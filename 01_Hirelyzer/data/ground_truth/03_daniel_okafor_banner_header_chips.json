@@ -1,0 +1,83 @@
+{
+  "is_resume": true,
+  "language": "en",
+  "full_name": "Daniel Okafor",
+  "headline": "Digital Marketing Manager",
+  "email": "daniel.okafor@example.com",
+  "phone": "+44 7700 900482",
+  "location": "London, UK",
+  "links": [
+    "linkedin.com/in/daniel-okafor-demo"
+  ],
+  "summary": "Results-driven marketing manager with 10 years of experience leading integrated B2C campaigns across paid, email and social. Track record of growing qualified leads while reducing acquisition cost.",
+  "skills": [
+    "Campaign Strategy",
+    "SEO",
+    "Google Ads",
+    "Meta Ads",
+    "Email Marketing",
+    "HubSpot",
+    "Content Marketing",
+    "Budget Management",
+    "Team Leadership",
+    "Google Analytics"
+  ],
+  "experience": [
+    {
+      "company": "Harbor & Pine Foods",
+      "title": "Marketing Manager",
+      "location": "London",
+      "start_date": "2022-01",
+      "end_date": null,
+      "is_current": true,
+      "highlights": [
+        "Led a 6-person team managing a GBP 1.4M annual marketing budget",
+        "Grew online orders 38% year-on-year through a redesigned email lifecycle programme",
+        "Cut cost per acquisition from GBP 21 to GBP 14 by restructuring paid search"
+      ]
+    },
+    {
+      "company": "Stratus Digital Agency",
+      "title": "Senior Marketing Executive",
+      "location": "London",
+      "start_date": "2018-05",
+      "end_date": "2021-12",
+      "is_current": false,
+      "highlights": [
+        "Managed campaigns for 9 clients across retail and hospitality",
+        "Launched a content hub that reached 120K organic visits per month within a year"
+      ]
+    },
+    {
+      "company": "Pixelfield Studio",
+      "title": "Marketing Executive",
+      "location": "Manchester",
+      "start_date": "2016-09",
+      "end_date": "2018-04",
+      "is_current": false,
+      "highlights": [
+        "Coordinated social calendars across 4 brands",
+        "Produced monthly reports on engagement and conversion"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of Eastvale",
+      "degree": "BA",
+      "field": "Business and Marketing",
+      "start_year": "2012",
+      "end_year": "2015",
+      "grade": "First Class Honours"
+    }
+  ],
+  "certifications": [
+    "Google Ads Certification",
+    "HubSpot Inbound Marketing Certification"
+  ],
+  "languages": [
+    "English",
+    "Igbo (conversational)"
+  ],
+  "projects": []
+}

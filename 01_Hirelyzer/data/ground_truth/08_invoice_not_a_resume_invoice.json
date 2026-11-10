@@ -1,0 +1,10 @@
+{
+  "is_resume": false,
+  "document_type": "invoice",
+  "invoice_number": "INV-2026-0412",
+  "invoice_date": "2026-09-18",
+  "currency": "USD",
+  "subtotal": 393.7,
+  "tax": 31.5,
+  "total": 425.2
+}

@@ -1,0 +1,80 @@
+{
+  "is_resume": true,
+  "language": "en",
+  "full_name": "Aisha Rahman",
+  "headline": "UX / Product Designer",
+  "email": "aisha.rahman@example.com",
+  "phone": "+971 50 555 0134",
+  "location": "Dubai, UAE",
+  "links": [
+    "behance.net/aisha-rahman-demo"
+  ],
+  "summary": "Product designer with 8 years of experience crafting mobile and web experiences for fintech and travel. I combine user research with clean visual design to improve conversion and retention.",
+  "skills": [
+    "Figma",
+    "User Research",
+    "Wireframing",
+    "Prototyping",
+    "Design Systems",
+    "Usability Testing",
+    "Adobe Illustrator",
+    "HTML and CSS"
+  ],
+  "experience": [
+    {
+      "company": "Sandgate Digital Bank",
+      "title": "Senior Product Designer",
+      "location": "Dubai",
+      "start_date": "2022-10",
+      "end_date": null,
+      "is_current": true,
+      "highlights": [
+        "Redesigned the onboarding flow, lifting completed sign-ups by 29%",
+        "Built a design system of 120+ components adopted by 4 squads",
+        "Ran 30+ moderated usability sessions to guide the roadmap"
+      ]
+    },
+    {
+      "company": "Wanderline Travel",
+      "title": "UX Designer",
+      "location": "Dubai",
+      "start_date": "2019-09",
+      "end_date": "2022-09",
+      "is_current": false,
+      "highlights": [
+        "Designed the booking experience for iOS and Android apps with 800K installs",
+        "Cut checkout from 6 steps to 3, reducing drop-off by 17%"
+      ]
+    },
+    {
+      "company": "Freelance",
+      "title": "UI Designer",
+      "location": "Remote",
+      "start_date": "2018-01",
+      "end_date": "2019-08",
+      "is_current": false,
+      "highlights": [
+        "Delivered branding and landing pages for 12 small businesses"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Crescent University of Design",
+      "degree": "B.Des.",
+      "field": "Interaction Design",
+      "start_year": "2014",
+      "end_year": "2018",
+      "grade": null
+    }
+  ],
+  "certifications": [
+    "Google UX Design Professional Certificate"
+  ],
+  "languages": [
+    "English",
+    "Arabic",
+    "Urdu"
+  ],
+  "projects": []
+}

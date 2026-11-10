@@ -1,0 +1,87 @@
+{
+  "is_resume": true,
+  "language": "en",
+  "full_name": "Rohan Deshmukh",
+  "headline": "Senior Software Engineer",
+  "email": "rohan.deshmukh@example.com",
+  "phone": "+91 90000 31245",
+  "location": "Pune, India",
+  "links": [
+    "linkedin.com/in/rohan-deshmukh-demo",
+    "github.com/rohan-deshmukh-demo"
+  ],
+  "summary": "Backend-focused software engineer with 7 years of experience building REST APIs and data pipelines in Python and Java. Comfortable owning features from design to production.",
+  "skills": [
+    "Python",
+    "Java",
+    "Django",
+    "FastAPI",
+    "PostgreSQL",
+    "Redis",
+    "Docker",
+    "Kubernetes",
+    "AWS",
+    "CI/CD",
+    "REST APIs",
+    "Git"
+  ],
+  "experience": [
+    {
+      "company": "Brightpath Systems",
+      "title": "Senior Software Engineer",
+      "location": "Pune",
+      "start_date": "2023-04",
+      "end_date": null,
+      "is_current": true,
+      "highlights": [
+        "Redesigned the order-processing service, cutting average API latency from 480 ms to 190 ms",
+        "Led migration of 14 microservices to Kubernetes, reducing infrastructure cost by 22%",
+        "Mentored 4 junior engineers and introduced code-review guidelines adopted by 3 teams"
+      ]
+    },
+    {
+      "company": "Kestrel Analytics",
+      "title": "Software Engineer",
+      "location": "Pune",
+      "start_date": "2020-07",
+      "end_date": "2023-03",
+      "is_current": false,
+      "highlights": [
+        "Built Python ETL pipelines processing 2M+ records daily for client dashboards",
+        "Raised automated test coverage from 41% to 78%",
+        "Implemented role-based access control for the internal admin portal"
+      ]
+    },
+    {
+      "company": "Bytewell Solutions",
+      "title": "Junior Software Engineer",
+      "location": "Pune",
+      "start_date": "2019-06",
+      "end_date": "2020-06",
+      "is_current": false,
+      "highlights": [
+        "Developed REST endpoints for a logistics tracking app using Django",
+        "Fixed 60+ production bugs and wrote API documentation"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Riverton Institute of Technology",
+      "degree": "B.Tech",
+      "field": "Computer Science",
+      "start_year": "2015",
+      "end_year": "2019",
+      "grade": "CGPA 8.4/10"
+    }
+  ],
+  "certifications": [
+    "AWS Certified Developer - Associate"
+  ],
+  "languages": [
+    "English",
+    "Hindi",
+    "Marathi"
+  ],
+  "projects": []
+}

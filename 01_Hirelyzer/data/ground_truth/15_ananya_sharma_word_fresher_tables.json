@@ -1,0 +1,68 @@
+{
+  "is_resume": true,
+  "language": "en",
+  "full_name": "Ananya Sharma",
+  "headline": "Computer Science Graduate | Aspiring Data and AI Engineer",
+  "email": "ananya.sharma@example.com",
+  "phone": "+91 90000 72513",
+  "location": "Hyderabad, India",
+  "links": [
+    "github.com/ananya-sharma-demo",
+    "linkedin.com/in/ananya-sharma-demo"
+  ],
+  "summary": "Recent computer science graduate seeking an entry-level role in data engineering or machine learning. Built three end-to-end projects in Python and completed online certifications in machine learning and SQL.",
+  "skills": [
+    "Python",
+    "SQL",
+    "Pandas",
+    "NumPy",
+    "scikit-learn",
+    "Git",
+    "HTML/CSS",
+    "Flask",
+    "Machine Learning Basics",
+    "Problem Solving"
+  ],
+  "experience": [],
+  "education": [
+    {
+      "institution": "Godavari Institute of Technology",
+      "degree": "B.Tech",
+      "field": "Computer Science and Engineering",
+      "start_year": "2022",
+      "end_year": "2026",
+      "grade": "CGPA 8.9/10"
+    },
+    {
+      "institution": "Narayana Junior College",
+      "degree": "Intermediate (Class XII)",
+      "field": "Mathematics, Physics, Chemistry",
+      "start_year": "2020",
+      "end_year": "2022",
+      "grade": "96%"
+    }
+  ],
+  "certifications": [
+    "Machine Learning Foundations Certificate (online, 2025)",
+    "SQL for Data Analysis Certificate (online, 2025)"
+  ],
+  "languages": [
+    "English",
+    "Telugu",
+    "Hindi"
+  ],
+  "projects": [
+    {
+      "name": "Movie Recommender System",
+      "description": "Built a content-based recommender using TF-IDF and cosine similarity on a 10K-movie dataset and deployed it with Flask."
+    },
+    {
+      "name": "Student Performance Predictor",
+      "description": "Trained regression models on exam data (R-squared 0.86) and created a Streamlit dashboard for teachers."
+    },
+    {
+      "name": "Expense Tracker CLI",
+      "description": "Command-line tool in Python with SQLite storage and monthly spending reports."
+    }
+  ]
+}

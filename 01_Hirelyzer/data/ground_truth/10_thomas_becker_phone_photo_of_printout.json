@@ -1,0 +1,82 @@
+{
+  "is_resume": true,
+  "language": "en",
+  "full_name": "Thomas Becker",
+  "headline": "Accountant | Financial Reporting and Audit Support",
+  "email": "thomas.becker@example.com",
+  "phone": "+49 151 5550 3321",
+  "location": "Munich, Germany",
+  "links": [],
+  "summary": "Detail-oriented accountant with 10 years of experience in financial reporting, month-end close and audit preparation for mid-sized manufacturing companies.",
+  "skills": [
+    "Financial Reporting",
+    "IFRS",
+    "HGB",
+    "Month-End Close",
+    "Accounts Payable",
+    "Accounts Receivable",
+    "SAP FI/CO",
+    "DATEV",
+    "Advanced Excel",
+    "Budgeting",
+    "Audit Support"
+  ],
+  "experience": [
+    {
+      "company": "Bergmann Industrietechnik GmbH",
+      "title": "Senior Accountant",
+      "location": "Munich",
+      "start_date": "2021-04",
+      "end_date": null,
+      "is_current": true,
+      "highlights": [
+        "Prepared monthly and quarterly financial statements under IFRS and HGB",
+        "Shortened the month-end close from 9 to 6 working days",
+        "Supported the external audit with zero material findings in 2024 and 2025"
+      ]
+    },
+    {
+      "company": "Alpen Treuhand AG",
+      "title": "Accountant",
+      "location": "Munich",
+      "start_date": "2018-10",
+      "end_date": "2021-03",
+      "is_current": false,
+      "highlights": [
+        "Managed bookkeeping and payroll accounting for 25 SME clients",
+        "Prepared VAT returns and annual accounts"
+      ]
+    },
+    {
+      "company": "Stadtwerke Isar GmbH",
+      "title": "Accounting Assistant",
+      "location": "Munich",
+      "start_date": "2016-09",
+      "end_date": "2018-09",
+      "is_current": false,
+      "highlights": [
+        "Processed 400+ supplier invoices per month",
+        "Reconciled bank statements and intercompany accounts"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Isar University of Applied Sciences",
+      "degree": "B.A.",
+      "field": "Business Administration (Accounting and Finance)",
+      "start_year": "2012",
+      "end_year": "2016",
+      "grade": "Grade 1.9"
+    }
+  ],
+  "certifications": [
+    "Bilanzbuchhalter (IHK)",
+    "SAP Certified Application Associate - Financial Accounting"
+  ],
+  "languages": [
+    "German (native)",
+    "English (fluent)"
+  ],
+  "projects": []
+}

@@ -1,0 +1,82 @@
+{
+  "is_resume": true,
+  "language": "en",
+  "full_name": "Grace O'Neill",
+  "headline": "HR Generalist",
+  "email": "grace.oneill@example.com",
+  "phone": "+353 85 555 0171",
+  "location": "Dublin, Ireland",
+  "links": [
+    "linkedin.com/in/grace-oneill-demo"
+  ],
+  "summary": "HR generalist with 9 years of experience supporting 300-500 employees across recruitment, onboarding, employee relations and HR operations. Passionate about building fair, people-centred processes.",
+  "skills": [
+    "Recruitment",
+    "Onboarding",
+    "Employee Relations",
+    "HR Policies",
+    "Workday",
+    "Performance Management",
+    "Payroll Coordination",
+    "Employment Law (Ireland)",
+    "Learning and Development",
+    "HR Analytics"
+  ],
+  "experience": [
+    {
+      "company": "Corrib Software Ltd.",
+      "title": "HR Generalist",
+      "location": "Dublin",
+      "start_date": "2021-09",
+      "end_date": null,
+      "is_current": true,
+      "highlights": [
+        "Managed end-to-end hiring for 60+ roles per year, reducing time-to-hire from 45 to 32 days",
+        "Rolled out a new onboarding programme that raised 90-day retention to 94%",
+        "Advised managers on disciplinary and grievance cases in line with Irish employment law"
+      ]
+    },
+    {
+      "company": "Liffey Retail Group",
+      "title": "HR Coordinator",
+      "location": "Dublin",
+      "start_date": "2019-02",
+      "end_date": "2021-08",
+      "is_current": false,
+      "highlights": [
+        "Administered HR records and payroll inputs for 450 employees",
+        "Coordinated graduate recruitment fairs across 5 universities"
+      ]
+    },
+    {
+      "company": "Dalkey Hospitality",
+      "title": "HR Assistant",
+      "location": "Dublin",
+      "start_date": "2017-06",
+      "end_date": "2019-01",
+      "is_current": false,
+      "highlights": [
+        "Supported recruitment for hotel and restaurant staff",
+        "Maintained employee files and absence tracking"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Eastbrook University",
+      "degree": "BA",
+      "field": "Human Resource Management",
+      "start_year": "2013",
+      "end_year": "2017",
+      "grade": "2:1"
+    }
+  ],
+  "certifications": [
+    "CIPD Level 5 Associate Diploma in People Management"
+  ],
+  "languages": [
+    "English",
+    "Irish (conversational)"
+  ],
+  "projects": []
+}

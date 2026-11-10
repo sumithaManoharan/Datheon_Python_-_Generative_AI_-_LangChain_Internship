@@ -1,0 +1,71 @@
+{
+  "is_resume": true,
+  "language": "en",
+  "full_name": "Lakshmi Iyer",
+  "headline": "Mechanical Design Engineer",
+  "email": "lakshmi.iyer@example.com",
+  "phone": "+91 90000 58236",
+  "location": "Coimbatore, India",
+  "links": [
+    "linkedin.com/in/lakshmi-iyer-demo"
+  ],
+  "summary": "Mechanical engineer with 6 years of experience in product design and manufacturing support for pump and motor assemblies. Skilled in CAD, GD&T and design for manufacturability.",
+  "skills": [
+    "SolidWorks",
+    "AutoCAD",
+    "GD&T",
+    "Ansys",
+    "DFMEA",
+    "CNC Machining Basics",
+    "Root Cause Analysis",
+    "Bill of Materials",
+    "Lean Manufacturing"
+  ],
+  "experience": [
+    {
+      "company": "Kovai Pumps & Motors Ltd.",
+      "title": "Design Engineer",
+      "location": "Coimbatore",
+      "start_date": "2022-08",
+      "end_date": null,
+      "is_current": true,
+      "highlights": [
+        "Redesigned the impeller housing, improving pump efficiency by 4% and cutting material cost by 9%",
+        "Produced 200+ detailed drawings with GD&T for manufacturing",
+        "Ran FEA studies in Ansys that removed two prototype iterations"
+      ]
+    },
+    {
+      "company": "Sakthi Auto Components",
+      "title": "Junior Design Engineer",
+      "location": "Coimbatore",
+      "start_date": "2020-07",
+      "end_date": "2022-07",
+      "is_current": false,
+      "highlights": [
+        "Updated BOMs and engineering change notices for 60+ parts",
+        "Supported shop-floor trials and resolved 25 dimensional non-conformances"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Noyyal Institute of Technology",
+      "degree": "B.E.",
+      "field": "Mechanical Engineering",
+      "start_year": "2016",
+      "end_year": "2020",
+      "grade": "CGPA 8.1/10"
+    }
+  ],
+  "certifications": [
+    "Certified SolidWorks Professional (CSWP)",
+    "Six Sigma Green Belt"
+  ],
+  "languages": [
+    "Tamil",
+    "English",
+    "Malayalam"
+  ],
+  "projects": []
+}

@@ -1,0 +1,93 @@
+{
+  "is_resume": true,
+  "language": "fr",
+  "full_name": "Camille Laurent",
+  "headline": "Cheffe de projet digital",
+  "email": "camille.laurent@example.com",
+  "phone": "+33 6 12 00 00 17",
+  "location": "Lyon, France",
+  "links": [
+    "linkedin.com/in/camille-laurent-demo"
+  ],
+  "summary": "Cheffe de projet digital forte de 10 ans d'expérience dans le pilotage de refontes de sites e-commerce et d'applications mobiles. À l'aise avec les méthodes agiles, la coordination d'équipes pluridisciplinaires et la relation client.",
+  "skills": [
+    "Gestion de projet",
+    "Scrum",
+    "Jira",
+    "Figma",
+    "Google Analytics",
+    "SEO",
+    "Recueil des besoins",
+    "Budget et planning",
+    "Relation client",
+    "SQL"
+  ],
+  "experience": [
+    {
+      "company": "Atelier Rhône Digital",
+      "title": "Cheffe de projet digital senior",
+      "location": "Lyon",
+      "start_date": "2022-03",
+      "end_date": null,
+      "is_current": true,
+      "highlights": [
+        "Pilotage de la refonte d'une plateforme e-commerce (budget de 480 k€) livrée dans les délais",
+        "Coordination de 12 collaborateurs (développeurs, designers, experts SEO)",
+        "Hausse de 24 % du taux de conversion mobile après optimisation du parcours d'achat"
+      ]
+    },
+    {
+      "company": "Vignoble Interactive",
+      "title": "Cheffe de projet web",
+      "location": "Lyon",
+      "start_date": "2019-01",
+      "end_date": "2022-02",
+      "is_current": false,
+      "highlights": [
+        "Gestion de 15 projets clients simultanés en méthode agile",
+        "Mise en place de rituels Scrum et d'un tableau de bord de suivi dans Jira",
+        "Réduction de 20 % des dépassements de budget grâce à un meilleur chiffrage"
+      ]
+    },
+    {
+      "company": "Studio Confluence",
+      "title": "Chargée de projet junior",
+      "location": "Villeurbanne",
+      "start_date": "2016-09",
+      "end_date": "2018-12",
+      "is_current": false,
+      "highlights": [
+        "Rédaction des cahiers des charges et des recettes fonctionnelles",
+        "Suivi des plannings et reporting hebdomadaire auprès des clients"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "École Supérieure du Numérique de Lyon",
+      "degree": "Master",
+      "field": "Management de projet digital",
+      "start_year": "2014",
+      "end_year": "2016",
+      "grade": "Mention Bien"
+    },
+    {
+      "institution": "Université Saint-Clair",
+      "degree": "Licence",
+      "field": "Information-Communication",
+      "start_year": "2011",
+      "end_year": "2014",
+      "grade": null
+    }
+  ],
+  "certifications": [
+    "Professional Scrum Master I (PSM I)",
+    "Certification Google Analytics"
+  ],
+  "languages": [
+    "Français (langue maternelle)",
+    "Anglais (courant)",
+    "Espagnol (notions)"
+  ],
+  "projects": []
+}

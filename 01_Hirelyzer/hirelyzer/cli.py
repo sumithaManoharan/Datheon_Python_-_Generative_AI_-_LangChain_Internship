@@ -15,6 +15,7 @@ from hirelyzer.extractor import ExtractionResult, ResumeExtractor
 from hirelyzer.llm import LLMClient
 from hirelyzer.prompts import PromptBuilder
 from hirelyzer.readers import READERS, prepare_text, read_document
+from hirelyzer.telemetry import DEFAULT_TELEMETRY_LOG, TelemetryRecorder, configure_telemetry_log
 
 logger = logging.getLogger(__name__)
 NOISY_LOGGERS = ("httpx", "httpx2", "httpcore")  # libraries that log every HTTP request
@@ -46,6 +47,12 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=Path(DEFAULT_OUTPUT_DIR),
         help="Folder for the JSON results (default: %(default)s).",
+    )
+    parser.add_argument(
+        "--telemetry-log",
+        type=Path,
+        default=Path(DEFAULT_TELEMETRY_LOG),
+        help="File for per-request telemetry JSON lines (default: %(default)s).",
     )
     parser.add_argument("-v", "--verbose", action="store_true", help="Show debug logs.")
     return parser
@@ -89,10 +96,10 @@ def collect_sources(args: argparse.Namespace, settings: Settings) -> list[Source
     return sources
 
 
-def build_extractor(settings: Settings) -> ResumeExtractor:
+def build_extractor(settings: Settings, recorder: TelemetryRecorder) -> ResumeExtractor:
     """Wire the real client and the prompt files into an extractor."""
     return ResumeExtractor(
-        LLMClient.from_settings(settings),
+        LLMClient.from_settings(settings, recorder),
         PromptBuilder.from_files(),
         settings.max_repair_attempts,
     )
@@ -146,12 +153,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     for noisy in NOISY_LOGGERS:  # hide per-request HTTP lines
         logging.getLogger(noisy).setLevel(logging.WARNING)  # hide per-request HTTP lines
 
+        recorder = TelemetryRecorder()
     try:
         settings = load_settings()
-        extractor = build_extractor(settings)
+        extractor = build_extractor(settings, recorder)
     except ConfigError as exc:
         print(f"Configuration error: {exc}", file=sys.stderr)
         return EXIT_USAGE
+    configure_telemetry_log(args.telemetry_log)
 
     sources = collect_sources(args, settings)
     if not sources:
@@ -166,6 +175,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         results.append(result)
 
     print(format_summary(results))
+    print(recorder.summary())
     return EXIT_OK if all(r.status == "success" for r in results) else EXIT_FAILED
 
 

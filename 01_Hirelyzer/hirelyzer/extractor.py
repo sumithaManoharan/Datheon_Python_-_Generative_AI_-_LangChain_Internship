@@ -59,7 +59,7 @@ class ResumeExtractor:
         for attempt in range(1, total_attempts + 1):
             result.attempts = attempt
             try:
-                response = self._llm.complete(messages)
+                response = self._llm.complete(messages, source=source)
             except LLMCallError as exc:
                 # Retries were already used up inside the client, so repairing cannot help.
                 result.errors.append(str(exc))

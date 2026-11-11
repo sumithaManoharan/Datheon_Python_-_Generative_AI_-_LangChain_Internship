@@ -1,0 +1,63 @@
+[
+    {
+      "document": "Jordan Avery\nBackend Developer\njordan.avery@example.com | +1 555 010 0199 | Springfield\n\nSKILLS\nPython, SQL, Docker, REST APIs\n\nEXPERIENCE\nNorthwind Labs - Backend Developer (Springfield) | Mar 2022 - Present\n- Built internal reporting APIs used by 4 teams\n- Cut report generation time from 40s to 6s\n\nBrightside Apps - Junior Developer (Remote) | Jun 2019 - Feb 2022\n- Maintained a Django web application\n\nEDUCATION\nSpringfield Technical University - B.Sc. Computer Science, 2015 - 2019, Grade: 3.6/4.0\n\nCERTIFICATIONS\nCloud Practitioner Essentials\n\nPROJECTS\nTask Tracker - A small command-line task manager (Python, SQLite)\n\nLANGUAGES\nEnglish, Spanish",
+      "output": {
+        "is_resume": true,
+        "language": "English",
+        "name": "Jordan Avery",
+        "headline": "Backend Developer",
+        "email": "jordan.avery@example.com",
+        "phone": "+1 555 010 0199",
+        "location": "Springfield",
+        "skills": ["Python", "SQL", "Docker", "REST APIs"],
+        "experience": [
+          {
+            "company": "Northwind Labs",
+            "job_title": "Backend Developer",
+            "job_location": "Springfield",
+            "start_date": "2022-03",
+            "end_date": null,
+            "is_current": true,
+            "highlights": [
+              "Built internal reporting APIs used by 4 teams",
+              "Cut report generation time from 40s to 6s"
+            ]
+          },
+          {
+            "company": "Brightside Apps",
+            "job_title": "Junior Developer",
+            "job_location": "Remote",
+            "start_date": "2019-06",
+            "end_date": "2022-02",
+            "is_current": false,
+            "highlights": ["Maintained a Django web application"]
+          }
+        ],
+        "education": [
+          {
+            "institution": "Springfield Technical University",
+            "degree": "B.Sc.",
+            "field_of_study": "Computer Science",
+            "start_year": "2015",
+            "end_year": "2019",
+            "grade": "3.6/4.0"
+          }
+        ],
+        "certifications": ["Cloud Practitioner Essentials"],
+        "projects": [
+          {
+            "project_title": "Task Tracker",
+            "project_description": "A small command-line task manager",
+            "skills_used": ["Python", "SQLite"]
+          }
+        ],
+        "languages": ["English", "Spanish"]
+      }
+    },
+    {
+      "document": "INVOICE #2041\nBlue Harbor Supplies\nBill to: Example Cafe\nDate: 2026-01-15\n\nItem            Qty   Price\nCoffee beans    10    12.50\nPaper cups      200   0.10\n\nTotal due: 145.00\nPayment terms: net 30",
+      "output": {
+        "is_resume": false
+      }
+    }
+  ]

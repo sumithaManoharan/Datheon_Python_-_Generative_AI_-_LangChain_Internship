@@ -3,21 +3,39 @@ name = "datheon-generative-ai-internship"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
-    "datasets>=5.1.0",
-    "huggingface-hub>=2.4.0",
-    "kagglehub>=1.0.3",
+    "docx2txt>=0.9",
     "openai>=3.42.1",
-    "pandas>=3.1.0",
-    "pathlib>=1.0.1",
-    "pdfplumber>=0.11.10",
     "pydantic>=2.14.2",
     "pymupdf4llm>=2.1",
     "python-dotenv>=1.2.4",
     "rapidocr>=3.10.0",
-    "requests>=2.34.2",
+    "rapidocr-onnxruntime>=1.4.4",
 ]
 
 [dependency-groups]
 dev = [
     "ipykernel>=7.4.0",
+    "pytest>=8.0",
+    "ruff>=0.8",
 ]
+rnd = [
+    "datasets>=5.1.0",
+    "huggingface-hub>=2.4.0",
+    "kagglehub>=1.0.3",
+    "pandas>=3.1.0",
+    "pdfplumber>=0.11.10",
+    "requests>=2.34.2",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+# E/W = pycodestyle (PEP 8), F = pyflakes (unused imports), I = import sorting,
+# UP = modern syntax, B = common bugs
+select = ["E", "F", "W", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+pythonpath = ["01_Hirelyzer"]
+testpaths = ["01_Hirelyzer/tests"]

@@ -1,0 +1,74 @@
+{
+  "is_resume": true,
+  "language": "English",
+  "name": "ANANYA SHARMA",
+  "headline": "Computer Science Graduate | Aspiring Data and AI Engineer",
+  "email": "ananya.sharma@example.com",
+  "phone": "+91 90000 72513",
+  "location": "Hyderabad, India",
+  "skills": [
+    "Python",
+    "SQL",
+    "Pandas",
+    "NumPy",
+    "scikit-learn",
+    "Git",
+    "HTML/CSS",
+    "Flask",
+    "Machine Learning Basics",
+    "Problem Solving"
+  ],
+  "experience": [],
+  "education": [
+    {
+      "institution": "Godavari Institute of Technology",
+      "degree": "B.Tech",
+      "field_of_study": "Computer Science and Engineering",
+      "start_year": "2022",
+      "end_year": "2026",
+      "grade": "CGPA 8.9/10"
+    },
+    {
+      "institution": "Narayana Junior College",
+      "degree": "Intermediate (Class XII)",
+      "field_of_study": "Mathematics, Physics, Chemistry",
+      "start_year": "2020",
+      "end_year": "2022",
+      "grade": "96%"
+    }
+  ],
+  "certifications": [
+    "Machine Learning Foundations Certificate (online, 2025)",
+    "SQL for Data Analysis Certificate (online, 2025)"
+  ],
+  "projects": [
+    {
+      "project_title": "Movie Recommender System",
+      "project_description": "Built a content-based recommender using TF-IDF and cosine similarity on a 10K-movie dataset and deployed it with Flask.",
+      "skills_used": [
+        "Python",
+        "Flask"
+      ]
+    },
+    {
+      "project_title": "Student Performance Predictor",
+      "project_description": "Trained regression models on exam data (R-squared 0.86) and created a Streamlit dashboard for teachers.",
+      "skills_used": [
+        "Python",
+        "scikit-learn"
+      ]
+    },
+    {
+      "project_title": "Expense Tracker CLI",
+      "project_description": "Command-line tool in Python with SQLite storage and monthly spending reports.",
+      "skills_used": [
+        "Python"
+      ]
+    }
+  ],
+  "languages": [
+    "English",
+    "Telugu",
+    "Hindi"
+  ]
+}

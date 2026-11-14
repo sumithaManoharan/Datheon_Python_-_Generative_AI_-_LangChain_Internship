@@ -65,7 +65,10 @@ class LLMClient:
 
     @classmethod
     def from_settings(
-        cls, settings: Settings, recorder: TelemetryRecorder | None = None
+        cls,
+        settings: Settings,
+        recorder: TelemetryRecorder | None = None,
+        model: str | None = None,
     ) -> "LLMClient":
         """Build the real client. The SDK's own retries are off so ours are the visible ones."""
         sdk_client = openai.OpenAI(
@@ -76,7 +79,7 @@ class LLMClient:
         )
         return cls(
             sdk_client,
-            settings.text_model,
+            model or settings.text_model,
             settings.temperature,
             settings.max_retries,
             recorder=recorder,

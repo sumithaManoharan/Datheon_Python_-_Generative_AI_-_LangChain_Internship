@@ -1,0 +1,2 @@
+run_id,mode,model,prompt_hash,documents,failed,overall,overall_processed,is_resume,language,name,headline,email,phone,location,skills_precision,skills_recall,skills_f1,certifications_f1,languages_f1,experience_f1,experience_fields,experience_highlights_f1,education_f1,education_fields,projects_f1,projects_skills_used_f1
+2026-11-12T12-15-16,live,openai/gpt-oss-20b,52194edd,15,0,0.9716,0.9716,1.0,1.0,1.0,0.9286,1.0,1.0,1.0,1.0,0.95,0.9615,1.0,0.8571,0.9762,1.0,0.9754,1.0,0.9554,1.0,0.8571

@@ -1,0 +1,145 @@
+{
+  "is_resume": true,
+  "language": "English",
+  "name": "Sofia Almeida",
+  "headline": "Senior Backend Engineer | Distributed Systems",
+  "email": "sofia.almeida@example.com",
+  "phone": "+1 416-555-0193",
+  "location": "Toronto, ON",
+  "skills": [
+    "Go",
+    "Python",
+    "Java",
+    "SQL",
+    "gRPC",
+    "REST",
+    "GraphQL",
+    "Kafka",
+    "RabbitMQ",
+    "Microservices",
+    "PostgreSQL",
+    "MongoDB",
+    "Redis",
+    "Elasticsearch",
+    "ClickHouse",
+    "AWS",
+    "GCP",
+    "Terraform",
+    "Docker",
+    "Kubernetes",
+    "GitHub Actions",
+    "Prometheus",
+    "Grafana"
+  ],
+  "experience": [
+    {
+      "company": "Meridian Pay",
+      "job_title": "Staff Engineer",
+      "job_location": "Toronto",
+      "start_date": "2022-09",
+      "end_date": null,
+      "is_current": true,
+      "highlights": [
+        "Architected a ledger service handling 9,000 transactions per second with 99.99% availability",
+        "Led a team of 8 engineers across payments reconciliation and fraud tooling",
+        "Introduced contract testing and canary deployments, reducing production incidents by 47%",
+        "Drove adoption of OpenTelemetry tracing across 30+ services"
+      ]
+    },
+    {
+      "company": "Orbit Messaging",
+      "job_title": "Senior Software Engineer",
+      "job_location": "Toronto",
+      "start_date": "2019-03",
+      "end_date": "2022-08",
+      "is_current": false,
+      "highlights": [
+        "Rebuilt the notification pipeline on Kafka, scaling from 5M to 40M messages per day",
+        "Reduced p99 delivery latency from 2.1 s to 420 ms",
+        "Designed a multi-tenant rate-limiting service used by 200+ enterprise customers",
+        "Mentored 6 engineers and ran the internal system-design reading group"
+      ]
+    },
+    {
+      "company": "Tallgrass Software",
+      "job_title": "Software Engineer",
+      "job_location": "Ottawa",
+      "start_date": "2016-01",
+      "end_date": "2019-02",
+      "is_current": false,
+      "highlights": [
+        "Developed Go microservices for an inventory platform serving 1,500 retailers",
+        "Migrated a monolithic Java application to services with zero customer downtime",
+        "Created internal CLI tooling that cut environment setup from 2 days to 30 minutes"
+      ]
+    },
+    {
+      "company": "Quillstone Data",
+      "job_title": "Software Developer",
+      "job_location": "Ottawa",
+      "start_date": "2013-06",
+      "end_date": "2015-12",
+      "is_current": false,
+      "highlights": [
+        "Built Python data-ingestion jobs for a market-research analytics product",
+        "Optimized SQL queries, reducing report generation time by 65%",
+        "Took part in the on-call rotation for production services"
+      ]
+    },
+    {
+      "company": "Maple Bridge Consulting",
+      "job_title": "Junior Developer",
+      "job_location": "Waterloo",
+      "start_date": "2012-05",
+      "end_date": "2013-05",
+      "is_current": false,
+      "highlights": [
+        "Implemented features for client web applications in Java and JavaScript"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Northshore University",
+      "degree": "B.Eng.",
+      "field_of_study": "Software Engineering",
+      "start_year": "2008",
+      "end_year": "2012",
+      "grade": "Graduated with distinction"
+    },
+    {
+      "institution": "Westbridge University",
+      "degree": "M.Sc.",
+      "field_of_study": "Computer Science",
+      "start_year": "2017",
+      "end_year": "2019",
+      "grade": "Part-time"
+    }
+  ],
+  "certifications": [
+    "AWS Certified Solutions Architect - Professional",
+    "Certified Kubernetes Application Developer (CKAD)"
+  ],
+  "projects": [
+    {
+      "project_title": "distq (open source)",
+      "project_description": "Go library for distributed task queues on Redis, with 1.8K GitHub stars and 40 contributors.",
+      "skills_used": [
+        "Go",
+        "Redis"
+      ]
+    },
+    {
+      "project_title": "kafka-lag-alerts (open source)",
+      "project_description": "Contributed alerting and dashboard features to a community Kafka monitoring tool used by 300+ teams.",
+      "skills_used": [
+        "Kafka"
+      ]
+    }
+  ],
+  "languages": [
+    "English",
+    "Portuguese",
+    "French (basic)"
+  ]
+}

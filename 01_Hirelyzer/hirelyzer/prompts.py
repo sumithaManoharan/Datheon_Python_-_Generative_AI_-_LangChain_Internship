@@ -132,3 +132,16 @@ class PromptBuilder:
             {"role": "system", "content": self._system_prompt},
             {"role": "user", "content": f"Document:\n\n{document_text}"},
         ]
+
+    def build_vision_messages(self, image_data_url: str) -> list[dict[str, Any]]:
+        """Return the system and user messages for one image (the same system prompt)."""
+        return [
+            {"role": "system", "content": self._system_prompt},
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "Extract the JSON for the document in this image."},
+                    {"type": "image_url", "image_url": {"url": image_data_url}},
+                ],
+            },
+        ]

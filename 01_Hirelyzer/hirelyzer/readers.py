@@ -2,9 +2,11 @@
 
 import logging
 from collections.abc import Callable
+from dataclasses import dataclass
 from pathlib import Path
 
 from hirelyzer.errors import EmptyDocumentError, InputTooLargeError, UnsupportedFileError
+from hirelyzer.vision import IMAGE_EXTENSIONS, image_to_data_url
 
 logger = logging.getLogger(__name__)
 
@@ -85,3 +87,24 @@ def read_document(path: Path, max_file_bytes: int, max_text_chars: int) -> str:
         )
 
     return prepare_text(reader(path), path.name, max_text_chars)
+
+
+# Every extension the CLI accepts: text-based documents plus images for the vision model.
+SUPPORTED_EXTENSIONS = frozenset(READERS) | IMAGE_EXTENSIONS
+
+
+@dataclass(frozen=True)
+class LoadedDocument:
+    """Content ready for the model: extracted text, or an image as a data URL."""
+
+    content: str
+    is_image: bool = False
+
+
+def load_document(path: Path, max_file_bytes: int, max_text_chars: int) -> LoadedDocument:
+    """Load a text document or an image; raise a typed error explaining why not."""
+    if path.suffix.lower() in IMAGE_EXTENSIONS:
+        if not path.is_file():
+            raise UnsupportedFileError(f"File not found: {path}")
+        return LoadedDocument(image_to_data_url(path, max_file_bytes), is_image=True)
+    return LoadedDocument(read_document(path, max_file_bytes, max_text_chars))

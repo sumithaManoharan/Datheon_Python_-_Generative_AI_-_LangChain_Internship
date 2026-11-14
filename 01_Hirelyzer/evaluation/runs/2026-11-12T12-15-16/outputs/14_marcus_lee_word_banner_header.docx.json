@@ -1,0 +1,89 @@
+{
+  "is_resume": true,
+  "language": "English",
+  "name": "Marcus Lee",
+  "headline": "B2B Sales Executive - SaaS",
+  "email": "marcus.lee@example.com",
+  "phone": "+65 8555 0192",
+  "location": "Singapore",
+  "skills": [
+    "B2B Sales",
+    "Account Management",
+    "Salesforce CRM",
+    "Negotiation",
+    "Pipeline Management",
+    "Lead Generation",
+    "Consultative Selling",
+    "Forecasting",
+    "Cold Outreach"
+  ],
+  "experience": [
+    {
+      "company": "Skyline Cloud Pte Ltd",
+      "job_title": "Senior Sales Executive",
+      "job_location": "Singapore",
+      "start_date": "2021-06",
+      "end_date": null,
+      "is_current": true,
+      "highlights": [
+        "Closed SGD 2.8M in annual recurring revenue in 2025, reaching 124% of quota",
+        "Built a pipeline of 60+ mid-market accounts in finance and logistics",
+        "Trained 5 new hires on discovery calls and product demos"
+      ]
+    },
+    {
+      "company": "Independent Consultant",
+      "job_title": "Sales Consultant",
+      "job_location": "Singapore",
+      "start_date": "2021-01",
+      "end_date": "2022-06",
+      "is_current": false,
+      "highlights": [
+        "Advised 3 startups on outbound sales process and CRM setup",
+        "Generated 40 qualified leads for a fintech client through LinkedIn outreach"
+      ]
+    },
+    {
+      "company": "Orchid Software Pte Ltd",
+      "job_title": "Sales Executive",
+      "job_location": "Singapore",
+      "start_date": "2016-03",
+      "end_date": "2019-08",
+      "is_current": false,
+      "highlights": [
+        "Achieved 108% of annual quota for three consecutive years",
+        "Won the 2018 Regional Top Performer award"
+      ]
+    },
+    {
+      "company": "Tradewinds Distribution",
+      "job_title": "Sales Associate",
+      "job_location": "Singapore",
+      "start_date": "2014-06",
+      "end_date": "2016-02",
+      "is_current": false,
+      "highlights": [
+        "Handled 70 retail accounts and managed monthly replenishment orders"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Lionsgate University",
+      "degree": "B.Bus.",
+      "field_of_study": "Marketing",
+      "start_year": "2010",
+      "end_year": "2014",
+      "grade": null
+    }
+  ],
+  "certifications": [
+    "Salesforce Certified Administrator"
+  ],
+  "projects": [],
+  "languages": [
+    "English",
+    "Mandarin",
+    "Malay (basic)"
+  ]
+}

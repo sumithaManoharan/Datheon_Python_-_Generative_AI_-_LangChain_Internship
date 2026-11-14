@@ -27,7 +27,7 @@ from hirelyzer.config import Settings, load_settings
 from hirelyzer.errors import HirelyzerError
 from hirelyzer.extractor import ExtractionResult
 from hirelyzer.prompts import EXAMPLES_FILE, PROMPTS_DIR, TEMPLATE_FILE
-from hirelyzer.readers import read_document
+from hirelyzer.readers import load_document
 from hirelyzer.schema import Education, Experience, Project, Resume
 from hirelyzer.telemetry import (
     TELEMETRY_LOGGER_NAME,
@@ -380,7 +380,7 @@ def run_pipeline(
     extractor = build_extractor(settings, TelemetryRecorder())
     results: dict[str, ExtractionResult] = {}
     for path in sorted(p for p in resumes_dir.iterdir() if p.is_file()):
-        loader = partial(read_document, path, settings.max_file_bytes, settings.max_text_chars)
+        loader = partial(load_document, path, settings.max_file_bytes, settings.max_text_chars)
         result = extract_one(extractor, path.name, loader)
         if result.status == "success" and outputs_dir is not None:
             write_result(result, outputs_dir)

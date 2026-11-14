@@ -14,7 +14,7 @@ from hirelyzer.errors import ConfigError, HirelyzerError
 from hirelyzer.extractor import ExtractionResult, ResumeExtractor
 from hirelyzer.llm import LLMClient
 from hirelyzer.prompts import PromptBuilder
-from hirelyzer.readers import READERS, prepare_text, read_document
+from hirelyzer.readers import SUPPORTED_EXTENSIONS, LoadedDocument, load_document, prepare_text
 from hirelyzer.telemetry import DEFAULT_TELEMETRY_LOG, TelemetryRecorder, configure_telemetry_log
 
 logger = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ STDIN_MARKER = "-"
 TEXT_SOURCE_NAME = "text-input"
 
 # A source is a display name plus a function that loads its text when called.
-Source = tuple[str, Callable[[], str]]
+Source = tuple[str, Callable[[], LoadedDocument]]
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -39,7 +39,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "inputs",
         nargs="*",
-        help="Files or folders (PDF, DOCX, TXT). Use '-' to read text from stdin.",
+        help="Files or folders (PDF, DOCX, TXT, JPG, PNG). Use '-' to read text from stdin.",
     )
     parser.add_argument("--text", help="Resume text passed directly on the command line.")
     parser.add_argument(
@@ -70,50 +70,57 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
 def expand_path(path: Path) -> list[Path]:
     """A folder becomes its supported files (sorted); anything else is kept as given."""
     if path.is_dir():
-        return sorted(p for p in path.iterdir() if p.suffix.lower() in READERS)
+        return sorted(p for p in path.iterdir() if p.suffix.lower() in SUPPORTED_EXTENSIONS)
     return [path]  # a missing file is reported later, for that file only
 
 
+def _text_document(text: str, source: str, max_chars: int) -> LoadedDocument:
+    """Wrap raw text (from --text or stdin) in a LoadedDocument after the usual guards."""
+    return LoadedDocument(prepare_text(text, source, max_chars))
+
+
 def collect_sources(args: argparse.Namespace, settings: Settings) -> list[Source]:
-    """Turn the command-line inputs into (name, load_text) pairs without reading anything yet."""
+    """Turn the command-line inputs into (name, load) pairs without reading anything yet."""
     sources: list[Source] = []
     if args.text is not None:
-        sources.append(
-            (
-                TEXT_SOURCE_NAME,
-                partial(prepare_text, args.text, TEXT_SOURCE_NAME, settings.max_text_chars),
-            )
-        )
+        loader = partial(_text_document, args.text, TEXT_SOURCE_NAME, settings.max_text_chars)
+        sources.append((TEXT_SOURCE_NAME, loader))
     for item in args.inputs:
         if item == STDIN_MARKER:
             sources.append(
-                ("stdin", lambda: prepare_text(sys.stdin.read(), "stdin", settings.max_text_chars))
+                (
+                    "stdin",
+                    lambda: _text_document(sys.stdin.read(), "stdin", settings.max_text_chars),
+                )
             )
             continue
         for path in expand_path(Path(item)):
-            loader = partial(read_document, path, settings.max_file_bytes, settings.max_text_chars)
+            loader = partial(load_document, path, settings.max_file_bytes, settings.max_text_chars)
             sources.append((path.name, loader))
     return sources
 
 
 def build_extractor(settings: Settings, recorder: TelemetryRecorder) -> ResumeExtractor:
-    """Wire the real client and the prompt files into an extractor."""
+    """Wire the real clients (text and vision) and the prompt files into an extractor."""
     return ResumeExtractor(
         LLMClient.from_settings(settings, recorder),
         PromptBuilder.from_files(),
         settings.max_repair_attempts,
+        vision_llm=LLMClient.from_settings(settings, recorder, model=settings.vision_model),
     )
 
 
 def extract_one(
-    extractor: ResumeExtractor, name: str, load_text: Callable[[], str]
+    extractor: ResumeExtractor, name: str, load: Callable[[], LoadedDocument]
 ) -> ExtractionResult:
     """Run one document. Input errors become a failed result, so a batch keeps going."""
     try:
-        text = load_text()
+        document = load()
     except HirelyzerError as exc:
         return ExtractionResult(source=name, errors=[str(exc)])
-    return extractor.extract(text, source=name)
+    if document.is_image:
+        return extractor.extract_image(document.content, source=name)
+    return extractor.extract(document.content, source=name)
 
 
 def write_result(result: ExtractionResult, output_dir: Path) -> Path:

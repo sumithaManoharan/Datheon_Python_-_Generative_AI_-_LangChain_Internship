@@ -1,0 +1,78 @@
+{
+  "is_resume": true,
+  "language": "English",
+  "name": "Meera Krishnan",
+  "headline": "Registered Nurse - Critical Care",
+  "email": "meera.krishnan@example.com",
+  "phone": "+91 90000 47821",
+  "location": "Chennai, India",
+  "skills": [
+    "Critical Care Nursing",
+    "Ventilator Management",
+    "IV Therapy",
+    "Patient Assessment",
+    "Wound Care",
+    "Electronic Medical Records",
+    "BLS/ACLS",
+    "Patient Education",
+    "Infection Control"
+  ],
+  "experience": [
+    {
+      "company": "Greenfield Medical Centre",
+      "job_title": "Senior Staff Nurse - ICU",
+      "job_location": "Chennai",
+      "start_date": "2021-03",
+      "end_date": null,
+      "is_current": true,
+      "highlights": [
+        "Care for 4 critically ill patients per shift in a 24-bed ICU",
+        "Trained 15 new nurses on ventilator and central-line protocols",
+        "Contributed to an infection-control audit that lowered CLABSl cases by 30% in one year"
+      ]
+    },
+    {
+      "company": "Sunrise Care Hospital",
+      "job_title": "Staff Nurse - Post-operative Ward",
+      "job_location": "Chennai",
+      "start_date": "2018-08",
+      "end_date": "2021-02",
+      "is_current": false,
+      "highlights": [
+        "Monitored recovery of 20+ surgical patients daily",
+        "Coordinated discharge planning with physiotherapy and dietetics teams"
+      ]
+    },
+    {
+      "company": "Lakeside Clinic",
+      "job_title": "Nurse Asi o is isive",
+      "job_location": "Coimbatore",
+      "start_date": "2016-07",
+      "end_date": "2018-07",
+      "is_current": false,
+      "highlights": [
+        "Maintained accurate patient records"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "St. Aldric's College of Nursing",
+      "degree": "B.Sc.",
+      "field_of_study": "Nursing",
+      "start_year": "2012",
+      "end_year": "2016",
+      "grade": "First Class"
+    }
+  ],
+  "certifications": [
+    "BLS and ACLS (American Heart Association)",
+    "Critical Care Nursing Certificate"
+  ],
+  "projects": [],
+  "languages": [
+    "English",
+    "Tamil",
+    "Hindi (basic)"
+  ]
+}

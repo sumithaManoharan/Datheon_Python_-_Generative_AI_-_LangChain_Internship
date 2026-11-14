@@ -1,0 +1,87 @@
+{
+  "is_resume": true,
+  "language": "English",
+  "name": "Jason Whitfield",
+  "headline": "Data Scientist - Machine Learning and Forecasting",
+  "email": "jason.whitfield@example.com",
+  "phone": "(206) 555-0128",
+  "location": "Seattle, WA",
+  "skills": [
+    "Python",
+    "scikit-learn",
+    "PyTorch",
+    "SQL",
+    "XGBoost",
+    "Time-Series Forecasting",
+    "A/B Testing",
+    "Spark",
+    "MLflow",
+    "Airflow",
+    "AWS SageMaker"
+  ],
+  "experience": [
+    {
+      "company": "Cascade Logistics",
+      "job_title": "Senior Data Scientist",
+      "job_location": "Seattle, WA",
+      "start_date": "2023-06",
+      "end_date": null,
+      "is_current": true,
+      "highlights": [
+        "Developed demand-forecasting models that cut stockouts by 18% across 9 warehouses",
+        "Productionized models with MLflow and Airflow, serving daily predictions for 50K SKUs",
+        "Designed an experimentation framework now used by 5 product teams"
+      ]
+    },
+    {
+      "company": "Evergreen Commerce",
+      "job_title": "Data Scientist",
+      "job_location": "Seattle, WA",
+      "start_date": "2020-08",
+      "end_date": "2023-05",
+      "is_current": false,
+      "highlights": [
+        "Built a product-recommendation model that increased average order value by 6.5%",
+        "Created a churn-prediction pipeline (AUC 0.84) used by the retention team",
+        "Reduced model training time by 55% by moving feature generation to Spark"
+      ]
+    },
+    {
+      "company": "Summit Research Lab",
+      "job_title": "Research Assistant (Data)",
+      "job_location": "Bellevue, WA",
+      "start_date": "2019-06",
+      "end_date": "2020-07",
+      "is_current": false,
+      "highlights": [
+        "Cleaned and analyzed survey datasets with 30K+ respondents",
+        "Co-authored an internal methodology report on sampling bias"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Westbridge University",
+      "degree": "M.S.",
+      "field_of_study": "Data Science",
+      "start_year": "2018",
+      "end_year": "2020",
+      "grade": "3.8/4.0"
+    },
+    {
+      "institution": "Pinecrest College",
+      "degree": "B.S.",
+      "field_of_study": "Mathematics",
+      "start_year": "2014",
+      "end_year": "2018",
+      "grade": null
+    }
+  ],
+  "certifications": [
+    "Databricks Certified Machine Learning Associate"
+  ],
+  "projects": [],
+  "languages": [
+    "English"
+  ]
+}

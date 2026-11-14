@@ -3,7 +3,7 @@
 import logging
 import time
 from dataclasses import dataclass, field
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import ValidationError
 
@@ -38,19 +38,38 @@ class ExtractionResult:
 
 
 class ResumeExtractor:
-    """Runs the extraction stages. The LLM client and prompt builder are injected."""
+    """Runs the extraction stages. The LLM clients and prompt builder are injected."""
 
     def __init__(
-        self, llm: LLMClient, prompts: PromptBuilder, max_repair_attempts: int = 2
+        self,
+        llm: LLMClient,
+        prompts: PromptBuilder,
+        max_repair_attempts: int = 2,
+        vision_llm: LLMClient | None = None,
     ) -> None:
-        """Store the collaborators; tests pass a fake LLM here."""
+        """Store the collaborators; tests pass fake LLMs here. Without a vision client,
+        image extraction returns a failed result instead of raising."""
         self._llm = llm
+        self._vision_llm = vision_llm
         self._prompts = prompts
         self._max_repair_attempts = max_repair_attempts
 
     def extract(self, document_text: str, source: str = "<text>") -> ExtractionResult:
         """Extract a validated Resume from text, repairing invalid output when possible."""
-        base_messages = self._prompts.build_messages(document_text)
+        messages = self._prompts.build_messages(document_text)
+        return self._run(self._llm, messages, source, "text")
+
+    def extract_image(self, image_data_url: str, source: str = "<image>") -> ExtractionResult:
+        """Extract a validated Resume from an image (a data URL) with the vision model."""
+        if self._vision_llm is None:
+            return ExtractionResult(source=source, errors=["No vision model is configured."])
+        messages = self._prompts.build_vision_messages(image_data_url)
+        return self._run(self._vision_llm, messages, source, "vision")
+
+    def _run(
+        self, llm: LLMClient, base_messages: list[dict[str, Any]], source: str, pipeline: str
+    ) -> ExtractionResult:
+        """Call the model, validate the reply, and repair it up to the allowed number of times."""
         messages = base_messages
         result = ExtractionResult(source=source)
         total_attempts = self._max_repair_attempts + 1  # first try plus repair rounds
@@ -59,7 +78,7 @@ class ResumeExtractor:
         for attempt in range(1, total_attempts + 1):
             result.attempts = attempt
             try:
-                response = self._llm.complete(messages, source=source)
+                response = llm.complete(messages, source=source, pipeline=pipeline)
             except LLMCallError as exc:
                 # Retries were already used up inside the client, so repairing cannot help.
                 result.errors.append(str(exc))

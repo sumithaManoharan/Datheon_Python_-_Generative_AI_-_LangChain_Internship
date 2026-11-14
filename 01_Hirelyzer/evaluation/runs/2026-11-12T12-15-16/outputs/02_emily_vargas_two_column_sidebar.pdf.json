@@ -1,0 +1,60 @@
+{
+  "is_resume": true,
+  "language": "English",
+  "name": "Emily Vargas",
+  "headline": "Data Analyst",
+  "email": "emily.vargas@example.com",
+  "phone": "(512) 555-0147",
+  "location": "Austin, TX",
+  "skills": [
+    "SQL",
+    "Python",
+    "Tableau"
+  ],
+  "experience": [
+    {
+      "company": "Lumen Retail Group",
+      "job_title": "Data Analyst",
+      "job_location": "Austin, TX",
+      "start_date": "2023-02",
+      "end_date": null,
+      "is_current": true,
+      "highlights": [
+        "Built 12 Tableau dashboards used weekly by 40+ store managers",
+        "Identified a pricing issue in 3 regions that recovered an estimated $310K in annual margin",
+        "Automated weekly sales reporting with Python and SQL, saving 6 hours per week"
+      ]
+    },
+    {
+      "company": "Cobalt Media",
+      "job_title": "Junior Data Analyst",
+      "job_location": "Austin, TX",
+      "start_date": "2021-06",
+      "end_date": "2023-01",
+      "is_current": false,
+      "highlights": [
+        "Analyzed churn across 1.2M subscriber accounts and proposed 3 retention experiments",
+        "Maintained KPI definitions and the data dictionary for the marketing team"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Westbridge University",
+      "degree": "B.S.",
+      "field_of_study": "Statistics",
+      "start_year": "2017",
+      "end_year": "2021",
+      "grade": "GPA 3.7/4.0"
+    }
+  ],
+  "certifications": [
+    "Google Data Analytics Professional Certificate",
+    "Tableau Desktop Specialist"
+  ],
+  "projects": [],
+  "languages": [
+    "English",
+    "Spanish"
+  ]
+}

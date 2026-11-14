@@ -1,0 +1,80 @@
+{
+  "is_resume": true,
+  "language": "English",
+  "name": "Vikram Singh Rathore",
+  "headline": "Project Manager - Construction and Infrastructure",
+  "email": "vikram.rathore@example.com",
+  "phone": "+91 90000 69304",
+  "location": "Jaipur, India",
+  "skills": [
+    "Project Planning",
+    "Budget Control",
+    "Risk Management",
+    "MS Project",
+    "Primavera P6",
+    "Contractor Management",
+    "Stakeholder Management",
+    "Quality Assurance",
+    "Procurement",
+    "AutoCAD (basic)"
+  ],
+  "experience": [
+    {
+      "company": "Pinkcity Developers Pvt. Ltd.",
+      "job_title": "Senior Project Manager",
+      "job_location": "Jaipur",
+      "start_date": "2020-01",
+      "end_date": null,
+      "is_current": true,
+      "highlights": [
+        "Delivered a 240-unit residential complex (INR 185 crore) 2 months ahead of schedule",
+        "Managed 6 site engineers and 40+ subcontractors",
+        "Reduced material wastage by 11% through tighter procurement planning"
+      ]
+    },
+    {
+      "company": "Aravali Infrastructure",
+      "job_title": "Project Manager",
+      "job_location": "Jaipur",
+      "start_date": "2016-03",
+      "end_date": "2019-12",
+      "is_current": false,
+      "highlights": [
+        "Led construction of 3 commercial buildings totalling 450,000 sq ft",
+        "Implemented weekly progress reporting that cut rework by 15%"
+      ]
+    },
+    {
+      "company": "Marwar Constructions",
+      "job_title": "Site Engineer",
+      "job_location": "Jodhpur",
+      "start_date": "2013-07",
+      "end_date": "2016-02",
+      "is_current": false,
+      "highlights": [
+        "Supervised civil works and verified quality of RCC work on site",
+        "Prepared daily progress reports and measurement sheets"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Rajputana Technical University",
+      "degree": "B.E.",
+      "field_of_study": "Civil Engineering",
+      "start_year": "2009",
+      "end_year": "2013",
+      "grade": "68%"
+    }
+  ],
+  "certifications": [
+    "Project Management Professional (PMP)",
+    "NEBOSH International General Certificate"
+  ],
+  "projects": [],
+  "languages": [
+    "Hindi",
+    "English",
+    "Marwari"
+  ]
+}

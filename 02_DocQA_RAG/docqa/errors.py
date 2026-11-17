@@ -7,3 +7,19 @@ class DocQAError(Exception):
 
 class ConfigError(DocQAError):
     """Missing or invalid configuration."""
+
+
+class UnsupportedFileError(DocQAError):
+    """The file type is not one the pipeline can read."""
+
+
+class DocumentReadError(DocQAError):
+    """A file is missing, unreadable, corrupt or encrypted."""
+
+
+class InputTooLargeError(DocQAError):
+    """A file is bigger than the configured size limit."""
+
+
+class EmptyDocumentError(DocQAError):
+    """A document has no extractable text (blank, or a scanned PDF)."""

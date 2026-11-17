@@ -27,6 +27,7 @@ DEFAULT_MAX_QUESTION_CHARS = 500
 DEFAULT_LLM_MODEL = "openai/gpt-oss-20b"
 DEFAULT_BASE_URL = "https://openrouter.ai/api/v1"
 DEFAULT_TEMPERATURE = 0.0
+DEFAULT_MAX_FILE_MB = 20
 
 # Maps each Settings field to the environment variable that overrides it.
 ENV_VARS: dict[str, str] = {
@@ -43,6 +44,7 @@ ENV_VARS: dict[str, str] = {
     "pdf_dir": "DOCQA_PDF_DIR",
     "store_dir": "DOCQA_STORE_DIR",
     "log_level": "DOCQA_LOG_LEVEL",
+    "max_file_mb": "DOCQA_MAX_FILE_MB",
 }
 
 
@@ -65,6 +67,7 @@ class Settings(BaseModel):
     source_dir: Path = PROJECT_ROOT / "data" / "source_md"
     pdf_dir: Path = PROJECT_ROOT / "data" / "pdf"
     store_dir: Path = PROJECT_ROOT / "data" / "chroma"
+    max_file_mb: int = Field(default=DEFAULT_MAX_FILE_MB, gt=0)
 
     @model_validator(mode="after")
     def _overlap_smaller_than_size(self) -> Self:

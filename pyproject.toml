@@ -3,6 +3,7 @@ name = "datheon-generative-ai-internship"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
+    "datasets>=5.1.0",
     "docx2txt>=0.9",
     "httpx>=0.28.1",
     "openai>=3.42.1",
@@ -39,5 +40,6 @@ target-version = "py312"
 select = ["E", "F", "W", "I", "UP", "B"]
 
 [tool.pytest.ini_options]
-pythonpath = ["01_Hirelyzer"]
-testpaths = ["01_Hirelyzer/tests"]
+pythonpath = ["01_Hirelyzer", "02_DocQA_RAG"]
+testpaths = ["01_Hirelyzer/tests", "02_DocQA_RAG/tests"]
+addopts = "--import-mode=importlib"

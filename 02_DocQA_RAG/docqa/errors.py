@@ -23,3 +23,11 @@ class InputTooLargeError(DocQAError):
 
 class EmptyDocumentError(DocQAError):
     """A document has no extractable text (blank, or a scanned PDF)."""
+
+
+class EmbeddingError(DocQAError):
+    """An embedding request failed or returned an unusable response."""
+
+
+class StoreError(DocQAError):
+    """The vector store could not be opened, written or queried."""

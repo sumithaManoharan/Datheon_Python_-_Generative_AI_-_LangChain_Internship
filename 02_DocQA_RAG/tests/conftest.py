@@ -1,12 +1,55 @@
 """Shared pytest fixtures."""
 
-from collections.abc import Callable
+import hashlib
+import math
+import re
+from collections.abc import Callable, Sequence
 from pathlib import Path
 
 import pymupdf
 import pytest
 
 PdfFactory = Callable[..., Path]
+
+
+class FakeEmbedder:
+    """Deterministic bag-of-words embedder: texts sharing words get similar vectors.
+
+    Records every `embed_documents` call, and raises `fail_with` when it is set.
+    """
+
+    name = "fake-embedder"
+
+    def __init__(self, dim: int = 32) -> None:
+        self.dim = dim
+        self.document_calls: list[list[str]] = []
+        self.fail_with: Exception | None = None
+
+    def _vector(self, text: str) -> list[float]:
+        vec = [0.0] * self.dim
+        for token in re.findall(r"\w+", text.lower()):
+            vec[int(hashlib.md5(token.encode()).hexdigest(), 16) % self.dim] += 1.0
+        if not any(vec):
+            vec[0] = 1.0
+        norm = math.sqrt(sum(v * v for v in vec))
+        return [v / norm for v in vec]
+
+    def embed_documents(self, texts: Sequence[str]) -> list[list[float]]:
+        if self.fail_with is not None:
+            raise self.fail_with
+        self.document_calls.append(list(texts))
+        return [self._vector(t) for t in texts]
+
+    def embed_query(self, text: str) -> list[float]:
+        if self.fail_with is not None:
+            raise self.fail_with
+        return self._vector(text)
+
+
+@pytest.fixture
+def embedder() -> FakeEmbedder:
+    """A fresh deterministic fake embedder."""
+    return FakeEmbedder()
 
 
 @pytest.fixture

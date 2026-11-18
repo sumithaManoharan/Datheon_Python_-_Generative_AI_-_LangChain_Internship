@@ -28,6 +28,10 @@ DEFAULT_LLM_MODEL = "openai/gpt-oss-20b"
 DEFAULT_BASE_URL = "https://openrouter.ai/api/v1"
 DEFAULT_TEMPERATURE = 0.0
 DEFAULT_MAX_FILE_MB = 20
+DEFAULT_EMBEDDING_MODEL = "openai/text-embedding-3-small"
+DEFAULT_EMBED_BATCH_SIZE = 64
+DEFAULT_MAX_ATTEMPTS = 3
+DEFAULT_RETRY_BASE_DELAY = 1.0
 
 # Maps each Settings field to the environment variable that overrides it.
 ENV_VARS: dict[str, str] = {
@@ -45,6 +49,10 @@ ENV_VARS: dict[str, str] = {
     "store_dir": "DOCQA_STORE_DIR",
     "log_level": "DOCQA_LOG_LEVEL",
     "max_file_mb": "DOCQA_MAX_FILE_MB",
+    "embedding_model": "DOCQA_EMBEDDING_MODEL",
+    "embed_batch_size": "DOCQA_EMBED_BATCH_SIZE",
+    "max_attempts": "DOCQA_MAX_ATTEMPTS",
+    "retry_base_delay": "DOCQA_RETRY_BASE_DELAY",
 }
 
 
@@ -68,6 +76,10 @@ class Settings(BaseModel):
     pdf_dir: Path = PROJECT_ROOT / "data" / "pdf"
     store_dir: Path = PROJECT_ROOT / "data" / "chroma"
     max_file_mb: int = Field(default=DEFAULT_MAX_FILE_MB, gt=0)
+    embedding_model: str = Field(default=DEFAULT_EMBEDDING_MODEL, min_length=1)
+    embed_batch_size: int = Field(default=DEFAULT_EMBED_BATCH_SIZE, ge=1, le=2048)
+    max_attempts: int = Field(default=DEFAULT_MAX_ATTEMPTS, ge=1, le=10)
+    retry_base_delay: float = Field(default=DEFAULT_RETRY_BASE_DELAY, ge=0, le=60)
 
     @model_validator(mode="after")
     def _overlap_smaller_than_size(self) -> Self:

@@ -114,7 +114,7 @@ class VectorStore:
         """
         key = str(source)
         if self.known_hash(source) == file_hash:
-            logger.info("skipping unchanged file %s", key)
+            logger.debug("skipping unchanged file %s", key)
             return False
         vectors = self._embedder.embed_documents([chunk.embed_text for chunk in chunks])
         if len(vectors) != len(chunks):
@@ -133,7 +133,7 @@ class VectorStore:
             # A half-written file would carry the new hash and be skipped next time.
             self._delete_source(key)
             raise StoreError(f"could not store {key}: {exc}") from exc
-        logger.info("stored %d chunks from %s", len(chunks), key)
+        logger.debug("stored %d chunks from %s", len(chunks), key)
         return bool(chunks)
 
     def search(self, query: str, k: int) -> list[SearchHit]:

@@ -1,0 +1,142 @@
+"""Tests for docqa.cli."""
+
+import json
+from pathlib import Path
+
+import pytest
+from docqa.answer import REFUSAL_MESSAGE, Answer, Citation
+from docqa.cli import main, parse_args
+from docqa.config import load_settings
+from docqa.errors import ConfigError, InvalidQuestionError
+from docqa.pipeline import IngestSummary
+
+SETTINGS = load_settings({})
+ANSWER = Answer(
+    text="Founded in 2015 [1].",
+    citations=(
+        Citation(
+            number=1,
+            source="about.md",
+            snippet="Insurellm was founded in 2015.",
+            section="About Insurellm",
+            start_line=1,
+            end_line=5,
+        ),
+    ),
+    refused=False,
+    prompt_tokens=10,
+    completion_tokens=5,
+)
+
+
+class FakePipeline:
+    """Records calls and returns canned results, or raises a scripted error."""
+
+    def __init__(self, summary=None, answer=None, error=None):
+        self.summary = summary
+        self.answer = answer
+        self.error = error
+        self.ingested: list[Path] = []
+        self.questions: list[str] = []
+
+    def ingest(self, source_dir):
+        self.ingested.append(source_dir)
+        if self.error:
+            raise self.error
+        return self.summary
+
+    def ask(self, question):
+        self.questions.append(question)
+        if self.error:
+            raise self.error
+        return self.answer
+
+
+def _run(argv, pipeline) -> int:
+    return main(argv, settings=SETTINGS, pipeline_factory=lambda _settings: pipeline)
+
+
+# ---------- ingest ----------
+
+
+def test_ingest_success_exits_zero_and_reports_counts(capsys):
+    pipeline = FakePipeline(summary=IngestSummary(3, 1, (), 40))
+    assert _run(["ingest"], pipeline) == 0
+    out = capsys.readouterr().out
+    assert "3 embedded" in out
+    assert "1 unchanged" in out
+    assert "40 chunks" in out
+    assert pipeline.ingested == [SETTINGS.source_dir]
+
+
+def test_ingest_source_dir_option_overrides_the_setting():
+    pipeline = FakePipeline(summary=IngestSummary(1, 0, (), 5))
+    _run(["ingest", "--source-dir", "docs"], pipeline)
+    assert pipeline.ingested == [Path("docs")]
+
+
+def test_ingest_with_a_failed_file_exits_one_and_lists_it(capsys):
+    pipeline = FakePipeline(summary=IngestSummary(1, 0, ("bad.pdf: corrupt",), 10))
+    assert _run(["ingest"], pipeline) == 1
+    out = capsys.readouterr().out
+    assert "1 failed" in out
+    assert "bad.pdf: corrupt" in out
+
+
+# ---------- ask ----------
+
+
+def test_ask_prints_the_answer_and_its_sources(capsys):
+    pipeline = FakePipeline(answer=ANSWER)
+    assert _run(["ask", "When was it founded?"], pipeline) == 0
+    out = capsys.readouterr().out
+    assert "Founded in 2015 [1]." in out
+    assert "Sources:" in out
+    assert "[1] about.md | About Insurellm, lines 1-5" in out
+    assert '"Insurellm was founded in 2015."' in out
+    assert pipeline.questions == ["When was it founded?"]
+
+
+def test_a_refusal_is_a_success_with_no_sources(capsys):
+    pipeline = FakePipeline(answer=Answer(text=REFUSAL_MESSAGE, citations=(), refused=True))
+    assert _run(["ask", "Capital of Australia?"], pipeline) == 0
+    out = capsys.readouterr().out
+    assert REFUSAL_MESSAGE in out
+    assert "Sources" not in out
+
+
+def test_ask_json_output_is_machine_readable(capsys):
+    assert _run(["ask", "--json", "When?"], FakePipeline(answer=ANSWER)) == 0
+    data = json.loads(capsys.readouterr().out)
+    assert data["answer" if "answer" in data else "text"] == "Founded in 2015 [1]."
+    assert data["refused"] is False
+    assert data["citations"][0]["section"] == "About Insurellm"
+    assert (data["prompt_tokens"], data["completion_tokens"]) == (10, 5)
+
+
+# ---------- errors and usage ----------
+
+
+def test_a_pipeline_error_exits_one_with_the_message_on_stderr(capsys):
+    pipeline = FakePipeline(error=InvalidQuestionError("the question is empty"))
+    assert _run(["ask", "x"], pipeline) == 1
+    assert "the question is empty" in capsys.readouterr().err
+
+
+def test_a_factory_error_exits_one(capsys):
+    def factory(_settings):
+        raise ConfigError("OPENROUTER_API_KEY is not set")
+
+    assert main(["ask", "x"], settings=SETTINGS, pipeline_factory=factory) == 1
+    assert "OPENROUTER_API_KEY" in capsys.readouterr().err
+
+
+def test_a_missing_command_is_a_usage_error():
+    with pytest.raises(SystemExit) as info:
+        main([], settings=SETTINGS)
+    assert info.value.code == 2
+
+
+def test_parse_args_reads_the_question():
+    args = parse_args(["ask", "hello", "--json"])
+    assert (args.command, args.question, args.as_json) == ("ask", "hello", True)

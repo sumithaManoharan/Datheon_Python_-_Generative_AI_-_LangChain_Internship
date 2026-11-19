@@ -5,6 +5,7 @@ import math
 import re
 from collections.abc import Callable, Sequence
 from pathlib import Path
+from types import SimpleNamespace
 
 import pymupdf
 import pytest
@@ -83,3 +84,27 @@ def make_pdf(tmp_path: Path) -> PdfFactory:
         return path
 
     return _make
+
+
+class FakeLLM:
+    """Stands in for an OpenAI client: returns a canned reply or raises scripted errors."""
+
+    def __init__(self, reply: str | None = "Answer [1].") -> None:
+        self.reply = reply
+        self.failures: list[Exception] = []
+        self.calls: list[dict] = []
+        self.chat = SimpleNamespace(completions=SimpleNamespace(create=self._create))
+
+    def _create(self, model, messages, temperature):
+        self.calls.append({"model": model, "messages": messages, "temperature": temperature})
+        if self.failures:
+            raise self.failures.pop(0)
+        message = SimpleNamespace(content=self.reply)
+        usage = SimpleNamespace(prompt_tokens=11, completion_tokens=5)
+        return SimpleNamespace(choices=[SimpleNamespace(message=message)], usage=usage)
+
+
+@pytest.fixture
+def llm() -> FakeLLM:
+    """A fresh fake LLM client."""
+    return FakeLLM()

@@ -31,3 +31,15 @@ class EmbeddingError(DocQAError):
 
 class StoreError(DocQAError):
     """The vector store could not be opened, written or queried."""
+
+
+class InvalidQuestionError(DocQAError):
+    """The question is empty or longer than the configured limit."""
+
+
+class LLMCallError(DocQAError):
+    """The LLM request failed or returned an unusable response."""
+
+
+class EvaluationError(DocQAError):
+    """The evaluation input is unusable or the store has nothing to evaluate."""

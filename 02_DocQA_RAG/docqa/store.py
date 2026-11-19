@@ -44,6 +44,12 @@ def file_sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def content_key(path: Path, chunk_size: int, chunk_overlap: int) -> str:
+    """Hash of the file bytes plus the chunking settings, so changing either re-ingests."""
+    seed = f"{file_sha256(path)}|{chunk_size}|{chunk_overlap}"
+    return hashlib.sha256(seed.encode("utf-8")).hexdigest()
+
+
 def _metadata(chunk: Chunk, file_hash: str) -> dict[str, str | int]:
     """Chroma metadata for a chunk. Chroma rejects None, so unset fields are omitted."""
     meta: dict[str, str | int] = {"source": str(chunk.source), "file_hash": file_hash}

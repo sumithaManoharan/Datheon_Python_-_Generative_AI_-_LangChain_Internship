@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 from docqa.chunking import Chunk
 from docqa.errors import DocumentReadError, EmbeddingError, StoreError
-from docqa.store import VectorStore, file_sha256
+from docqa.store import VectorStore, content_key, file_sha256
 
 A = Path("docs/a.md")
 B = Path("docs/b.md")
@@ -153,3 +153,14 @@ def test_file_sha256_changes_with_content(tmp_path: Path):
 def test_file_sha256_missing_file_raises(tmp_path: Path):
     with pytest.raises(DocumentReadError):
         file_sha256(tmp_path / "nope.md")
+
+
+def test_content_key_changes_with_file_or_chunk_settings(tmp_path: Path):
+    path = tmp_path / "a.md"
+    path.write_text("one", encoding="utf-8")
+    base = content_key(path, 800, 100)
+    assert content_key(path, 800, 100) == base
+    assert content_key(path, 500, 100) != base
+    assert content_key(path, 800, 50) != base
+    path.write_text("two", encoding="utf-8")
+    assert content_key(path, 800, 100) != base

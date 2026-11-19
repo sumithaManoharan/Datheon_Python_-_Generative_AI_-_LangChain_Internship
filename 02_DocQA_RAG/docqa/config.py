@@ -21,7 +21,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LOG_LEVEL = "INFO"
 DEFAULT_CHUNK_SIZE = 800
 DEFAULT_CHUNK_OVERLAP = 100
-DEFAULT_TOP_K = 4
+DEFAULT_TOP_K = 10
 # Tuned on the InsureLM eval: weakest answerable top hit 0.31, strongest unrelated 0.17.
 DEFAULT_RELEVANCE_THRESHOLD = 0.25
 DEFAULT_MAX_QUESTION_CHARS = 500

@@ -8,7 +8,7 @@ from pydantic import ValidationError
 
 def test_defaults_when_environment_is_empty():
     s = load_settings({})
-    assert (s.chunk_size, s.chunk_overlap, s.top_k) == (800, 100, 4)
+    assert (s.chunk_size, s.chunk_overlap, s.top_k) == (800, 100, 10)
     assert s.log_level == "INFO"
     assert s.api_key is None
     assert s.embedding_model == "openai/text-embedding-3-small"
@@ -21,12 +21,12 @@ def test_environment_values_override_defaults():
         {
             "DOCQA_CHUNK_SIZE": "500",
             "DOCQA_CHUNK_OVERLAP": "50",
-            "DOCQA_TOP_K": "6",
+            "DOCQA_TOP_K": "7",
             "DOCQA_EMBEDDING_MODEL": "some/model",
             "DOCQA_RETRY_BASE_DELAY": "0.5",
         }
     )
-    assert (s.chunk_size, s.chunk_overlap, s.top_k) == (500, 50, 6)
+    assert (s.chunk_size, s.chunk_overlap, s.top_k) == (500, 50, 7)
     assert s.embedding_model == "some/model"
     assert s.retry_base_delay == 0.5
 
@@ -43,7 +43,7 @@ def test_default_paths_live_under_the_project_root():
 
 def test_explicit_mapping_ignores_the_real_environment(monkeypatch):
     monkeypatch.setenv("DOCQA_TOP_K", "9")
-    assert load_settings({}).top_k == 4
+    assert load_settings({}).top_k == 10
 
 
 def test_default_reads_the_real_environment(monkeypatch):

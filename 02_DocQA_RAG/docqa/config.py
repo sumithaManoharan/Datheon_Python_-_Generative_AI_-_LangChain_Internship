@@ -22,7 +22,8 @@ DEFAULT_LOG_LEVEL = "INFO"
 DEFAULT_CHUNK_SIZE = 800
 DEFAULT_CHUNK_OVERLAP = 100
 DEFAULT_TOP_K = 4
-DEFAULT_RELEVANCE_THRESHOLD = 0.0  # 0.0 = guard off until tuned on the eval set
+# Tuned on the InsureLM eval: weakest answerable top hit 0.31, strongest unrelated 0.17.
+DEFAULT_RELEVANCE_THRESHOLD = 0.25
 DEFAULT_MAX_QUESTION_CHARS = 500
 DEFAULT_LLM_MODEL = "openai/gpt-oss-20b"
 DEFAULT_BASE_URL = "https://openrouter.ai/api/v1"

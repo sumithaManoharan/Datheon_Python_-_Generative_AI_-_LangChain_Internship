@@ -13,6 +13,7 @@ def test_defaults_when_environment_is_empty():
     assert s.api_key is None
     assert s.embedding_model == "openai/text-embedding-3-small"
     assert (s.embed_batch_size, s.max_attempts, s.retry_base_delay) == (64, 3, 1.0)
+    assert s.relevance_threshold == 0.25
 
 
 def test_environment_values_override_defaults():

@@ -9,6 +9,7 @@ from docqa.cli import main, parse_args
 from docqa.config import load_settings
 from docqa.errors import ConfigError, InvalidQuestionError
 from docqa.pipeline import IngestSummary
+from docqa.telemetry import QueryRecord, TelemetryLog
 
 SETTINGS = load_settings({})
 ANSWER = Answer(
@@ -140,3 +141,52 @@ def test_a_missing_command_is_a_usage_error():
 def test_parse_args_reads_the_question():
     args = parse_args(["ask", "hello", "--json"])
     assert (args.command, args.question, args.as_json) == ("ask", "hello", True)
+
+
+# ---------- stats ----------
+
+
+def _stats_settings(tmp_path: Path):
+    return load_settings({"DOCQA_STORE_DIR": str(tmp_path / "chroma")})
+
+
+def _no_pipeline(_settings):
+    raise AssertionError("stats must not build a pipeline")
+
+
+def test_stats_with_no_records_says_so(tmp_path: Path, capsys):
+    code = main(["stats"], settings=_stats_settings(tmp_path), pipeline_factory=_no_pipeline)
+    assert code == 0
+    assert "No questions recorded yet." in capsys.readouterr().out
+
+
+def test_stats_summarises_the_log_without_building_a_pipeline(tmp_path: Path, capsys):
+    settings = _stats_settings(tmp_path)
+    log = TelemetryLog(tmp_path / "telemetry.jsonl")
+    base = {"timestamp": "2026-11-19T10:00:00+00:00", "question_chars": 10, "retrieved": 10}
+    log.record(
+        QueryRecord(
+            **base,
+            refused=False,
+            retrieve_seconds=1.0,
+            generate_seconds=2.0,
+            prompt_tokens=100,
+            completion_tokens=20,
+        )
+    )
+    log.record(
+        QueryRecord(
+            **base,
+            refused=True,
+            retrieve_seconds=0.5,
+            generate_seconds=0.0,
+            prompt_tokens=0,
+            completion_tokens=0,
+        )
+    )
+    assert main(["stats"], settings=settings, pipeline_factory=_no_pipeline) == 0
+    out = capsys.readouterr().out
+    assert "Questions: 2 (1 refused)" in out
+    assert "retrieve 0.75" in out
+    assert "total 1.75 (p95 3.00)" in out
+    assert "100 prompt, 20 completion" in out

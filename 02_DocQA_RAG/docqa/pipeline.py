@@ -1,7 +1,9 @@
 """Orchestration: ingest a folder of documents and answer questions about them."""
 
 import logging
+import time
 from collections import defaultdict
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -15,10 +17,12 @@ from docqa.errors import DocQAError
 from docqa.loader import load_directory
 from docqa.retriever import Retriever
 from docqa.store import VectorStore, content_key
+from docqa.telemetry import QueryRecord, TelemetryLog, telemetry_path, utc_timestamp
 
 logger = logging.getLogger(__name__)
 
 BYTES_PER_MB = 1024 * 1024
+TIMING_DECIMALS = 4
 
 
 @dataclass(frozen=True)
@@ -44,6 +48,8 @@ class DocQAPipeline:
         chunk_overlap: int,
         max_file_bytes: int,
         max_question_chars: int,
+        telemetry: TelemetryLog | None = None,
+        clock: Callable[[], float] = time.perf_counter,
     ) -> None:
         self._store = store
         self._retriever = retriever
@@ -52,6 +58,8 @@ class DocQAPipeline:
         self._chunk_overlap = chunk_overlap
         self._max_file_bytes = max_file_bytes
         self._max_question_chars = max_question_chars
+        self._telemetry = telemetry
+        self._clock = clock
 
     def ingest(self, source_dir: Path) -> IngestSummary:
         """Load, chunk and store every supported file in a folder.
@@ -88,9 +96,30 @@ class DocQAPipeline:
         return IngestSummary(embedded, skipped, tuple(failures), self._store.count())
 
     def ask(self, question: str) -> Answer:
-        """Answer from the stored documents; refuses when nothing relevant is found."""
+        """Answer from the stored documents; refuses when nothing relevant is found.
+
+        When telemetry is configured, one record per answered question is appended.
+        """
         question = validate_question(question, self._max_question_chars)
-        return self._generator.answer(question, self._retriever.retrieve(question))
+        started = self._clock()
+        retrieved = self._retriever.retrieve(question)
+        retrieved_at = self._clock()
+        answer = self._generator.answer(question, retrieved)
+        finished = self._clock()
+        if self._telemetry is not None:
+            self._telemetry.record(
+                QueryRecord(
+                    timestamp=utc_timestamp(),
+                    question_chars=len(question),
+                    retrieved=len(retrieved),
+                    refused=answer.refused,
+                    retrieve_seconds=round(retrieved_at - started, TIMING_DECIMALS),
+                    generate_seconds=round(finished - retrieved_at, TIMING_DECIMALS),
+                    prompt_tokens=answer.prompt_tokens or 0,
+                    completion_tokens=answer.completion_tokens or 0,
+                )
+            )
+        return answer
 
 
 def build_pipeline(settings: Settings, client: OpenAI | None = None) -> DocQAPipeline:
@@ -124,4 +153,5 @@ def build_pipeline(settings: Settings, client: OpenAI | None = None) -> DocQAPip
         chunk_overlap=settings.chunk_overlap,
         max_file_bytes=settings.max_file_mb * BYTES_PER_MB,
         max_question_chars=settings.max_question_chars,
+        telemetry=TelemetryLog(telemetry_path(settings)),
     )

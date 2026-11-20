@@ -122,8 +122,13 @@ class DocQAPipeline:
         return answer
 
 
-def build_pipeline(settings: Settings, client: OpenAI | None = None) -> DocQAPipeline:
-    """Create the real pipeline from settings. Pass `client` to avoid needing an API key."""
+def build_pipeline(
+    settings: Settings, client: OpenAI | None = None, *, record_telemetry: bool = True
+) -> DocQAPipeline:
+    """Create the real pipeline from settings. Pass `client` to avoid needing an API key.
+
+    Evaluation runs pass `record_telemetry=False` so they do not fill the usage log.
+    """
     api_client = client or OpenAI(
         base_url=settings.base_url, api_key=settings.require_api_key(), max_retries=0
     )
@@ -153,5 +158,5 @@ def build_pipeline(settings: Settings, client: OpenAI | None = None) -> DocQAPip
         chunk_overlap=settings.chunk_overlap,
         max_file_bytes=settings.max_file_mb * BYTES_PER_MB,
         max_question_chars=settings.max_question_chars,
-        telemetry=TelemetryLog(telemetry_path(settings)),
+        telemetry=TelemetryLog(telemetry_path(settings)) if record_telemetry else None,
     )

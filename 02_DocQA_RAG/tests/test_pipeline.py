@@ -195,3 +195,18 @@ def test_an_unwritable_telemetry_path_does_not_break_the_answer(store, llm, tmp_
     blocker.write_text("x", encoding="utf-8")
     pipeline = _make(store, llm, telemetry=TelemetryLog(blocker / "t.jsonl"))
     assert pipeline.ask("anything at all?").refused
+
+
+# ---------- evaluation runs ----------
+
+
+def test_build_pipeline_records_telemetry_by_default(tmp_path: Path, llm):
+    settings = load_settings({"DOCQA_STORE_DIR": str(tmp_path / "chroma")})
+    build_pipeline(settings, client=llm).ask("anything?")
+    assert (tmp_path / "telemetry.jsonl").exists()
+
+
+def test_build_pipeline_can_skip_telemetry_for_evaluation_runs(tmp_path: Path, llm):
+    settings = load_settings({"DOCQA_STORE_DIR": str(tmp_path / "chroma")})
+    build_pipeline(settings, client=llm, record_telemetry=False).ask("anything?")
+    assert not (tmp_path / "telemetry.jsonl").exists()

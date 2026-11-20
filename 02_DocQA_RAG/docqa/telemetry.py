@@ -31,6 +31,7 @@ class QueryRecord:
 
     @property
     def total_seconds(self) -> float:
+        """Retrieval plus generation time."""
         return self.retrieve_seconds + self.generate_seconds
 
 
@@ -66,9 +67,11 @@ class TelemetryLog:
 
     @property
     def path(self) -> Path:
+        """Where the log file lives."""
         return self._path
 
     def record(self, record: QueryRecord) -> None:
+        """Append one record as a JSON line; a write failure is logged, never raised."""
         try:
             self._path.parent.mkdir(parents=True, exist_ok=True)
             with self._path.open("a", encoding="utf-8") as handle:

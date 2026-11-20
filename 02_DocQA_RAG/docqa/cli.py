@@ -28,11 +28,14 @@ EXIT_COMMAND = "/exit"
 class Pipeline(Protocol):
     """What the CLI needs from a pipeline."""
 
-    def ingest(self, source_dir: Path) -> IngestSummary: ...
+    def ingest(self, source_dir: Path) -> IngestSummary:
+        """Embed every supported file in a folder."""
 
-    def ask(self, question: str) -> Answer: ...
+    def ask(self, question: str) -> Answer:
+        """Answer one question on its own."""
 
-    def chat(self, question: str, memory: ConversationMemory) -> Answer: ...
+    def chat(self, question: str, memory: ConversationMemory) -> Answer:
+        """Answer a question using, and extending, the conversation memory."""
 
 
 PipelineFactory = Callable[[Settings], Pipeline]

@@ -70,7 +70,7 @@ class Settings(BaseModel):
     llm_model: str = Field(default=DEFAULT_LLM_MODEL, min_length=1)
     base_url: str = Field(default=DEFAULT_BASE_URL, min_length=1)
     temperature: float = Field(default=DEFAULT_TEMPERATURE, ge=0, le=2)
-    # repr=False keeps the secret out of print(settings) and log lines.
+    # repr=False keeps the secret out of printed settings and log lines.
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = DEFAULT_LOG_LEVEL
     api_key: str | None = Field(default=None, repr=False)
     source_dir: Path = PROJECT_ROOT / "data" / "source_md"

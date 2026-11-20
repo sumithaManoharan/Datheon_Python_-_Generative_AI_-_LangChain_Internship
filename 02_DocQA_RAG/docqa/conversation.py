@@ -18,6 +18,7 @@ class ConversationMemory:
 
     @property
     def max_turns(self) -> int:
+        """How many exchanges are remembered."""
         return self._max_turns
 
     @property
@@ -26,9 +27,11 @@ class ConversationMemory:
         return tuple(self._turns)
 
     def add(self, question: str, answer: str) -> None:
+        """Remember one exchange; the oldest is dropped when the memory is full."""
         self._turns.append(Turn(question=question, answer=answer))
 
     def clear(self) -> None:
+        """Forget every remembered exchange."""
         self._turns.clear()
 
     def __len__(self) -> int:

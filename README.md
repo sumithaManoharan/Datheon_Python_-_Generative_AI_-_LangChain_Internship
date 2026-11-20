@@ -2,6 +2,8 @@
 
 Task 1 of the Datheon Python + Generative AI & LangChain internship. Hirelyzer reads a resume (PDF, DOCX, TXT, JPG/PNG or raw text), asks an LLM to extract its content, and returns JSON validated against a strict Pydantic schema. Output the model gets wrong is sent back for repair; a document that still fails is reported, never silently dropped. An evaluation script scores the output against ground truth and records every run.
 
+**Task 2:** a document Q&A assistant with RAG, source citations and refusal lives in [`02_DocQA_RAG/`](02_DocQA_RAG/README.md).
+
 ## Quick start
 
 ```bash

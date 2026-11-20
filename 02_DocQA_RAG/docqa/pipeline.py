@@ -3,15 +3,16 @@
 import logging
 import time
 from collections import defaultdict
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
 from openai import OpenAI
 
-from docqa.answer import Answer, AnswerGenerator, load_system_prompt, validate_question
+from docqa.answer import Answer, AnswerGenerator, Turn, load_system_prompt, validate_question
 from docqa.chunking import Chunk, chunk_documents
 from docqa.config import Settings
+from docqa.conversation import ConversationMemory
 from docqa.embeddings import OpenAIEmbedder
 from docqa.errors import DocQAError
 from docqa.loader import load_directory
@@ -96,15 +97,30 @@ class DocQAPipeline:
         return IngestSummary(embedded, skipped, tuple(failures), self._store.count())
 
     def ask(self, question: str) -> Answer:
-        """Answer from the stored documents; refuses when nothing relevant is found.
+        """Answer one question on its own; no conversation memory is used."""
+        return self._answer_question(validate_question(question, self._max_question_chars), ())
 
-        When telemetry is configured, one record per answered question is appended.
+    def chat(self, question: str, memory: ConversationMemory) -> Answer:
+        """Answer inside a conversation: earlier turns resolve references like 'he' or 'it'.
+
+        The exchange is added to `memory` once answered; an invalid or failed question is not.
         """
         question = validate_question(question, self._max_question_chars)
+        answer = self._answer_question(question, memory.turns)
+        memory.add(question, answer.text)
+        return answer
+
+    def _answer_question(self, question: str, history: Sequence[Turn]) -> Answer:
+        """Retrieve and answer; refuses when nothing relevant is found.
+
+        With history, the follow-up is first rewritten as a standalone question for retrieval.
+        When telemetry is configured, one record per answered question is appended.
+        """
         started = self._clock()
-        retrieved = self._retriever.retrieve(question)
+        search_text = self._generator.condense(question, history) if history else question
+        retrieved = self._retriever.retrieve(search_text)
         retrieved_at = self._clock()
-        answer = self._generator.answer(question, retrieved)
+        answer = self._generator.answer(search_text, retrieved, history)
         finished = self._clock()
         if self._telemetry is not None:
             self._telemetry.record(

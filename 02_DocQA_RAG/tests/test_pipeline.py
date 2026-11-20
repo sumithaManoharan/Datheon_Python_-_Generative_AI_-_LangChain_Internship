@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 from docqa.answer import AnswerGenerator
 from docqa.config import load_settings
+from docqa.conversation import ConversationMemory
 from docqa.errors import ConfigError, DocQAError, EmbeddingError, InvalidQuestionError
 from docqa.pipeline import DocQAPipeline, build_pipeline
 from docqa.retriever import Retriever
@@ -210,3 +211,65 @@ def test_build_pipeline_can_skip_telemetry_for_evaluation_runs(tmp_path: Path, l
     settings = load_settings({"DOCQA_STORE_DIR": str(tmp_path / "chroma")})
     build_pipeline(settings, client=llm, record_telemetry=False).ask("anything?")
     assert not (tmp_path / "telemetry.jsonl").exists()
+
+
+# ---------- chat ----------
+
+
+def test_the_first_chat_turn_makes_one_llm_call_and_is_remembered(store, llm, docs):
+    pipeline = _make(store, llm)
+    pipeline.ingest(docs)
+    memory = ConversationMemory()
+    llm.reply = "Alpha facts [1]."
+    answer = pipeline.chat("alpha beta gamma", memory)
+    assert not answer.refused
+    assert len(llm.calls) == 1
+    assert [(t.question, t.answer) for t in memory.turns] == [
+        ("alpha beta gamma", "Alpha facts [1].")
+    ]
+
+
+def test_a_follow_up_is_condensed_and_answered_with_the_earlier_turns(store, llm, docs):
+    pipeline = _make(store, llm)
+    pipeline.ingest(docs)
+    memory = ConversationMemory()
+    llm.reply = "Alpha facts [1]."
+    pipeline.chat("alpha beta gamma", memory)
+    pipeline.chat("and delta?", memory)
+    assert len(llm.calls) == 3  # first answer, then the rewrite, then the second answer
+    rewrite, second = llm.calls[1], llm.calls[2]
+    assert "Q: alpha beta gamma" in rewrite["messages"][1]["content"]
+    assert [m["role"] for m in second["messages"]] == ["system", "user", "assistant", "user"]
+    assert second["messages"][0]["content"].endswith("passage numbers from earlier answers.")
+    assert second["messages"][1]["content"] == "alpha beta gamma"
+    assert second["messages"][2]["content"] == "Alpha facts."  # old [1] removed
+    # the fake model answers the rewrite call with the same canned reply, so that is the question
+    assert second["messages"][3]["content"].endswith("Question: Alpha facts [1].")
+    assert len(memory) == 2
+
+
+def test_memory_keeps_only_the_most_recent_turns(store, llm, docs):
+    pipeline = _make(store, llm)
+    pipeline.ingest(docs)
+    memory = ConversationMemory(max_turns=2)
+    for question in ("one alpha", "two beta", "three gamma"):
+        pipeline.chat(question, memory)
+    assert [t.question for t in memory.turns] == ["two beta", "three gamma"]
+
+
+def test_an_invalid_chat_question_is_rejected_and_not_remembered(store, llm, docs):
+    pipeline = _make(store, llm)
+    pipeline.ingest(docs)
+    memory = ConversationMemory()
+    with pytest.raises(InvalidQuestionError):
+        pipeline.chat("   ", memory)
+    assert len(memory) == 0
+    assert llm.calls == []
+
+
+def test_ask_without_history_leaves_the_system_prompt_unchanged(store, llm, docs):
+    pipeline = _make(store, llm)
+    pipeline.ingest(docs)
+    pipeline.ask("alpha beta gamma")
+    assert llm.calls[0]["messages"][0]["content"] == "SYSTEM"
+    assert len(llm.calls[0]["messages"]) == 2

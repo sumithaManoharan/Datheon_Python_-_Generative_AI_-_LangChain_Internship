@@ -156,6 +156,43 @@ def _extract_text(response: Any) -> str:
     return content.strip()
 
 
+HISTORY_RULE = (
+    "\n7. Earlier messages are the conversation so far. Use them only to understand what the "
+    "question refers to (for example 'he' or 'that product'). Every fact in your answer must "
+    "still come from the numbered context in the last message, and you must not reuse passage "
+    "numbers from earlier answers."
+)
+CONDENSE_PROMPT = (
+    "Rewrite the follow-up question as one standalone question that can be understood without "
+    "the conversation. Replace pronouns and references such as 'he', 'it' or 'that product' "
+    "with the names they stand for. Do not answer the question. If it is already standalone, "
+    "return it unchanged. Reply with the question only."
+)
+OLD_MARKER_RE = re.compile(r"\s*\[\d+(?:\s*,\s*\d+)*\]")
+
+
+@dataclass(frozen=True)
+class Turn:
+    """One earlier question and the answer it received."""
+
+    question: str
+    answer: str
+
+
+def strip_citations(text: str) -> str:
+    """Remove [n] markers so old passage numbers cannot be mistaken for the current ones."""
+    return OLD_MARKER_RE.sub("", text).strip()
+
+
+def _history_messages(history: Sequence[Turn]) -> list[dict[str, str]]:
+    """Earlier turns as chat messages: the question, then the answer without its markers."""
+    messages: list[dict[str, str]] = []
+    for turn in history:
+        messages.append({"role": "user", "content": turn.question})
+        messages.append({"role": "assistant", "content": strip_citations(turn.answer)})
+    return messages
+
+
 class AnswerGenerator:
     """Turns a question and retrieved chunks into a grounded, cited answer.
 
@@ -182,15 +219,22 @@ class AnswerGenerator:
         self._base_delay = base_delay
         self._sleep = sleep
 
-    def answer(self, question: str, retrieved: Sequence[RetrievedChunk]) -> Answer:
+    def answer(
+        self,
+        question: str,
+        retrieved: Sequence[RetrievedChunk],
+        history: Sequence[Turn] = (),
+    ) -> Answer:
         """Answer from the retrieved chunks only; refuse when there is no evidence."""
         question = validate_question(question, self._max_question_chars)
         if not retrieved:
             logger.info("no relevant chunks; refusing without an LLM call")
             return Answer(text=REFUSAL_MESSAGE, citations=(), refused=True)
         citations = _build_citations(retrieved)
+        system_prompt = self._system_prompt + HISTORY_RULE if history else self._system_prompt
         messages = [
-            {"role": "system", "content": self._system_prompt},
+            {"role": "system", "content": system_prompt},
+            *_history_messages(history),
             {"role": "user", "content": _user_message(question, citations, retrieved)},
         ]
         response = self._complete(messages)
@@ -204,6 +248,27 @@ class AnswerGenerator:
             logger.info("model found no answer in the context; refusing")
             return Answer(text=REFUSAL_MESSAGE, citations=(), refused=True, **tokens)
         return Answer(text=text, citations=_cited(text, citations), refused=False, **tokens)
+
+    def condense(self, question: str, history: Sequence[Turn]) -> str:
+        """Rewrite a follow-up as a standalone question; no history means no LLM call."""
+        if not history:
+            return question
+        transcript = "\n".join(
+            f"Q: {turn.question}\nA: {strip_citations(turn.answer)}" for turn in history
+        )
+        messages = [
+            {"role": "system", "content": CONDENSE_PROMPT},
+            {
+                "role": "user",
+                "content": f"Conversation:\n{transcript}\n\nFollow-up question: {question}",
+            },
+        ]
+        rewritten = " ".join(_extract_text(self._complete(messages)).split())
+        logger.debug("follow-up rewritten as: %s", rewritten)
+        if len(rewritten) > self._max_question_chars:
+            logger.warning("rewritten question is too long; searching with the original")
+            return question
+        return rewritten
 
     def _complete(self, messages: list[dict[str, str]]) -> Any:
         """One chat completion with retry on transient errors."""

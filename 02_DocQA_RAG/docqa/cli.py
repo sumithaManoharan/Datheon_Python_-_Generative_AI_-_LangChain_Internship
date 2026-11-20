@@ -1,4 +1,4 @@
-"""Command-line interface: ingest a folder of documents, ask a question, show usage stats."""
+"""Command-line interface: ingest, ask, chat, and usage stats."""
 
 import argparse
 import json
@@ -12,6 +12,7 @@ from dotenv import find_dotenv, load_dotenv
 
 from docqa.answer import Answer
 from docqa.config import Settings, load_settings
+from docqa.conversation import DEFAULT_MAX_TURNS, ConversationMemory
 from docqa.errors import DocQAError
 from docqa.logging_setup import configure_logging
 from docqa.pipeline import IngestSummary, build_pipeline
@@ -19,6 +20,9 @@ from docqa.telemetry import Summary, TelemetryLog, summarize, telemetry_path
 
 EXIT_OK = 0
 EXIT_FAILURE = 1  # argparse itself exits with 2 on a usage error
+PROMPT = "> "
+CLEAR_COMMAND = "/clear"
+EXIT_COMMAND = "/exit"
 
 
 class Pipeline(Protocol):
@@ -28,8 +32,21 @@ class Pipeline(Protocol):
 
     def ask(self, question: str) -> Answer: ...
 
+    def chat(self, question: str, memory: ConversationMemory) -> Answer: ...
+
 
 PipelineFactory = Callable[[Settings], Pipeline]
+InputFn = Callable[[str], str]
+
+
+def _positive_int(value: str) -> int:
+    try:
+        number = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(f"expected an integer, got {value!r}") from exc
+    if number < 1:
+        raise argparse.ArgumentTypeError("must be at least 1")
+    return number
 
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
@@ -38,9 +55,13 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     commands = parser.add_subparsers(dest="command", required=True)
     ingest = commands.add_parser("ingest", help="embed the documents in a folder")
     ingest.add_argument("--source-dir", type=Path, default=None, help="default: DOCQA_SOURCE_DIR")
-    ask = commands.add_parser("ask", help="answer a question from the stored documents")
+    ask = commands.add_parser("ask", help="answer one question from the stored documents")
     ask.add_argument("question")
     ask.add_argument("--json", action="store_true", dest="as_json", help="machine-readable output")
+    chat = commands.add_parser("chat", help="interactive session that remembers recent turns")
+    chat.add_argument(
+        "--turns", type=_positive_int, default=DEFAULT_MAX_TURNS, help="exchanges to remember"
+    )
     commands.add_parser("stats", help="show timing and token usage of past questions")
     return parser.parse_args(argv)
 
@@ -98,6 +119,35 @@ def _run_ask(pipeline: Pipeline, question: str, as_json: bool) -> int:
     return EXIT_OK
 
 
+def _run_chat(pipeline: Pipeline, turns: int, input_fn: InputFn) -> int:
+    """Read questions until /exit or end of input. An error on one turn does not end the session."""
+    memory = ConversationMemory(turns)
+    sys.stdout.write(
+        f"Remembering the last {turns} exchanges. {CLEAR_COMMAND} forgets them, "
+        f"{EXIT_COMMAND} quits.\n"
+    )
+    while True:
+        try:
+            line = input_fn(PROMPT).strip()
+        except (EOFError, KeyboardInterrupt):
+            sys.stdout.write("\n")
+            return EXIT_OK
+        if not line:
+            continue
+        if line == EXIT_COMMAND:
+            return EXIT_OK
+        if line == CLEAR_COMMAND:
+            memory.clear()
+            sys.stdout.write("Conversation cleared.\n")
+            continue
+        try:
+            answer = pipeline.chat(line, memory)
+        except DocQAError as exc:
+            sys.stderr.write(f"error: {exc}\n")
+            continue
+        sys.stdout.write(format_answer(answer) + "\n")
+
+
 def _run_stats(settings: Settings) -> int:
     log = TelemetryLog(telemetry_path(settings))
     sys.stdout.write(format_stats(summarize(log.read())))
@@ -109,10 +159,12 @@ def main(
     *,
     settings: Settings | None = None,
     pipeline_factory: PipelineFactory = build_pipeline,
+    input_fn: InputFn = input,
 ) -> int:
     """Run one command and return the process exit code.
 
-    Tests pass `settings` and a fake `pipeline_factory`, so no network or `.env` is used.
+    Tests pass `settings`, a fake `pipeline_factory` and a scripted `input_fn`, so no network,
+    `.env` or keyboard is used.
     """
     args = parse_args(argv)
     try:
@@ -125,6 +177,8 @@ def main(
         pipeline = pipeline_factory(settings)
         if args.command == "ingest":
             return _run_ingest(pipeline, args.source_dir or settings.source_dir)
+        if args.command == "chat":
+            return _run_chat(pipeline, args.turns, input_fn)
         return _run_ask(pipeline, args.question, args.as_json)
     except DocQAError as exc:
         sys.stderr.write(f"error: {exc}\n")

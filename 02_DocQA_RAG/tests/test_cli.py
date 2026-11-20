@@ -39,6 +39,9 @@ class FakePipeline:
         self.error = error
         self.ingested: list[Path] = []
         self.questions: list[str] = []
+        self.memory = None
+        self.memory_sizes: list[int] = []
+        self.fail_on: set[str] = set()
 
     def ingest(self, source_dir):
         self.ingested.append(source_dir)
@@ -50,6 +53,15 @@ class FakePipeline:
         self.questions.append(question)
         if self.error:
             raise self.error
+        return self.answer
+
+    def chat(self, question, memory):
+        self.questions.append(question)
+        self.memory = memory
+        self.memory_sizes.append(len(memory))
+        if question in self.fail_on:
+            raise InvalidQuestionError("boom")
+        memory.add(question, self.answer.text)
         return self.answer
 
 
@@ -190,3 +202,76 @@ def test_stats_summarises_the_log_without_building_a_pipeline(tmp_path: Path, ca
     assert "retrieve 0.75" in out
     assert "total 1.75 (p95 3.00)" in out
     assert "100 prompt, 20 completion" in out
+
+
+# ---------- chat ----------
+
+
+def _inputs(*lines):
+    remaining = iter(lines)
+
+    def read(_prompt):
+        try:
+            return next(remaining)
+        except StopIteration:
+            raise EOFError from None
+
+    return read
+
+
+def _chat(pipeline, *lines, turns=None):
+    argv = ["chat"] + ([] if turns is None else ["--turns", str(turns)])
+    return main(
+        argv,
+        settings=SETTINGS,
+        pipeline_factory=lambda _settings: pipeline,
+        input_fn=_inputs(*lines),
+    )
+
+
+def test_chat_answers_each_line_until_the_input_ends(capsys):
+    pipeline = FakePipeline(answer=ANSWER)
+    assert _chat(pipeline, "Who founded it?", "And when?") == 0
+    assert capsys.readouterr().out.count("Founded in 2015 [1].") == 2
+    assert pipeline.questions == ["Who founded it?", "And when?"]
+
+
+def test_chat_ignores_blank_lines():
+    pipeline = FakePipeline(answer=ANSWER)
+    _chat(pipeline, "", "   ", "Who?")
+    assert pipeline.questions == ["Who?"]
+
+
+def test_chat_clear_forgets_the_earlier_turns(capsys):
+    pipeline = FakePipeline(answer=ANSWER)
+    _chat(pipeline, "one?", "two?", "/clear", "three?")
+    assert pipeline.memory_sizes == [0, 1, 0]
+    assert "Conversation cleared." in capsys.readouterr().out
+
+
+def test_chat_exit_stops_without_reading_more():
+    pipeline = FakePipeline(answer=ANSWER)
+    assert _chat(pipeline, "one?", "/exit", "two?") == 0
+    assert pipeline.questions == ["one?"]
+
+
+def test_chat_an_error_is_reported_and_the_session_continues(capsys):
+    pipeline = FakePipeline(answer=ANSWER)
+    pipeline.fail_on = {"bad?"}
+    assert _chat(pipeline, "bad?", "good?") == 0
+    captured = capsys.readouterr()
+    assert "boom" in captured.err
+    assert "Founded in 2015 [1]." in captured.out
+
+
+def test_chat_turns_option_sets_the_memory_size():
+    pipeline = FakePipeline(answer=ANSWER)
+    _chat(pipeline, "one?", turns=3)
+    assert pipeline.memory.max_turns == 3
+
+
+def test_chat_defaults_to_six_turns_and_rejects_a_bad_value():
+    assert parse_args(["chat"]).turns == 6
+    with pytest.raises(SystemExit) as info:
+        parse_args(["chat", "--turns", "0"])
+    assert info.value.code == 2

@@ -146,6 +146,33 @@ def _guard(func: Callable[..., str]) -> Callable[..., str]:
     return wrapper
 
 
+DUPLICATE_NOTE = (
+    "Duplicate call: you already have this result. "
+    "Do not repeat it; use the earlier result or move on."
+)
+
+
+def _remember(func: Callable[..., str]) -> Callable[..., str]:
+    """Wrap a tool so an identical repeat call returns a short note instead of running.
+
+    Each call to _remember has its own cache, so every build_tools() starts fresh.
+    Errors are not remembered, so a failed call can be retried.
+    """
+    cache: set[str] = set()
+
+    @functools.wraps(func)
+    def wrapper(*args: Any, **kwargs: Any) -> str:
+        key = json.dumps([args, kwargs], sort_keys=True, default=str)
+        if key in cache:
+            return DUPLICATE_NOTE
+        result = func(*args, **kwargs)
+        if not result.startswith("Error:"):
+            cache.add(key)
+        return result
+
+    return wrapper
+
+
 @_guard
 def _calculator_tool(
     expression: str | None = None,
@@ -227,7 +254,7 @@ def build_tools(
 
     tools.append(
         StructuredTool.from_function(
-            func=_web_search_tool,
+            func=_remember(_web_search_tool),
             name="web_search",
             description="Search the web for current prices, reviews and specs.",
             args_schema=WebSearchArgs,
@@ -235,7 +262,7 @@ def build_tools(
     )
     tools.append(
         StructuredTool.from_function(
-            func=_calculator_tool,
+            func=_remember(_calculator_tool),
             name="calculator",
             description=(
                 "Do arithmetic. Pass 'expression', or pass 'function' ('tco' or "

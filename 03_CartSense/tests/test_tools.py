@@ -131,3 +131,13 @@ def test_web_search_rejects_empty_query_without_calling_backend() -> None:
     with pytest.raises(ToolError):
         web_search("   ", search_fn=fake, sleep=lambda _: None)
     assert calls["count"] == 0
+
+
+def test_web_search_drops_ad_links() -> None:
+    hits = [
+        {"title": "Ad", "href": "https://www.bing.com/aclick?ld=abc", "body": "x"},
+        {"title": "Real", "href": "https://example.com", "body": "y"},
+    ]
+    fake, _ = _flaky_search(0, hits)
+    results = web_search("phone", search_fn=fake, sleep=lambda _: None)
+    assert [hit["title"] for hit in results] == ["Real"]

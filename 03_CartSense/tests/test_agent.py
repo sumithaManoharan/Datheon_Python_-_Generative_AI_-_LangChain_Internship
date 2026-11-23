@@ -188,3 +188,21 @@ def test_system_prompt_file_loads_and_bad_files_fail(tmp_path) -> None:
 def test_format_step_labels() -> None:
     assert format_step(Step("action", "x()")) == "Action: x()"
     assert format_step(Step("final", "done")) == "Final answer: done"
+
+
+def test_duplicate_tool_call_is_not_run_twice(monkeypatch: pytest.MonkeyPatch) -> None:
+    runs: list[str] = []
+
+    def fake(query: str, max_results: int = 5):
+        runs.append(query)
+        return [{"title": "T", "url": "https://example.com", "snippet": "S"}]
+
+    monkeypatch.setattr(agent_module, "web_search", fake)
+    script = [
+        _call("web_search", {"query": "x"}, "c1"),
+        _call("web_search", {"query": "x"}, "c2"),
+        AIMessage(content="Ok."),
+    ]
+    _, result = _run(script)
+    assert runs == ["x"]
+    assert "Duplicate call" in _observations(result)[1]

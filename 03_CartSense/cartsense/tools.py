@@ -120,6 +120,14 @@ def read_wishlist(category: str, directory: Path = WISHLIST_DIR) -> Wishlist | N
 # --- web search -------------------------------------------------------------
 
 
+AD_URL_MARKERS = ("bing.com/aclick", "duckduckgo.com/y.js")
+
+
+def _is_ad(url: str) -> bool:
+    """True for sponsored-ad redirect links, which are not product pages."""
+    return any(marker in url for marker in AD_URL_MARKERS)
+
+
 def _ddgs_text(query: str, max_results: int) -> list[dict[str, str]]:
     """Run a DuckDuckGo text search. Imported lazily so tests never need the network."""
     from ddgs import DDGS
@@ -163,6 +171,7 @@ def web_search(
             "snippet": str(hit.get("body", ""))[:MAX_SNIPPET_LENGTH],
         }
         for hit in raw
+        if not _is_ad(str(hit.get("href", "")))
     ]
 
 

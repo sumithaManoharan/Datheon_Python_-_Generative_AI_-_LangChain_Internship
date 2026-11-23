@@ -212,7 +212,7 @@ def build_tools(
             StructuredTool.from_function(
                 func=ask_user_tool,
                 name="ask_user",
-                description="Ask the buyer one short question. At most 6 questions per run.",
+                description="Ask the buyer one short question. At most 10 questions per run.",
                 args_schema=AskUserArgs,
             )
         )

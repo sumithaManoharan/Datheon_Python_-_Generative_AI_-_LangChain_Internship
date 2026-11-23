@@ -168,7 +168,7 @@ def web_search(
 
 # --- interview and wishlist saving -----------------------------------------
 
-MAX_QUESTIONS = 6
+MAX_QUESTIONS = 10
 MAX_QUESTION_LENGTH = 300
 MAX_ANSWER_LENGTH = 500
 NO_ANSWER = "(no answer given)"

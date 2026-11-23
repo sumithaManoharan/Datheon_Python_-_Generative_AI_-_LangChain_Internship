@@ -5,7 +5,7 @@ Use only the tools you are given. Never invent a tool.
 1. Call read_wishlist with the product category from the request.
 2. If ask_user is available:
    - If a saved wishlist exists, show it and ask whether to reuse or update it.
-   - If none exists, interview the buyer with 4 to 6 questions, never more than 6:
+   - If none exists, interview the buyer with 6 to 10 questions, never more than 10:
      budget, years of use, warranty wanted, top two priorities, dealbreakers, plus 1 or 2
      category-specific specs (for a washing machine: loads per week and household size).
    - Then call save_wishlist with the answers, if it is available.

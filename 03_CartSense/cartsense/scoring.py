@@ -22,10 +22,13 @@ def tco(
     yearly_repair_cost: float = 0.0,
     warranty_years: float = 0.0,
     resale_value: float = 0.0,
+    yearly_consumables_cost: float = 0.0,
 ) -> float:
     """Total cost of ownership over the years of use.
 
-    Repairs are only counted for the years the warranty does not cover.
+    yearly_running_cost is energy and water; yearly_consumables_cost is things like
+    detergent, cleaning liquid, filters. Repairs are only counted for the years
+    the warranty does not cover.
     """
     _require_non_negative(
         price=price,
@@ -33,6 +36,7 @@ def tco(
         yearly_repair_cost=yearly_repair_cost,
         warranty_years=warranty_years,
         resale_value=resale_value,
+        yearly_consumables_cost=yearly_consumables_cost,
     )
     if years_of_use <= 0:
         raise ValueError(f"years_of_use must be positive, got {years_of_use}")
@@ -41,6 +45,7 @@ def tco(
     total = (
         price
         + yearly_running_cost * years_of_use
+        + yearly_consumables_cost * years_of_use
         + yearly_repair_cost * uncovered_years
         - resale_value
     )

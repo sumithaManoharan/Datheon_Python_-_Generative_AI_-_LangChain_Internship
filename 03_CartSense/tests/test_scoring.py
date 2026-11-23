@@ -66,3 +66,14 @@ def test_value_score_rejects_bad_ratings(ratings: list[float]) -> None:
         value_score(
             price=1, budget=10, warranty_offered=1, warranty_wanted=1, priority_ratings=ratings
         )
+
+
+def test_tco_includes_consumables_every_year() -> None:
+    # Detergent and cleaning liquid are paid every year, warranty or not.
+    result = tco(price=1000, years_of_use=3, warranty_years=3, yearly_consumables_cost=200)
+    assert result == 1000 + 600
+
+
+def test_tco_rejects_negative_consumables() -> None:
+    with pytest.raises(ValueError):
+        tco(price=1000, years_of_use=3, yearly_consumables_cost=-1)

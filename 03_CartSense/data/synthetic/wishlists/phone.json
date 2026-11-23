@@ -1,0 +1,9 @@
+{
+  "category": "phone",
+  "budget": 25000,
+  "years_of_use": 3,
+  "warranty_years": 1,
+  "priorities": ["battery life", "camera quality"],
+  "dealbreakers": ["no fast charging"],
+  "specs": {"ram": "8 GB", "storage": "128 GB"}
+}

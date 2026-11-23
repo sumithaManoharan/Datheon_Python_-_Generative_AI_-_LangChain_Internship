@@ -206,3 +206,16 @@ def test_duplicate_tool_call_is_not_run_twice(monkeypatch: pytest.MonkeyPatch) -
     _, result = _run(script)
     assert runs == ["x"]
     assert "Duplicate call" in _observations(result)[1]
+
+
+def test_search_region_is_passed_to_web_search(monkeypatch: pytest.MonkeyPatch) -> None:
+    seen: dict[str, str] = {}
+
+    def fake(query: str, max_results: int = 5, region: str = "unset"):
+        seen["region"] = region
+        return []
+
+    monkeypatch.setattr(agent_module, "web_search", fake)
+    tools = build_tools(region="uk-en")
+    _run([_call("web_search", {"query": "phone"}), AIMessage(content="Ok.")], tools=tools)
+    assert seen["region"] == "uk-en"

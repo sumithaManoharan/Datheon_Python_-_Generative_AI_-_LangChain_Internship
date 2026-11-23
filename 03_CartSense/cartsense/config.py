@@ -1,6 +1,7 @@
 """Environment-driven configuration for CartSense."""
 
 import os
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -11,6 +12,8 @@ DEFAULT_BASE_URL = "https://openrouter.ai/api/v1"
 DEFAULT_MODEL = "openai/gpt-oss-20b"
 DEFAULT_MAX_STEPS = 25
 DEFAULT_TEMPERATURE = 0.0
+DEFAULT_SEARCH_REGION = "in-en"
+REGION_PATTERN = r"^[a-z]{2}-[a-z]{2}$"
 
 
 class ConfigError(Exception):
@@ -26,6 +29,7 @@ class Config:
     model: str
     max_steps: int
     temperature: float
+    search_region: str = DEFAULT_SEARCH_REGION
 
 
 def _read_int(name: str, default: int) -> int:
@@ -71,10 +75,15 @@ def load_config() -> Config:
     if not 0.0 <= temperature <= 2.0:
         raise ConfigError("CARTSENSE_TEMPERATURE must be between 0.0 and 2.0.")
 
+    region = os.environ.get("CARTSENSE_SEARCH_REGION", DEFAULT_SEARCH_REGION).strip().lower()
+    if not re.fullmatch(REGION_PATTERN, region):
+        raise ConfigError("CARTSENSE_SEARCH_REGION must look like 'in-en' or 'us-en'.")
+
     return Config(
         api_key=api_key,
         base_url=os.environ.get("OPENROUTER_BASE_URL", DEFAULT_BASE_URL).strip(),
         model=os.environ.get("CARTSENSE_MODEL", DEFAULT_MODEL).strip(),
         max_steps=max_steps,
         temperature=temperature,
+        search_region=region,
     )

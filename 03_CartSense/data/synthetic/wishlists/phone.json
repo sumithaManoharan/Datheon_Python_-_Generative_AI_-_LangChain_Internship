@@ -1,6 +1,7 @@
 {
   "category": "phone",
   "budget": 25000,
+  "currency": "INR",
   "years_of_use": 3,
   "warranty_years": 1,
   "priorities": ["battery life", "camera quality"],

@@ -124,7 +124,9 @@ def main(
         chat_model = model if model is not None else build_model(settings)
         prompt = f"{load_system_prompt()}\n\n{mode_note(interactive)}"
         prompter = UserPrompter(input_fn) if interactive else None
-        tools = build_tools(wishlist_dir=wishlist_dir, prompter=prompter)
+        tools = build_tools(
+            wishlist_dir=wishlist_dir, prompter=prompter, region=settings.search_region
+        )
         result = run_agent(
             chat_model, settings, args.request, tools=tools, system_prompt=prompt, on_step=show_step
         )

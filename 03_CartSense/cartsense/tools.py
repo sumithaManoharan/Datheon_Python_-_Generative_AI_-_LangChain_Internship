@@ -12,7 +12,7 @@ from typing import Any
 
 from pydantic import ValidationError
 
-from cartsense.config import PROJECT_ROOT
+from cartsense.config import DEFAULT_SEARCH_REGION, PROJECT_ROOT
 from cartsense.models import CATEGORY_PATTERN, Wishlist, clean_category
 
 logger = logging.getLogger(__name__)
@@ -128,18 +128,24 @@ def _is_ad(url: str) -> bool:
     return any(marker in url for marker in AD_URL_MARKERS)
 
 
-def _ddgs_text(query: str, max_results: int) -> list[dict[str, str]]:
-    """Run a DuckDuckGo text search. Imported lazily so tests never need the network."""
-    from ddgs import DDGS
+def make_ddgs_search(region: str) -> SearchFn:
+    """Build a DuckDuckGo search function bound to a region such as 'in-en'."""
 
-    return DDGS().text(query, max_results=max_results)
+    def search(query: str, max_results: int) -> list[dict[str, str]]:
+        """Run a DuckDuckGo text search. Imported lazily so tests never need the network."""
+        from ddgs import DDGS
+
+        return DDGS().text(query, region=region, max_results=max_results)
+
+    return search
 
 
 def web_search(
     query: str,
     max_results: int = 5,
     *,
-    search_fn: SearchFn = _ddgs_text,
+    region: str = DEFAULT_SEARCH_REGION,
+    search_fn: SearchFn | None = None,
     sleep: Callable[[float], None] = time.sleep,
     max_attempts: int = SEARCH_MAX_ATTEMPTS,
 ) -> list[dict[str, str]]:
@@ -151,10 +157,11 @@ def web_search(
         raise ToolError(f"Search query is longer than {MAX_QUERY_LENGTH} characters.")
     limit = max(1, min(max_results, MAX_RESULTS_LIMIT))
 
+    backend = search_fn if search_fn is not None else make_ddgs_search(region)
     raw: list[dict[str, str]] = []
     for attempt in range(1, max_attempts + 1):
         try:
-            raw = search_fn(text, limit)
+            raw = backend(text, limit)
             break
         except Exception as exc:  # backend errors vary; narrow once real ones are seen
             if attempt == max_attempts:

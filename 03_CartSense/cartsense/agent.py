@@ -107,7 +107,8 @@ class SaveWishlistArgs(BaseModel):
 
     data: dict[str, Any] = Field(
         description=(
-            "Wishlist fields: category (text), budget (number), years_of_use (number), "
+            "Wishlist fields: category (text), budget (number), currency (e.g. INR), "
+            "years_of_use (number), "
             "warranty_years (number), priorities (1 or 2 short texts), dealbreakers "
             "(list of short texts), specs (object of short texts)."
         )
@@ -191,14 +192,23 @@ def _calculator_tool(
         raise ToolError(f"Bad arguments for {function}: {exc}") from None
 
 
-@_guard
-def _web_search_tool(query: str, max_results: int = 5) -> str:
-    """Return search hits as a JSON string."""
-    return json.dumps(web_search(query, max_results))
+def _make_web_search_tool(region: str | None) -> Callable[..., str]:
+    """Build the web_search handler, bound to the buyer's search region."""
+
+    @_guard
+    def web_search_tool(query: str, max_results: int = 5) -> str:
+        """Return search hits as a JSON string."""
+        extra = {"region": region} if region else {}
+        return json.dumps(web_search(query, max_results, **extra))
+
+    return web_search_tool
 
 
 def build_tools(
-    *, wishlist_dir: Path = WISHLIST_DIR, prompter: UserPrompter | None = None
+    *,
+    wishlist_dir: Path = WISHLIST_DIR,
+    prompter: UserPrompter | None = None,
+    region: str | None = None,
 ) -> list[BaseTool]:
     """Build the LangChain tools.
 
@@ -254,7 +264,7 @@ def build_tools(
 
     tools.append(
         StructuredTool.from_function(
-            func=_remember(_web_search_tool),
+            func=_remember(_make_web_search_tool(region)),
             name="web_search",
             description="Search the web for current prices, reviews and specs.",
             args_schema=WebSearchArgs,

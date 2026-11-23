@@ -141,3 +141,18 @@ def test_web_search_drops_ad_links() -> None:
     fake, _ = _flaky_search(0, hits)
     results = web_search("phone", search_fn=fake, sleep=lambda _: None)
     assert [hit["title"] for hit in results] == ["Real"]
+
+
+def test_ddgs_search_passes_the_region(monkeypatch: pytest.MonkeyPatch) -> None:
+    from cartsense.tools import make_ddgs_search
+
+    seen: dict[str, object] = {}
+
+    class FakeDDGS:
+        def text(self, query: str, **kwargs: object) -> list[dict[str, str]]:
+            seen.update(kwargs)
+            return []
+
+    monkeypatch.setattr("ddgs.DDGS", FakeDDGS)
+    make_ddgs_search("in-en")("phone", 3)
+    assert seen == {"region": "in-en", "max_results": 3}

@@ -22,6 +22,7 @@ class Wishlist(BaseModel):
 
     category: str = Field(pattern=CATEGORY_PATTERN)
     budget: float = Field(gt=0, le=10_000_000, description="Maximum spend in local currency.")
+    currency: str = Field(default="INR", pattern=r"^[A-Z]{3}$", description="Currency code.")
     years_of_use: float = Field(gt=0, le=50, description="Expected years of ownership.")
     warranty_years: float = Field(ge=0, le=20, description="Minimum warranty wanted.")
     priorities: list[str] = Field(min_length=1, max_length=2)

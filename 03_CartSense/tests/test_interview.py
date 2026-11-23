@@ -1,0 +1,186 @@
+"""Tests for ask_user, save_wishlist, the interview flow and non-interactive tools."""
+
+from pathlib import Path
+from typing import Any
+
+import pytest
+from langchain_core.messages import AIMessage
+from test_agent import _call, _observations, _run
+
+from cartsense.agent import build_tools, mode_note
+from cartsense.config import Config
+from cartsense.tools import (
+    MAX_ANSWER_LENGTH,
+    MAX_QUESTIONS,
+    NO_ANSWER,
+    ToolError,
+    UserPrompter,
+    read_wishlist,
+    save_wishlist,
+)
+
+CORE_TOOLS = ["read_wishlist", "web_search", "calculator"]
+LONG_CONFIG = Config(api_key="k", base_url="u", model="m", max_steps=10, temperature=0.0)
+
+
+def _answers(*items: str):
+    """A fake input function that returns the given answers in order."""
+    queue = list(items)
+
+    def fake_input(prompt: str) -> str:
+        return queue.pop(0)
+
+    return fake_input
+
+
+def _wishlist(**changes: Any) -> dict[str, Any]:
+    data: dict[str, Any] = {
+        "category": "phone",
+        "budget": 25000,
+        "years_of_use": 3,
+        "warranty_years": 1,
+        "priorities": ["battery life", "camera quality"],
+        "dealbreakers": ["no fast charging"],
+        "specs": {"ram": "8 GB"},
+    }
+    return {**data, **changes}
+
+
+# --- UserPrompter -----------------------------------------------------------
+
+
+def test_prompter_enforces_the_question_cap() -> None:
+    prompter = UserPrompter(_answers(*["a"] * MAX_QUESTIONS))
+    for _ in range(MAX_QUESTIONS):
+        assert prompter.ask("Question?") == "a"
+    with pytest.raises(ToolError, match="limit"):
+        prompter.ask("One too many?")
+
+
+def test_prompter_handles_blank_and_long_answers() -> None:
+    prompter = UserPrompter(_answers("   ", "x" * 2000))
+    assert prompter.ask("Q1?") == NO_ANSWER
+    assert len(prompter.ask("Q2?")) == MAX_ANSWER_LENGTH
+
+
+def test_prompter_reports_end_of_input() -> None:
+    def closed(prompt: str) -> str:
+        raise EOFError
+
+    with pytest.raises(ToolError, match="No input"):
+        UserPrompter(closed).ask("Budget?")
+
+
+@pytest.mark.parametrize("question", ["", "   ", "q" * 301])
+def test_prompter_rejects_bad_questions(question: str) -> None:
+    with pytest.raises(ToolError):
+        UserPrompter(_answers("a")).ask(question)
+
+
+# --- save_wishlist ----------------------------------------------------------
+
+
+def test_save_wishlist_writes_a_file_that_reads_back(tmp_path: Path) -> None:
+    folder = tmp_path / "wishlists"
+    path = save_wishlist(_wishlist(), folder)
+    assert path == folder / "phone.json"
+    loaded = read_wishlist("phone", folder)
+    assert loaded is not None
+    assert loaded.budget == 25000
+
+
+def test_save_wishlist_maps_spaces_and_writes_only_one_json_file(tmp_path: Path) -> None:
+    save_wishlist(_wishlist(category="Washing Machine"), tmp_path)
+    assert [p.name for p in tmp_path.iterdir()] == ["washing_machine.json"]
+
+
+def test_save_wishlist_overwrites_an_existing_one(tmp_path: Path) -> None:
+    save_wishlist(_wishlist(), tmp_path)
+    save_wishlist(_wishlist(budget=30000), tmp_path)
+    loaded = read_wishlist("phone", tmp_path)
+    assert loaded is not None
+    assert loaded.budget == 30000
+
+
+@pytest.mark.parametrize(
+    "data",
+    [
+        _wishlist(budget=-5),
+        _wishlist(bogus="x"),
+        _wishlist(category="../escape"),
+        _wishlist(category="a/b"),
+        _wishlist(priorities=["a", "b", "c"]),
+        _wishlist(specs={f"k{i}": "x" * 2000 for i in range(10)}),
+        "not a dict",
+    ],
+)
+def test_save_wishlist_rejects_bad_data_and_writes_nothing(tmp_path: Path, data: Any) -> None:
+    with pytest.raises(ToolError):
+        save_wishlist(data, tmp_path)
+    assert list(tmp_path.iterdir()) == []
+
+
+# --- tool lists and modes ---------------------------------------------------
+
+
+def test_default_tools_have_no_interactive_tools() -> None:
+    assert [tool.name for tool in build_tools()] == CORE_TOOLS
+
+
+def test_prompter_adds_ask_and_save_tools(tmp_path: Path) -> None:
+    tools = build_tools(wishlist_dir=tmp_path, prompter=UserPrompter(_answers()))
+    assert [tool.name for tool in tools] == [
+        "read_wishlist",
+        "ask_user",
+        "save_wishlist",
+        "web_search",
+        "calculator",
+    ]
+
+
+def test_mode_notes_differ() -> None:
+    assert "NOT available" in mode_note(False)
+    assert "NOT available" not in mode_note(True)
+
+
+# --- the agent with these tools --------------------------------------------
+
+
+def test_interview_flow_saves_the_wishlist(tmp_path: Path) -> None:
+    tools = build_tools(wishlist_dir=tmp_path, prompter=UserPrompter(_answers("25000", "3 years")))
+    script = [
+        _call("ask_user", {"question": "Budget?"}, "c1"),
+        _call("ask_user", {"question": "Years of use?"}, "c2"),
+        _call("save_wishlist", {"data": _wishlist()}, "c3"),
+        AIMessage(content="Saved."),
+    ]
+    _, result = _run(script, tools=tools, config=LONG_CONFIG)
+    assert result.status == "done"
+    assert _observations(result) == ["25000", "3 years", "Saved wishlist to phone.json."]
+    assert (tmp_path / "phone.json").is_file()
+
+
+def test_invalid_save_becomes_an_observation(tmp_path: Path) -> None:
+    tools = build_tools(wishlist_dir=tmp_path, prompter=UserPrompter(_answers()))
+    script = [
+        _call("save_wishlist", {"data": _wishlist(budget=-5)}),
+        AIMessage(content="Will fix."),
+    ]
+    _, result = _run(script, tools=tools)
+    assert _observations(result)[0].startswith("Error: Invalid wishlist")
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_non_interactive_agent_cannot_ask_or_save() -> None:
+    def must_not_run(prompt: str) -> str:
+        raise AssertionError("ask_user must not run in non-interactive mode")
+
+    script = [
+        _call("ask_user", {"question": "Budget?"}, "c1"),
+        _call("save_wishlist", {"data": _wishlist()}, "c2"),
+        AIMessage(content="Proceeding with defaults."),
+    ]
+    _, result = _run(script, tools=build_tools())
+    assert result.status == "done"
+    assert "ask_user" in _observations(result)[0]
+    assert "save_wishlist" in _observations(result)[1]

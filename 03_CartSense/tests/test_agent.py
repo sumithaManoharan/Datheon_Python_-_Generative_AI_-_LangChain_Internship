@@ -53,10 +53,10 @@ def _call(name: str, args: dict[str, Any], call_id: str = "c1") -> AIMessage:
     return AIMessage(content="", tool_calls=[{"name": name, "args": args, "id": call_id}])
 
 
-def _run(script: list[Any], **kwargs: Any):
+def _run(script: list[Any], config: Config = CONFIG, **kwargs: Any):
     model = ScriptedModel(script=script)
     kwargs.setdefault("system_prompt", "test prompt")
-    return model, run_agent(model, CONFIG, "buy a phone", **kwargs)
+    return model, run_agent(model, config, "buy a phone", **kwargs)
 
 
 def _observations(result) -> list[str]:
@@ -136,7 +136,7 @@ def test_web_search_outage_becomes_observation(monkeypatch: pytest.MonkeyPatch) 
 
 
 def test_read_wishlist_tool_reports_missing(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(agent_module, "read_wishlist", lambda category: None)
+    monkeypatch.setattr(agent_module, "read_wishlist", lambda category, directory: None)
     _, result = _run([_call("read_wishlist", {"category": "phone"}), AIMessage(content="Ok.")])
     assert _observations(result) == ["No saved wishlist for 'phone'."]
 

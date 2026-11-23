@@ -20,7 +20,15 @@ from pydantic import BaseModel, Field
 
 from cartsense.config import PROJECT_ROOT, Config
 from cartsense.scoring import tco, value_score
-from cartsense.tools import ToolError, calculator, read_wishlist, web_search
+from cartsense.tools import (
+    WISHLIST_DIR,
+    ToolError,
+    UserPrompter,
+    calculator,
+    read_wishlist,
+    save_wishlist,
+    web_search,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +46,12 @@ STEP_LABELS = {
     "observation": "Observation",
     "final": "Final answer",
 }
+INTERACTIVE_NOTE = "Mode: interactive. ask_user and save_wishlist are available."
+NON_INTERACTIVE_NOTE = (
+    "Mode: non-interactive. ask_user and save_wishlist are NOT available. "
+    "Do not ask the buyer anything. Use the saved wishlist if there is one; otherwise use "
+    "sensible defaults and state each one as an assumption."
+)
 
 SCORING_FUNCTIONS: dict[str, Callable[..., float]] = {"tco": tco, "value_score": value_score}
 
@@ -68,6 +82,11 @@ def format_step(step: Step) -> str:
     return f"{STEP_LABELS.get(step.kind, step.kind)}: {step.text}"
 
 
+def mode_note(interactive: bool) -> str:
+    """The line appended to the system prompt that tells the agent which mode it is in."""
+    return INTERACTIVE_NOTE if interactive else NON_INTERACTIVE_NOTE
+
+
 # --- tools ------------------------------------------------------------------
 
 
@@ -75,6 +94,24 @@ class ReadWishlistArgs(BaseModel):
     """Arguments for read_wishlist."""
 
     category: str = Field(description="Product category, e.g. 'washing machine'.")
+
+
+class AskUserArgs(BaseModel):
+    """Arguments for ask_user."""
+
+    question: str = Field(description="One short question for the buyer.")
+
+
+class SaveWishlistArgs(BaseModel):
+    """Arguments for save_wishlist."""
+
+    data: dict[str, Any] = Field(
+        description=(
+            "Wishlist fields: category (text), budget (number), years_of_use (number), "
+            "warranty_years (number), priorities (1 or 2 short texts), dealbreakers "
+            "(list of short texts), specs (object of short texts)."
+        )
+    )
 
 
 class WebSearchArgs(BaseModel):
@@ -128,35 +165,75 @@ def _calculator_tool(
 
 
 @_guard
-def _read_wishlist_tool(category: str) -> str:
-    """Return the saved wishlist as JSON, or a plain message when there is none."""
-    wishlist = read_wishlist(category)
-    if wishlist is None:
-        return f"No saved wishlist for {category!r}."
-    return wishlist.model_dump_json()
-
-
-@_guard
 def _web_search_tool(query: str, max_results: int = 5) -> str:
     """Return search hits as a JSON string."""
     return json.dumps(web_search(query, max_results))
 
 
-def build_tools() -> list[BaseTool]:
-    """The LangChain tools available in this build of the agent."""
-    return [
+def build_tools(
+    *, wishlist_dir: Path = WISHLIST_DIR, prompter: UserPrompter | None = None
+) -> list[BaseTool]:
+    """Build the LangChain tools.
+
+    ask_user and save_wishlist exist only when a prompter is given (interactive mode).
+    """
+
+    @_guard
+    def read_wishlist_tool(category: str) -> str:
+        """Return the saved wishlist as JSON, or a plain message when there is none."""
+        wishlist = read_wishlist(category, wishlist_dir)
+        if wishlist is None:
+            return f"No saved wishlist for {category!r}."
+        return wishlist.model_dump_json()
+
+    tools: list[BaseTool] = [
         StructuredTool.from_function(
-            func=_read_wishlist_tool,
+            func=read_wishlist_tool,
             name="read_wishlist",
             description="Read the saved wishlist for a product category, if one exists.",
             args_schema=ReadWishlistArgs,
-        ),
+        )
+    ]
+
+    if prompter is not None:
+
+        @_guard
+        def ask_user_tool(question: str) -> str:
+            """Ask the buyer one question and return the answer."""
+            return prompter.ask(question)
+
+        @_guard
+        def save_wishlist_tool(data: dict[str, Any]) -> str:
+            """Validate and save the wishlist; return a confirmation."""
+            path = save_wishlist(data, wishlist_dir)
+            return f"Saved wishlist to {path.name}."
+
+        tools.append(
+            StructuredTool.from_function(
+                func=ask_user_tool,
+                name="ask_user",
+                description="Ask the buyer one short question. At most 6 questions per run.",
+                args_schema=AskUserArgs,
+            )
+        )
+        tools.append(
+            StructuredTool.from_function(
+                func=save_wishlist_tool,
+                name="save_wishlist",
+                description="Save the buyer's answers as their wishlist for this category.",
+                args_schema=SaveWishlistArgs,
+            )
+        )
+
+    tools.append(
         StructuredTool.from_function(
             func=_web_search_tool,
             name="web_search",
             description="Search the web for current prices, reviews and specs.",
             args_schema=WebSearchArgs,
-        ),
+        )
+    )
+    tools.append(
         StructuredTool.from_function(
             func=_calculator_tool,
             name="calculator",
@@ -165,8 +242,9 @@ def build_tools() -> list[BaseTool]:
                 "'value_score') with its 'arguments' object."
             ),
             args_schema=CalculatorArgs,
-        ),
-    ]
+        )
+    )
+    return tools
 
 
 # --- model and prompt -------------------------------------------------------

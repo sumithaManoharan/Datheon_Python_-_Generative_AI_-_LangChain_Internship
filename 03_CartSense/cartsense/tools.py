@@ -8,6 +8,7 @@ import re
 import time
 from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 from pydantic import ValidationError
 
@@ -163,3 +164,70 @@ def web_search(
         }
         for hit in raw
     ]
+
+
+# --- interview and wishlist saving -----------------------------------------
+
+MAX_QUESTIONS = 6
+MAX_QUESTION_LENGTH = 300
+MAX_ANSWER_LENGTH = 500
+NO_ANSWER = "(no answer given)"
+
+
+class UserPrompter:
+    """Asks the buyer questions on the console, with a hard cap on how many."""
+
+    def __init__(
+        self, input_fn: Callable[[str], str] = input, max_questions: int = MAX_QUESTIONS
+    ) -> None:
+        self._input_fn = input_fn
+        self._max_questions = max_questions
+        self.asked = 0
+
+    def ask(self, question: str) -> str:
+        """Ask one question and return the trimmed answer."""
+        text = question.strip() if isinstance(question, str) else ""
+        if not text:
+            raise ToolError("Question is empty.")
+        if len(text) > MAX_QUESTION_LENGTH:
+            raise ToolError(f"Question is longer than {MAX_QUESTION_LENGTH} characters.")
+        if self.asked >= self._max_questions:
+            raise ToolError(
+                f"Question limit reached ({self._max_questions}). "
+                "Continue with the answers you have and state assumptions."
+            )
+        self.asked += 1
+        try:
+            answer = self._input_fn(f"\n? {text}\n> ")
+        except EOFError:
+            raise ToolError("No input is available; continue with defaults.") from None
+        return answer.strip()[:MAX_ANSWER_LENGTH] or NO_ANSWER
+
+
+def save_wishlist(data: dict[str, Any], directory: Path = WISHLIST_DIR) -> Path:
+    """Validate the data and write it to <directory>/<category>.json; return the path.
+
+    The filename comes only from the cleaned, pattern-checked category.
+    """
+    if not isinstance(data, dict):
+        raise ToolError("Wishlist data must be an object.")
+    try:
+        wishlist = Wishlist.model_validate(data)
+    except ValidationError as exc:
+        problems = "; ".join(
+            f"{'.'.join(str(part) for part in error['loc'])}: {error['msg']}"
+            for error in exc.errors()
+        )
+        raise ToolError(f"Invalid wishlist: {problems}") from None
+
+    payload = wishlist.model_dump_json(indent=2)
+    if len(payload.encode("utf-8")) > MAX_WISHLIST_BYTES:
+        raise ToolError(f"Wishlist is larger than {MAX_WISHLIST_BYTES} bytes.")
+    path = wishlist_path(wishlist.category, directory)
+    try:
+        directory.mkdir(parents=True, exist_ok=True)
+        path.write_text(payload, encoding="utf-8")
+    except OSError as exc:
+        logger.error("Could not write %s: %s", path.name, exc)
+        raise ToolError("Could not write the wishlist file.") from exc
+    return path

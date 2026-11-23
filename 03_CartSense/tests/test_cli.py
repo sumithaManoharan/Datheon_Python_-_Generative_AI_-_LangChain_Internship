@@ -103,7 +103,7 @@ def test_terminal_run_offers_the_interview_tools(tmp_path: Path) -> None:
 
 
 def test_failed_run_returns_nonzero_and_writes_no_file(tmp_path: Path) -> None:
-    code, _ = _main(["buy a phone"], tmp_path, [AIMessage(content="   ")])
+    code, _ = _main(["buy a phone"], tmp_path, [AIMessage(content=""), AIMessage(content="")])
     assert code == cli.EXIT_FAILED
     assert not (tmp_path / "output").exists()
 

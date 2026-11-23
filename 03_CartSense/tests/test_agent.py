@@ -149,7 +149,7 @@ def test_step_limit_stops_the_loop() -> None:
 
 
 def test_empty_final_answer_is_a_failed_result() -> None:
-    _, result = _run([AIMessage(content="   ")])
+    _, result = _run([AIMessage(content="   "), AIMessage(content="")])
     assert result.status == "failed"
 
 
@@ -219,3 +219,25 @@ def test_search_region_is_passed_to_web_search(monkeypatch: pytest.MonkeyPatch) 
     tools = build_tools(region="uk-en")
     _run([_call("web_search", {"query": "phone"}), AIMessage(content="Ok.")], tools=tools)
     assert seen["region"] == "uk-en"
+
+
+def test_empty_final_answer_is_retried_once() -> None:
+    _, result = _run([AIMessage(content=""), AIMessage(content="Buy X.")])
+    assert result.status == "done"
+    assert result.final_answer == "Buy X."
+    assert result.steps[-1] == Step("final", "Buy X.")
+
+
+def test_dict_priority_ratings_get_a_readable_error() -> None:
+    args = {
+        "function": "value_score",
+        "arguments": {
+            "price": 1,
+            "budget": 10,
+            "warranty_offered": 1,
+            "warranty_wanted": 1,
+            "priority_ratings": {"battery": 8},
+        },
+    }
+    _, result = _run([_call("calculator", args), AIMessage(content="Ok.")])
+    assert "list of numbers" in _observations(result)[0]

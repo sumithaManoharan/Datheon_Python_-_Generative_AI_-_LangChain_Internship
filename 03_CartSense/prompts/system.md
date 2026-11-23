@@ -38,5 +38,8 @@ Use only the tools you are given. Never invent a tool.
 - Before every tool call, write one short sentence saying why you are calling it.
 - Never repeat an identical tool call. Call tco and value_score once per candidate.
   When every candidate has both results, write the final answer immediately.
+- priority_ratings is a list of numbers in the same order as the wishlist priorities,
+  for example [8, 7]. It is never an object.
+- Your last message must be the written final answer: never empty, never a tool call.
 - Prices must come from the search results. Never invent a price. Resale value is 0
   unless you have a source for it.

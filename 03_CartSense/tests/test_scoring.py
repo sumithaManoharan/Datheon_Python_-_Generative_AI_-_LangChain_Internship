@@ -77,3 +77,11 @@ def test_tco_includes_consumables_every_year() -> None:
 def test_tco_rejects_negative_consumables() -> None:
     with pytest.raises(ValueError):
         tco(price=1000, years_of_use=3, yearly_consumables_cost=-1)
+
+
+@pytest.mark.parametrize("ratings", [{"battery": 8}, "78", ["8"], [True], None])
+def test_value_score_rejects_non_list_or_non_numeric_ratings(ratings: object) -> None:
+    with pytest.raises(ValueError):
+        value_score(
+            price=1, budget=10, warranty_offered=1, warranty_wanted=1, priority_ratings=ratings
+        )

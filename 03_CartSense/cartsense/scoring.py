@@ -68,10 +68,15 @@ def value_score(
     _require_non_negative(price=price, warranty_offered=warranty_offered)
     if budget <= 0:
         raise ValueError(f"budget must be positive, got {budget}")
-    if not priority_ratings:
-        raise ValueError("priority_ratings must not be empty")
-    if any(not 0 <= rating <= MAX_RATING for rating in priority_ratings):
-        raise ValueError(f"every rating must be between 0 and {MAX_RATING:g}")
+    if not isinstance(priority_ratings, list | tuple) or not priority_ratings:
+        raise ValueError("priority_ratings must be a non-empty list of numbers, e.g. [8, 7]")
+    if any(
+        isinstance(rating, bool)
+        or not isinstance(rating, int | float)
+        or not 0 <= rating <= MAX_RATING
+        for rating in priority_ratings
+    ):
+        raise ValueError(f"every rating must be a number between 0 and {MAX_RATING:g}")
 
     if dealbreaker_hit:
         return 0.0

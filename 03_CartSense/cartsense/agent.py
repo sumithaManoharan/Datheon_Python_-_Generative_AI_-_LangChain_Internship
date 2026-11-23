@@ -12,7 +12,7 @@ from typing import Any
 import openai
 from langchain.agents import create_agent
 from langchain_core.language_models.chat_models import BaseChatModel
-from langchain_core.messages import AIMessage, ToolMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 from langchain_core.tools import BaseTool, StructuredTool
 from langchain_openai import ChatOpenAI
 from langgraph.errors import GraphRecursionError
@@ -40,6 +40,7 @@ MODEL_TIMEOUT_SECONDS = 60
 # One model call plus one tool call is about two graph steps.
 GRAPH_STEPS_PER_TURN = 2
 MAX_STEPS_MESSAGE = "Stopped: the step limit was reached before a final answer."
+FINAL_NUDGE = "Write your final answer now, using the results above. Do not call any tool."
 STEP_LABELS = {
     "thought": "Thought",
     "action": "Action",
@@ -327,6 +328,15 @@ def _text(content: Any) -> str:
     return ""
 
 
+def _request_final_answer(model: BaseChatModel, history: list[Any]) -> str:
+    """Ask the model once more for a final answer after an empty reply (no tools bound)."""
+    try:
+        reply = model.invoke([*history, HumanMessage(FINAL_NUDGE)])
+    except openai.OpenAIError as exc:
+        raise AgentError(f"Model API error: {exc}") from exc
+    return _text(reply.content)
+
+
 def run_agent(
     model: BaseChatModel,
     config: Config,
@@ -348,6 +358,7 @@ def run_agent(
         model, tools=tools if tools is not None else build_tools(), system_prompt=prompt
     )
     steps: list[Step] = []
+    history: list[Any] = [SystemMessage(prompt), HumanMessage(request)]
     usage = {"prompt": 0, "completion": 0}
     final_seen = False
     final_text = ""
@@ -371,6 +382,7 @@ def run_agent(
                 if not isinstance(node_update, dict):
                     continue
                 for message in node_update.get("messages", []):
+                    history.append(message)
                     if isinstance(message, ToolMessage):
                         record("observation", _text(message.content))
                     elif isinstance(message, AIMessage):
@@ -403,5 +415,8 @@ def run_agent(
     if not final_seen:
         return AgentResult("failed", "The agent ended without a final answer.", steps)
     if not final_text:
-        return AgentResult("failed", "The model returned an empty answer.", steps)
+        final_text = _request_final_answer(model, history)
+        if not final_text:
+            return AgentResult("failed", "The model returned an empty answer.", steps)
+        record("final", final_text)
     return AgentResult("done", final_text, steps)

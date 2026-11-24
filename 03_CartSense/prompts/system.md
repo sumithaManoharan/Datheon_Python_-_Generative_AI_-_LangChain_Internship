@@ -59,6 +59,13 @@ Use only the tools you are given. Never invent a tool.
 - Candidates must be the product type the buyer asked for (a washing machine, not a
   dryer) and must fit the buyer's budget.
 - As soon as you have a price and specs for a candidate, call calculator for it.
+- The price you pass to value_score must appear in a search result; the program rejects
+  any other. If a candidate has no price in the results, drop it. Present 1 or 2 verified
+  candidates rather than inventing a third. Never invent a candidate, price or spec.
+- Never ask the buyer anything after you have saved the wishlist.
+- For durable goods with no consumables (a chair, a desk), do not ask how often it is
+  used: use uses_per_week 7 and zero running costs, and state that as an assumption.
+- If an answer is unclear (for example 'not sure'), ask once more. Never send null.
 - Your first search must be a discovery search, for example 'best front load washing
   machine under 45000 India'. Candidate names must come from search results. Never name
   a model from memory and never invent a model number.

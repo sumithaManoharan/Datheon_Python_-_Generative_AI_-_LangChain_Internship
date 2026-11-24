@@ -200,6 +200,11 @@ class UserPrompter:
         self._input_fn = input_fn
         self._max_questions = max_questions
         self.asked = 0
+        self._closed = False
+
+    def close(self) -> None:
+        """Stop further questions once the wishlist is saved."""
+        self._closed = True
 
     def ask(self, question: str) -> str:
         """Ask one question and return the trimmed answer."""
@@ -208,6 +213,11 @@ class UserPrompter:
             raise ToolError("Question is empty.")
         if len(text) > MAX_QUESTION_LENGTH:
             raise ToolError(f"Question is longer than {MAX_QUESTION_LENGTH} characters.")
+        if self._closed:
+            raise ToolError(
+                "The interview is over because the wishlist is saved. "
+                "Do not ask more questions; continue with the research."
+            )
         if self.asked >= self._max_questions:
             raise ToolError(
                 f"Question limit reached ({self._max_questions}). "

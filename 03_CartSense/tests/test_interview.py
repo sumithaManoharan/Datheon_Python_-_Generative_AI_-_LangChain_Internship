@@ -263,3 +263,14 @@ def test_requirements_depend_on_mode() -> None:
     assert live.min_questions > 0 and live.save_new_wishlist
     assert quiet.min_questions == 0 and not quiet.save_new_wishlist
     assert quiet.tools == frozenset({"web_search", "calculator"})
+
+
+def test_ask_user_is_closed_after_the_wishlist_is_saved(tmp_path: Path) -> None:
+    tools = build_tools(wishlist_dir=tmp_path, prompter=UserPrompter(_answers("1")))
+    script = [
+        _call("save_wishlist", {"data": _wishlist()}, "c1"),
+        _call("ask_user", {"question": "One more?"}, "c2"),
+        AIMessage(content="Done."),
+    ]
+    _, result = _run(script, config=LONG_CONFIG, tools=tools)
+    assert "interview is over" in _observations(result)[1]

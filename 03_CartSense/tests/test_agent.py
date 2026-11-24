@@ -268,3 +268,54 @@ def test_web_search_is_capped(monkeypatch: pytest.MonkeyPatch) -> None:
     _, result = _run(script, config=roomy, tools=build_tools(max_searches=2))
     assert runs == ["q0", "q1"]
     assert _observations(result)[2].startswith("Error: Search limit reached")
+
+
+@pytest.mark.parametrize(
+    ("price", "text", "expected"),
+    [
+        (2999, "Price Rs 2,999 only", True),
+        (2999, "Price 2999", True),
+        (2999, "Price 12,999", False),
+        (125000, "Rs 1,25,000", True),
+        (2500, "no price here", False),
+    ],
+)
+def test_price_in_text(price: float, text: str, expected: bool) -> None:
+    from cartsense.agent import _price_in_text
+
+    assert _price_in_text(price, text) is expected
+
+
+def _score_args(price: float) -> dict[str, Any]:
+    return {
+        "function": "value_score",
+        "arguments": {
+            "price": price,
+            "budget": 3000,
+            "warranty_offered": 1,
+            "warranty_wanted": 1,
+            "priority_ratings": [8, 7],
+        },
+    }
+
+
+def test_value_score_rejects_a_price_not_seen_in_search(monkeypatch: pytest.MonkeyPatch) -> None:
+    hits = [{"title": "Chair", "url": "https://example.com", "snippet": "Only Rs 2,999"}]
+    monkeypatch.setattr(agent_module, "web_search", lambda q, max_results=5, **kw: hits)
+    roomy = Config(api_key="k", base_url="u", model="m", max_steps=10, temperature=0.0)
+    script = [
+        _call("web_search", {"query": "chair"}, "c1"),
+        _call("calculator", _score_args(2500), "c2"),
+        _call("calculator", _score_args(2999), "c3"),
+        AIMessage(content="Ok."),
+    ]
+    tools = build_tools(require_price_evidence=True)
+    _, result = _run(script, config=roomy, tools=tools)
+    observations = _observations(result)
+    assert observations[1].startswith("Error: price 2500 was not found")
+    assert observations[2] == "87.5"
+
+
+def test_price_evidence_is_off_by_default() -> None:
+    _, result = _run([_call("calculator", _score_args(2500)), AIMessage(content="Ok.")])
+    assert _observations(result) == ["87.5"]

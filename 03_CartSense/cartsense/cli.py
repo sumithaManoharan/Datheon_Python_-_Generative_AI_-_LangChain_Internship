@@ -147,7 +147,10 @@ def main(
         prompt = f"{load_system_prompt()}\n\n{mode_note(interactive)}"
         prompter = UserPrompter(input_fn) if interactive else None
         tools = build_tools(
-            wishlist_dir=wishlist_dir, prompter=prompter, region=settings.search_region
+            wishlist_dir=wishlist_dir,
+            prompter=prompter,
+            region=settings.search_region,
+            require_price_evidence=True,
         )
         result = run_agent(
             chat_model,

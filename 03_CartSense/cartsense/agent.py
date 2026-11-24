@@ -222,12 +222,70 @@ def _make_web_search_tool(region: str | None, max_searches: int) -> Callable[...
     return web_search_tool
 
 
+PRICE_NOT_FOUND = (
+    "Error: price {price:g} was not found in any search result. Use only prices that appear "
+    "in search results. If a candidate has no price, drop it and use fewer candidates."
+)
+
+
+def _indian_grouping(number: int) -> str:
+    """Format a whole number with Indian digit grouping, e.g. 125000 -> 1,25,000."""
+    digits = str(number)
+    if len(digits) <= 3:
+        return digits
+    head, tail = digits[:-3], digits[-3:]
+    groups: list[str] = []
+    while len(head) > 2:
+        groups.insert(0, head[-2:])
+        head = head[:-2]
+    if head:
+        groups.insert(0, head)
+    return ",".join([*groups, tail])
+
+
+def _price_in_text(price: float, text: str) -> bool:
+    """True if the price appears in the text as a whole number, plain or with separators."""
+    whole = int(round(price))
+    forms = {str(whole), f"{whole:,}", _indian_grouping(whole)}
+    return any(re.search(rf"(?<![\d,]){re.escape(form)}(?!\d)", text) for form in forms)
+
+
+def _record_results(func: Callable[..., str], seen: list[str]) -> Callable[..., str]:
+    """Wrap web_search so every successful result is remembered for price checks."""
+
+    @functools.wraps(func)
+    def wrapper(*args: Any, **kwargs: Any) -> str:
+        result = func(*args, **kwargs)
+        if not result.startswith(("Error:", "Duplicate call")):
+            seen.append(result)
+        return result
+
+    return wrapper
+
+
+def _price_checked(func: Callable[..., str], seen: list[str], enabled: bool) -> Callable[..., str]:
+    """Wrap calculator so value_score only accepts prices seen in search results."""
+
+    @functools.wraps(func)
+    def wrapper(*args: Any, **kwargs: Any) -> str:
+        if enabled and kwargs.get("function") == "value_score":
+            inner = kwargs.get("arguments")
+            price = inner.get("price") if isinstance(inner, dict) else None
+            if isinstance(price, int | float) and not isinstance(price, bool):
+                if not _price_in_text(price, "\n".join(seen)):
+                    return PRICE_NOT_FOUND.format(price=price)
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
 def build_tools(
     *,
     wishlist_dir: Path = WISHLIST_DIR,
     prompter: UserPrompter | None = None,
     region: str | None = None,
     max_searches: int = MAX_SEARCHES,
+    require_price_evidence: bool = False,
 ) -> list[BaseTool]:
     """Build the LangChain tools.
 
@@ -241,6 +299,8 @@ def build_tools(
         if wishlist is None:
             return f"No saved wishlist for {category!r}."
         return wishlist.model_dump_json()
+
+    seen_text: list[str] = []
 
     tools: list[BaseTool] = [
         StructuredTool.from_function(
@@ -262,6 +322,7 @@ def build_tools(
         def save_wishlist_tool(data: dict[str, Any]) -> str:
             """Validate and save the wishlist; return a confirmation."""
             path = save_wishlist(data, wishlist_dir)
+            prompter.close()
             return f"Saved wishlist to {path.name}."
 
         tools.append(
@@ -283,7 +344,7 @@ def build_tools(
 
     tools.append(
         StructuredTool.from_function(
-            func=_remember(_make_web_search_tool(region, max_searches)),
+            func=_record_results(_remember(_make_web_search_tool(region, max_searches)), seen_text),
             name="web_search",
             description="Search the web for current prices, reviews and specs.",
             args_schema=WebSearchArgs,
@@ -291,7 +352,7 @@ def build_tools(
     )
     tools.append(
         StructuredTool.from_function(
-            func=_remember(_calculator_tool),
+            func=_remember(_price_checked(_calculator_tool, seen_text, require_price_evidence)),
             name="calculator",
             description=(
                 "Do arithmetic. Pass 'expression', or pass 'function' ('tco' or "

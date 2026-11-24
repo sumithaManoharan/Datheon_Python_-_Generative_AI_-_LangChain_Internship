@@ -19,6 +19,7 @@ dependencies = [
     "python-dotenv>=1.2.4",
     "rapidocr>=3.10.0",
     "rapidocr-onnxruntime>=1.4.4",
+    "streamlit>=1.67.0",
 ]
 
 [dependency-groups]
@@ -46,6 +47,6 @@ target-version = "py312"
 select = ["E", "F", "W", "I", "UP", "B"]
 
 [tool.pytest.ini_options]
-pythonpath = ["01_Hirelyzer", "02_DocQA_RAG"]
-testpaths = ["01_Hirelyzer/tests", "02_DocQA_RAG/tests"]
+pythonpath = ["01_Hirelyzer", "02_DocQA_RAG", "04_DocQA_Streamlit"]
+testpaths = ["01_Hirelyzer/tests", "02_DocQA_RAG/tests", "04_DocQA_Streamlit/tests"]
 addopts = "--import-mode=importlib"

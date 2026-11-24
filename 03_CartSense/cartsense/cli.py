@@ -74,14 +74,33 @@ def guess_category(text: str) -> str:
     return cleaned if re.fullmatch(CATEGORY_PATTERN, cleaned) else FALLBACK_CATEGORY
 
 
+def calculation_log(steps: list[Step]) -> str:
+    """List every successful calculator call and its result, verbatim, from the step trace."""
+    lines: list[str] = []
+    pending = ""
+    for step in steps:
+        if step.kind == "action" and step.text.startswith("calculator("):
+            pending = step.text
+        elif step.kind == "observation" and pending:
+            if not step.text.startswith(("Error:", "Duplicate call")):
+                lines.append(f"- `{pending}` -> `{step.text}`")
+            pending = ""
+    return "\n".join(lines)
+
+
 def save_recommendation(
     result: AgentResult, request: str, category: str, directory: Path = OUTPUT_DIR
 ) -> Path:
-    """Write the final recommendation to <directory>/<category>.md and return the path."""
+    """Write the recommendation and the calculator log to <directory>/<category>.md."""
     directory.mkdir(parents=True, exist_ok=True)
     path = directory / f"{category.replace(' ', '_')}.md"
+    log = calculation_log(result.steps)
+    appendix = ""
+    if log:
+        appendix = f"\n## Figures computed by the calculator tool (verbatim)\n\n{log}\n"
     path.write_text(
-        f"# CartSense recommendation: {category}\n\nRequest: {request}\n\n{result.final_answer}\n",
+        f"# CartSense recommendation: {category}\n\nRequest: {request}\n\n"
+        f"{result.final_answer}\n{appendix}",
         encoding="utf-8",
     )
     return path

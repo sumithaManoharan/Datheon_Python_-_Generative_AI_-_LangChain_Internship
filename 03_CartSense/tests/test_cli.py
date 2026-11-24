@@ -118,3 +118,20 @@ def test_config_error_gives_exit_code_2(
     monkeypatch.setattr(cli, "load_config", broken)
     assert cli.main(["buy a phone"], stdin=FakeStdin(False)) == cli.EXIT_CONFIG
     assert "OPENROUTER_API_KEY" in capsys.readouterr().err
+
+
+def test_calculation_log_lists_only_successful_calculator_calls() -> None:
+    from cartsense.agent import Step
+
+    steps = [
+        Step("action", 'calculator({"expression": "1 + 1"})'),
+        Step("observation", "2.0"),
+        Step("action", 'calculator({"expression": "1 / 0"})'),
+        Step("observation", "Error: Division by zero."),
+        Step("action", 'web_search({"query": "x"})'),
+        Step("observation", "[]"),
+    ]
+    log = cli.calculation_log(steps)
+    assert "2.0" in log
+    assert "Division" not in log
+    assert "web_search" not in log

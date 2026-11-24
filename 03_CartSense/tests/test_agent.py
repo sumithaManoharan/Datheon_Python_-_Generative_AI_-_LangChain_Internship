@@ -241,3 +241,30 @@ def test_dict_priority_ratings_get_a_readable_error() -> None:
     }
     _, result = _run([_call("calculator", args), AIMessage(content="Ok.")])
     assert "list of numbers" in _observations(result)[0]
+
+
+def test_running_cost_mode_returns_json() -> None:
+    args = {
+        "function": "running_cost",
+        "arguments": {"uses_per_week": 7, "consumable_cost_per_use": 10},
+    }
+    _, result = _run([_call("calculator", args), AIMessage(content="Ok.")])
+    data = json.loads(_observations(result)[0])
+    assert data["per_use"] == 10.0
+    assert data["per_year"] == 3640.0
+
+
+def test_web_search_is_capped(monkeypatch: pytest.MonkeyPatch) -> None:
+    runs: list[str] = []
+
+    def fake(query: str, max_results: int = 5, **kwargs: Any):
+        runs.append(query)
+        return []
+
+    monkeypatch.setattr(agent_module, "web_search", fake)
+    roomy = Config(api_key="k", base_url="u", model="m", max_steps=10, temperature=0.0)
+    script = [_call("web_search", {"query": f"q{i}"}, f"c{i}") for i in range(3)]
+    script.append(AIMessage(content="Ok."))
+    _, result = _run(script, config=roomy, tools=build_tools(max_searches=2))
+    assert runs == ["q0", "q1"]
+    assert _observations(result)[2].startswith("Error: Search limit reached")

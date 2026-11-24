@@ -6,6 +6,9 @@ WEIGHT_PRIORITIES = 0.50
 WEIGHT_BUDGET = 0.30
 WEIGHT_WARRANTY = 0.20
 MAX_RATING = 10.0
+WEEKS_PER_YEAR = 52
+MONTHS_PER_YEAR = 12
+DAYS_PER_YEAR = 365
 
 
 def _require_non_negative(**values: float) -> None:
@@ -50,6 +53,38 @@ def tco(
         - resale_value
     )
     return round(max(total, 0.0), 2)
+
+
+def running_cost(
+    uses_per_week: float,
+    energy_cost_per_use: float = 0.0,
+    water_cost_per_use: float = 0.0,
+    consumable_cost_per_use: float = 0.0,
+    other_yearly_cost: float = 0.0,
+) -> dict[str, float]:
+    """Running cost per use, day, week, month and year (purchase price excluded).
+
+    Consumables are things like detergent or cleaning liquid: pack price divided by
+    the number of uses per pack gives consumable_cost_per_use.
+    """
+    _require_non_negative(
+        energy_cost_per_use=energy_cost_per_use,
+        water_cost_per_use=water_cost_per_use,
+        consumable_cost_per_use=consumable_cost_per_use,
+        other_yearly_cost=other_yearly_cost,
+    )
+    if uses_per_week <= 0:
+        raise ValueError(f"uses_per_week must be positive, got {uses_per_week}")
+
+    per_use = energy_cost_per_use + water_cost_per_use + consumable_cost_per_use
+    per_year = per_use * uses_per_week * WEEKS_PER_YEAR + other_yearly_cost
+    return {
+        "per_use": round(per_use, 2),
+        "per_day": round(per_year / DAYS_PER_YEAR, 2),
+        "per_week": round(per_year / WEEKS_PER_YEAR, 2),
+        "per_month": round(per_year / MONTHS_PER_YEAR, 2),
+        "per_year": round(per_year, 2),
+    }
 
 
 def value_score(

@@ -20,7 +20,7 @@ from langgraph.errors import GraphRecursionError
 from pydantic import BaseModel, Field
 
 from cartsense.config import PROJECT_ROOT, Config
-from cartsense.scoring import tco, value_score
+from cartsense.scoring import running_cost, tco, value_score
 from cartsense.tools import (
     WISHLIST_DIR,
     ToolError,
@@ -35,6 +35,11 @@ logger = logging.getLogger(__name__)
 
 PROMPT_PATH = PROJECT_ROOT / "prompts" / "system.md"
 MAX_REQUEST_LENGTH = 500
+MAX_SEARCHES = 8
+SEARCH_LIMIT_NOTE = (
+    "Search limit reached. Stop searching. Call calculator (running_cost and "
+    "value_score) for each candidate using what you have, then write the final answer."
+)
 MAX_OBSERVATION_CHARS = 4000
 MODEL_MAX_RETRIES = 3
 MODEL_TIMEOUT_SECONDS = 60
@@ -55,7 +60,11 @@ NON_INTERACTIVE_NOTE = (
     "sensible defaults and state each one as an assumption."
 )
 
-SCORING_FUNCTIONS: dict[str, Callable[..., float]] = {"tco": tco, "value_score": value_score}
+SCORING_FUNCTIONS: dict[str, Callable[..., Any]] = {
+    "tco": tco,
+    "value_score": value_score,
+    "running_cost": running_cost,
+}
 
 
 class AgentError(Exception):
@@ -130,7 +139,9 @@ class CalculatorArgs(BaseModel):
     expression: str | None = Field(
         default=None, description="Arithmetic using numbers and + - * / // % ** ( ) only."
     )
-    function: str | None = Field(default=None, description="'tco' or 'value_score'.")
+    function: str | None = Field(
+        default=None, description="'tco', 'value_score' or 'running_cost'."
+    )
     arguments: dict[str, Any] | None = Field(
         default=None, description="Keyword arguments for the chosen function."
     )
@@ -189,17 +200,22 @@ def _calculator_tool(
     if scorer is None:
         raise ToolError(f"Unknown function {function!r}; use one of {sorted(SCORING_FUNCTIONS)}.")
     try:
-        return str(scorer(**(arguments or {})))
+        result = scorer(**(arguments or {}))
+        return json.dumps(result) if isinstance(result, dict) else str(result)
     except (TypeError, ValueError) as exc:
         raise ToolError(f"Bad arguments for {function}: {exc}") from None
 
 
-def _make_web_search_tool(region: str | None) -> Callable[..., str]:
+def _make_web_search_tool(region: str | None, max_searches: int) -> Callable[..., str]:
     """Build the web_search handler, bound to the buyer's search region."""
+    used = {"count": 0}
 
     @_guard
     def web_search_tool(query: str, max_results: int = 5) -> str:
         """Return search hits as a JSON string."""
+        if used["count"] >= max_searches:
+            raise ToolError(SEARCH_LIMIT_NOTE)
+        used["count"] += 1
         extra = {"region": region} if region else {}
         return json.dumps(web_search(query, max_results, **extra))
 
@@ -211,6 +227,7 @@ def build_tools(
     wishlist_dir: Path = WISHLIST_DIR,
     prompter: UserPrompter | None = None,
     region: str | None = None,
+    max_searches: int = MAX_SEARCHES,
 ) -> list[BaseTool]:
     """Build the LangChain tools.
 
@@ -266,7 +283,7 @@ def build_tools(
 
     tools.append(
         StructuredTool.from_function(
-            func=_remember(_make_web_search_tool(region)),
+            func=_remember(_make_web_search_tool(region, max_searches)),
             name="web_search",
             description="Search the web for current prices, reviews and specs.",
             args_schema=WebSearchArgs,
@@ -278,7 +295,7 @@ def build_tools(
             name="calculator",
             description=(
                 "Do arithmetic. Pass 'expression', or pass 'function' ('tco' or "
-                "'value_score') with its 'arguments' object."
+                "'value_score' or 'running_cost') with its 'arguments' object."
             ),
             args_schema=CalculatorArgs,
         )

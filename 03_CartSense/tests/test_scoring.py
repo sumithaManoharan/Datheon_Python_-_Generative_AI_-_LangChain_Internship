@@ -85,3 +85,35 @@ def test_value_score_rejects_non_list_or_non_numeric_ratings(ratings: object) ->
         value_score(
             price=1, budget=10, warranty_offered=1, warranty_wanted=1, priority_ratings=ratings
         )
+
+
+def test_running_cost_breaks_down_by_period() -> None:
+    from cartsense.scoring import running_cost
+
+    result = running_cost(
+        uses_per_week=7, energy_cost_per_use=5, water_cost_per_use=3, consumable_cost_per_use=10
+    )
+    assert result["per_use"] == 18.0
+    assert result["per_week"] == 126.0
+    assert result["per_month"] == 546.0
+    assert result["per_year"] == 6552.0
+    assert result["per_day"] == 17.95
+
+
+def test_running_cost_adds_other_yearly_cost() -> None:
+    from cartsense.scoring import running_cost
+
+    result = running_cost(uses_per_week=1, other_yearly_cost=1200)
+    assert result["per_year"] == 1200.0
+    assert result["per_month"] == 100.0
+
+
+@pytest.mark.parametrize(
+    "kwargs",
+    [{"uses_per_week": 0}, {"uses_per_week": -1}, {"uses_per_week": 3, "water_cost_per_use": -1}],
+)
+def test_running_cost_rejects_invalid_input(kwargs: dict[str, float]) -> None:
+    from cartsense.scoring import running_cost
+
+    with pytest.raises(ValueError):
+        running_cost(**kwargs)

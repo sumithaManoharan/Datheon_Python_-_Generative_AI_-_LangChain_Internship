@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_BASE_URL = "https://openrouter.ai/api/v1"
 DEFAULT_MODEL = "openai/gpt-oss-20b"
-DEFAULT_MAX_STEPS = 25
+DEFAULT_MAX_STEPS = 40
 DEFAULT_TEMPERATURE = 0.0
 DEFAULT_SEARCH_REGION = "in-en"
 REGION_PATTERN = r"^[a-z]{2}-[a-z]{2}$"

@@ -3,6 +3,7 @@
 import functools
 import json
 import logging
+import re
 import time
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -337,6 +338,62 @@ def _request_final_answer(model: BaseChatModel, history: list[Any]) -> str:
     return _text(reply.content)
 
 
+URL_PATTERN = re.compile(r"https?://[^\s)\]>|\"']+")
+GATE_MAX_NUDGES = 2
+MIN_QUESTIONS = 6
+
+
+@dataclass(frozen=True)
+class Requirements:
+    """Steps the agent must complete before its final answer is accepted."""
+
+    tools: frozenset[str] = frozenset()
+    min_questions: int = 0
+    save_new_wishlist: bool = False
+    check_urls: bool = False
+
+
+def build_requirements(interactive: bool) -> Requirements:
+    """The steps a real run must complete; the interview applies only when interactive."""
+    core = frozenset({"web_search", "calculator"})
+    if interactive:
+        return Requirements(core, MIN_QUESTIONS, save_new_wishlist=True, check_urls=True)
+    return Requirements(core, check_urls=True)
+
+
+def _unsupported_urls(answer: str, evidence: str) -> list[str]:
+    """URLs in the answer that never appeared in any tool result."""
+    urls = (url.rstrip(".,;:") for url in URL_PATTERN.findall(answer))
+    return sorted({url for url in urls if url not in evidence})
+
+
+def _missing_steps(
+    req: Requirements,
+    answer: str,
+    succeeded: dict[str, int],
+    wishlist_found: bool,
+    evidence: str,
+) -> list[str]:
+    """List the required steps that have not been done yet."""
+    missing = [f"call {name} successfully" for name in sorted(req.tools) if not succeeded.get(name)]
+    if not wishlist_found:
+        asked = succeeded.get("ask_user", 0)
+        if asked < req.min_questions:
+            missing.append(
+                f"ask the buyer at least {req.min_questions} questions with ask_user "
+                f"(so far: {asked})"
+            )
+        if req.save_new_wishlist and not succeeded.get("save_wishlist"):
+            missing.append("save the buyer's answers with save_wishlist")
+    if req.check_urls:
+        bad = _unsupported_urls(answer, evidence)
+        if bad:
+            missing.append(
+                "remove these URLs, which never appeared in a search result: " + ", ".join(bad[:3])
+            )
+    return missing
+
+
 def run_agent(
     model: BaseChatModel,
     config: Config,
@@ -345,14 +402,16 @@ def run_agent(
     tools: list[BaseTool] | None = None,
     system_prompt: str | None = None,
     on_step: Callable[[Step], None] | None = None,
+    requirements: Requirements | None = None,
 ) -> AgentResult:
-    """Run the LangChain agent until a final answer or the step limit."""
+    """Run the LangChain agent until an accepted final answer or the step limit."""
     request = user_request.strip() if isinstance(user_request, str) else ""
     if not request:
         raise AgentError("The request is empty.")
     if len(request) > MAX_REQUEST_LENGTH:
         raise AgentError(f"The request is longer than {MAX_REQUEST_LENGTH} characters.")
 
+    req = requirements if requirements is not None else Requirements()
     prompt = system_prompt if system_prompt is not None else load_system_prompt()
     agent = create_agent(
         model, tools=tools if tools is not None else build_tools(), system_prompt=prompt
@@ -360,8 +419,9 @@ def run_agent(
     steps: list[Step] = []
     history: list[Any] = [SystemMessage(prompt), HumanMessage(request)]
     usage = {"prompt": 0, "completion": 0}
-    final_seen = False
-    final_text = ""
+    succeeded: dict[str, int] = {}
+    evidence: list[str] = []
+    found = {"wishlist": False}
 
     def record(kind: str, text: str) -> None:
         """Store a step and show it right away if a listener is attached."""
@@ -370,10 +430,11 @@ def run_agent(
         if on_step is not None:
             on_step(step)
 
-    started = time.perf_counter()
-    try:
+    def run_pass(messages_in: list[Any]) -> tuple[bool, str]:
+        """Stream one pass of the agent; return whether it ended with a reply, and its text."""
+        final_seen, final_text = False, ""
         stream = agent.stream(
-            {"messages": [{"role": "user", "content": request}]},
+            {"messages": messages_in},
             config={"recursion_limit": config.max_steps * GRAPH_STEPS_PER_TURN + 1},
             stream_mode="updates",
         )
@@ -384,7 +445,14 @@ def run_agent(
                 for message in node_update.get("messages", []):
                     history.append(message)
                     if isinstance(message, ToolMessage):
-                        record("observation", _text(message.content))
+                        text = _text(message.content)
+                        evidence.append(text)
+                        name = getattr(message, "name", None) or ""
+                        if not text.startswith("Error:"):
+                            succeeded[name] = succeeded.get(name, 0) + 1
+                            if name == "read_wishlist" and not text.startswith("No saved"):
+                                found["wishlist"] = True
+                        record("observation", text)
                     elif isinstance(message, AIMessage):
                         meta = message.usage_metadata or {}
                         usage["prompt"] += meta.get("input_tokens", 0)
@@ -397,8 +465,35 @@ def run_agent(
                                 record("action", f"{call['name']}({json.dumps(call['args'])})")
                         else:
                             final_seen, final_text = True, text
-                            if text:
-                                record("final", text)
+        return final_seen, final_text
+
+    started = time.perf_counter()
+    messages_in: list[Any] = [{"role": "user", "content": request}]
+    try:
+        for attempt in range(GATE_MAX_NUDGES + 1):
+            final_seen, final_text = run_pass(messages_in)
+            if not final_seen:
+                return AgentResult("failed", "The agent ended without a final answer.", steps)
+            missing = _missing_steps(
+                req, final_text, succeeded, found["wishlist"], "\n".join(evidence)
+            )
+            if not missing:
+                break
+            listing = "; ".join(missing)
+            record("observation", f"CartSense rejected the final answer: {listing}")
+            if attempt == GATE_MAX_NUDGES:
+                return AgentResult("failed", f"The agent skipped required steps: {listing}.", steps)
+            history.append(
+                HumanMessage(f"You cannot finish yet. First {listing}. Do not invent results.")
+            )
+            messages_in = history[1:]
+
+        if not final_text:
+            final_text = _request_final_answer(model, history)
+            if not final_text:
+                return AgentResult("failed", "The model returned an empty answer.", steps)
+        record("final", final_text)
+        return AgentResult("done", final_text, steps)
     except GraphRecursionError:
         return AgentResult("max_steps", MAX_STEPS_MESSAGE, steps)
     except openai.OpenAIError as exc:
@@ -411,12 +506,3 @@ def run_agent(
             usage["prompt"],
             usage["completion"],
         )
-
-    if not final_seen:
-        return AgentResult("failed", "The agent ended without a final answer.", steps)
-    if not final_text:
-        final_text = _request_final_answer(model, history)
-        if not final_text:
-            return AgentResult("failed", "The model returned an empty answer.", steps)
-        record("final", final_text)
-    return AgentResult("done", final_text, steps)

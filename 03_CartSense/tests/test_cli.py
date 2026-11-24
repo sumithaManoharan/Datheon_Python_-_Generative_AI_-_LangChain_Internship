@@ -7,7 +7,7 @@ from langchain_core.messages import AIMessage
 from test_agent import CONFIG, ScriptedModel
 
 from cartsense import cli
-from cartsense.agent import AgentResult
+from cartsense.agent import AgentResult, Requirements
 from cartsense.config import ConfigError
 
 
@@ -35,6 +35,7 @@ def _main(argv: list[str], tmp_path: Path, script: list, *, tty: bool = False):
         stdin=FakeStdin(tty),
         wishlist_dir=tmp_path / "wishlists",
         output_dir=tmp_path / "output",
+        requirements=Requirements(),
     )
     return code, model
 

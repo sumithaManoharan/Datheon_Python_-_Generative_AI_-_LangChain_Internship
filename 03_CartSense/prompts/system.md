@@ -41,5 +41,12 @@ Use only the tools you are given. Never invent a tool.
 - priority_ratings is a list of numbers in the same order as the wishlist priorities,
   for example [8, 7]. It is never an object.
 - Your last message must be the written final answer: never empty, never a tool call.
+- Never write the final answer before every workflow step is done. For a new wishlist
+  that means: ask the questions, call save_wishlist, search the web, and call calculator
+  for every candidate. The program rejects any final answer that skips a step.
+- Never fill in a wishlist field the buyer did not tell you. Ask instead. Never invent
+  priorities or dealbreakers.
+- Every URL in the final answer must be copied from a web_search result. Never build a
+  URL yourself (for example a google.com/search link). Do not use citation markers.
 - Prices must come from the search results. Never invent a price. Resale value is 0
   unless you have a source for it.

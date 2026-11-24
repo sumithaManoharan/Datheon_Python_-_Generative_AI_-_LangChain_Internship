@@ -13,8 +13,10 @@ from langchain_core.language_models.chat_models import BaseChatModel
 from cartsense.agent import (
     AgentError,
     AgentResult,
+    Requirements,
     Step,
     build_model,
+    build_requirements,
     build_tools,
     format_step,
     load_system_prompt,
@@ -115,6 +117,7 @@ def main(
     stdin: TextIO | None = None,
     wishlist_dir: Path = WISHLIST_DIR,
     output_dir: Path = OUTPUT_DIR,
+    requirements: Requirements | None = None,
 ) -> int:
     """Run one request end to end and return the process exit code."""
     args = parse_args(argv)
@@ -128,7 +131,13 @@ def main(
             wishlist_dir=wishlist_dir, prompter=prompter, region=settings.search_region
         )
         result = run_agent(
-            chat_model, settings, args.request, tools=tools, system_prompt=prompt, on_step=show_step
+            chat_model,
+            settings,
+            args.request,
+            tools=tools,
+            system_prompt=prompt,
+            on_step=show_step,
+            requirements=requirements or build_requirements(interactive),
         )
     except ConfigError as exc:
         print(f"Configuration error: {exc}", file=sys.stderr)

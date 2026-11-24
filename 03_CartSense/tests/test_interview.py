@@ -7,7 +7,8 @@ import pytest
 from langchain_core.messages import AIMessage
 from test_agent import _call, _observations, _run
 
-from cartsense.agent import build_tools, mode_note
+from cartsense import agent as agent_module
+from cartsense.agent import Requirements, build_requirements, build_tools, mode_note
 from cartsense.config import Config
 from cartsense.tools import (
     MAX_ANSWER_LENGTH,
@@ -184,3 +185,81 @@ def test_non_interactive_agent_cannot_ask_or_save() -> None:
     assert result.status == "done"
     assert "ask_user" in _observations(result)[0]
     assert "save_wishlist" in _observations(result)[1]
+
+
+# --- the final-answer gate ---------------------------------------------------
+
+
+def test_final_answer_without_required_tools_is_rejected() -> None:
+    script = [
+        AIMessage(content="Made-up answer."),
+        _call("calculator", {"expression": "1 + 1"}),
+        AIMessage(content="Real answer: 2."),
+    ]
+    _, result = _run(
+        script, config=LONG_CONFIG, requirements=Requirements(frozenset({"calculator"}))
+    )
+    assert result.status == "done"
+    assert result.final_answer == "Real answer: 2."
+    assert all("Made-up" not in step.text for step in result.steps)
+    assert any(step.text.startswith("CartSense rejected") for step in result.steps)
+
+
+def test_agent_that_keeps_skipping_steps_fails() -> None:
+    script = [AIMessage(content=f"Answer {i}.") for i in range(3)]
+    model, result = _run(
+        script, config=LONG_CONFIG, requirements=Requirements(frozenset({"calculator"}))
+    )
+    assert result.status == "failed"
+    assert "calculator" in result.final_answer
+    assert model.calls == 3
+
+
+def test_new_wishlist_requires_questions_and_a_save(tmp_path: Path) -> None:
+    tools = build_tools(wishlist_dir=tmp_path, prompter=UserPrompter(_answers("1", "2")))
+    script = [
+        AIMessage(content="Early answer."),
+        _call("ask_user", {"question": "Budget?"}, "c1"),
+        _call("ask_user", {"question": "Years?"}, "c2"),
+        _call("save_wishlist", {"data": _wishlist()}, "c3"),
+        AIMessage(content="Done."),
+    ]
+    req = Requirements(min_questions=2, save_new_wishlist=True)
+    _, result = _run(script, config=LONG_CONFIG, tools=tools, requirements=req)
+    assert result.status == "done"
+    assert (tmp_path / "phone.json").is_file()
+    assert any("CartSense rejected" in step.text for step in result.steps)
+
+
+def test_existing_wishlist_needs_no_interview(tmp_path: Path) -> None:
+    save_wishlist(_wishlist(), tmp_path)
+    tools = build_tools(wishlist_dir=tmp_path, prompter=UserPrompter(_answers()))
+    script = [_call("read_wishlist", {"category": "phone"}), AIMessage(content="Reuse.")]
+    req = Requirements(min_questions=6, save_new_wishlist=True)
+    _, result = _run(script, config=LONG_CONFIG, tools=tools, requirements=req)
+    assert result.status == "done"
+
+
+def test_urls_not_found_in_tool_results_are_rejected() -> None:
+    script = [AIMessage(content="See https://fake.example/x"), AIMessage(content="No links.")]
+    _, result = _run(script, config=LONG_CONFIG, requirements=Requirements(check_urls=True))
+    assert result.final_answer == "No links."
+    assert any("fake.example" in step.text for step in result.steps)
+
+
+def test_urls_from_search_results_are_accepted(monkeypatch: pytest.MonkeyPatch) -> None:
+    hits = [{"title": "T", "url": "https://example.com/p", "snippet": "S"}]
+    monkeypatch.setattr(agent_module, "web_search", lambda query, max_results=5, **kw: hits)
+    script = [
+        _call("web_search", {"query": "phone"}),
+        AIMessage(content="Source: https://example.com/p."),
+    ]
+    _, result = _run(script, config=LONG_CONFIG, requirements=Requirements(check_urls=True))
+    assert result.status == "done"
+
+
+def test_requirements_depend_on_mode() -> None:
+    live, quiet = build_requirements(True), build_requirements(False)
+    assert live.min_questions > 0 and live.save_new_wishlist
+    assert quiet.min_questions == 0 and not quiet.save_new_wishlist
+    assert quiet.tools == frozenset({"web_search", "calculator"})

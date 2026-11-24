@@ -156,3 +156,14 @@ def test_ddgs_search_passes_the_region(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("ddgs.DDGS", FakeDDGS)
     make_ddgs_search("in-en")("phone", 3)
     assert seen == {"region": "in-en", "max_results": 3}
+
+
+def test_web_search_asks_for_at_least_three_results() -> None:
+    seen: list[int] = []
+
+    def fake(query: str, limit: int) -> list[dict[str, str]]:
+        seen.append(limit)
+        return []
+
+    web_search("phone", 1, search_fn=fake, sleep=lambda _: None)
+    assert seen == [3]

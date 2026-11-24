@@ -59,6 +59,11 @@ Use only the tools you are given. Never invent a tool.
 - Candidates must be the product type the buyer asked for (a washing machine, not a
   dryer) and must fit the buyer's budget.
 - As soon as you have a price and specs for a candidate, call calculator for it.
+- Your first search must be a discovery search, for example 'best front load washing
+  machine under 45000 India'. Candidate names must come from search results. Never name
+  a model from memory and never invent a model number.
+- Always use max_results 5. If a candidate has no price after 2 searches, drop it and
+  take another candidate from the discovery results.
 - Call running_cost separately for each candidate, using that candidate's own energy and
   water figures. If the specs are not found, say the same assumed figure was used for all.
 - Electricity in India costs roughly 5 to 10 rupees per kWh. State your figure as an

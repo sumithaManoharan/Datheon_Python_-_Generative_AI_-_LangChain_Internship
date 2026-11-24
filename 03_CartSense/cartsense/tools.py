@@ -25,6 +25,7 @@ MAX_ABS_RESULT = 1e15
 MAX_QUERY_LENGTH = 200
 MAX_SNIPPET_LENGTH = 300
 MAX_RESULTS_LIMIT = 10
+MIN_RESULTS_LIMIT = 3
 SEARCH_MAX_ATTEMPTS = 3
 SEARCH_BASE_DELAY = 1.0
 
@@ -155,7 +156,7 @@ def web_search(
         raise ToolError("Search query is empty.")
     if len(text) > MAX_QUERY_LENGTH:
         raise ToolError(f"Search query is longer than {MAX_QUERY_LENGTH} characters.")
-    limit = max(1, min(max_results, MAX_RESULTS_LIMIT))
+    limit = max(MIN_RESULTS_LIMIT, min(max_results, MAX_RESULTS_LIMIT))
 
     backend = search_fn if search_fn is not None else make_ddgs_search(region)
     raw: list[dict[str, str]] = []

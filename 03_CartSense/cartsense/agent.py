@@ -519,6 +519,7 @@ class Requirements:
     require_link: bool = False
     check_figures: bool = False
     confirm_existing: bool = False
+    interview_on_update: bool = False
 
 
 def build_requirements(interactive: bool) -> Requirements:
@@ -527,7 +528,12 @@ def build_requirements(interactive: bool) -> Requirements:
     checks = {"check_urls": True, "require_link": True, "check_figures": True}
     if interactive:
         return Requirements(
-            core, MIN_QUESTIONS, save_new_wishlist=True, confirm_existing=True, **checks
+            core,
+            MIN_QUESTIONS,
+            save_new_wishlist=True,
+            confirm_existing=True,
+            interview_on_update=True,
+            **checks,
         )
     return Requirements(core, **checks)
 
@@ -573,6 +579,20 @@ def _unsupported_figures(answer: str, allowed: set[float], calc_scores: set[floa
     return bad
 
 
+REUSE_WORDS = ("reuse", "keep", "same")
+UPDATE_WORDS = ("update", "change", "new")
+
+
+def _wants_update(replies: list[str]) -> bool:
+    """True if the buyer's first answer is anything other than a clear 'reuse'."""
+    if not replies:
+        return False
+    text = replies[0].lower()
+    reuse = any(word in text for word in REUSE_WORDS)
+    update = any(word in text for word in UPDATE_WORDS)
+    return not reuse or update
+
+
 def _missing_steps(
     req: Requirements,
     answer: str,
@@ -581,6 +601,7 @@ def _missing_steps(
     evidence: str,
     allowed: set[float],
     calc_scores: set[float],
+    update_requested: bool = False,
 ) -> list[str]:
     """List the required steps that have not been done yet."""
     missing = [f"call {name} successfully" for name in sorted(req.tools) if not succeeded.get(name)]
@@ -595,6 +616,16 @@ def _missing_steps(
             missing.append("save the buyer's answers with save_wishlist")
     if wishlist_found and req.confirm_existing and not succeeded.get("ask_user"):
         missing.append("ask the buyer with ask_user whether to reuse or update the saved wishlist")
+    if wishlist_found and req.interview_on_update and update_requested:
+        asked = succeeded.get("ask_user", 0)
+        if asked < req.min_questions + 1:
+            missing.append(
+                "interview the buyer field by field with ask_user (at least "
+                f"{req.min_questions} questions after the reuse question, so far "
+                f"{max(asked - 1, 0)}), then call save_wishlist"
+            )
+        elif not succeeded.get("save_wishlist"):
+            missing.append("save the updated wishlist with save_wishlist")
     if req.check_urls:
         bad_urls = _unsupported_urls(answer, evidence)
         if bad_urls:
@@ -643,6 +674,7 @@ def run_agent(
     evidence: list[str] = []
     calc_scores: set[float] = set()
     calc_inputs: set[float] = set()
+    replies: list[str] = []
     found = {"wishlist": False}
 
     def record(kind: str, text: str) -> None:
@@ -674,6 +706,8 @@ def run_agent(
                             succeeded[name] = succeeded.get(name, 0) + 1
                             if name == "read_wishlist" and not text.startswith("No saved"):
                                 found["wishlist"] = True
+                            if name == "ask_user":
+                                replies.append(text)
                             if name == "calculator" and not text.startswith("Duplicate call"):
                                 calc_scores.update(_numbers(text))
                         record("observation", text)
@@ -709,6 +743,7 @@ def run_agent(
                 evidence_text,
                 _numbers(evidence_text) | calc_inputs,
                 calc_scores,
+                _wants_update(replies),
             )
             if not missing:
                 break

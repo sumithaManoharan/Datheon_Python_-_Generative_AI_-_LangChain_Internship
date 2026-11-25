@@ -381,3 +381,56 @@ def test_existing_wishlist_with_a_question_passes(tmp_path: Path) -> None:
         script, config=LONG_CONFIG, tools=tools, requirements=Requirements(confirm_existing=True)
     )
     assert result.status == "done"
+
+
+# --- update interview ---------------------------------------------------------
+
+
+def test_update_requires_a_field_by_field_interview(tmp_path: Path) -> None:
+    save_wishlist(_wishlist(), tmp_path)
+    prompter = UserPrompter(_answers("update the budget to 4000", "keep", "keep"))
+    tools = build_tools(wishlist_dir=tmp_path, prompter=prompter)
+    script = [
+        _call("read_wishlist", {"category": "phone"}, "c1"),
+        _call("ask_user", {"question": "Reuse or update?"}, "c2"),
+        AIMessage(content="Early answer."),
+        _call("ask_user", {"question": "Budget is 25000. Keep?"}, "c3"),
+        _call("ask_user", {"question": "Years is 3. Keep?"}, "c4"),
+        _call("save_wishlist", {"data": _wishlist(budget=4000)}, "c5"),
+        AIMessage(content="Done."),
+    ]
+    req = Requirements(min_questions=2, confirm_existing=True, interview_on_update=True)
+    _, result = _run(script, config=LONG_CONFIG, tools=tools, requirements=req)
+    assert result.final_answer == "Done."
+    assert any("field by field" in step.text for step in result.steps)
+
+
+def test_reuse_needs_no_interview(tmp_path: Path) -> None:
+    save_wishlist(_wishlist(), tmp_path)
+    tools = build_tools(wishlist_dir=tmp_path, prompter=UserPrompter(_answers("reuse")))
+    script = [
+        _call("read_wishlist", {"category": "phone"}, "c1"),
+        _call("ask_user", {"question": "Reuse or update?"}, "c2"),
+        AIMessage(content="Done."),
+    ]
+    req = Requirements(min_questions=2, confirm_existing=True, interview_on_update=True)
+    _, result = _run(script, config=LONG_CONFIG, tools=tools, requirements=req)
+    assert result.status == "done"
+    assert not any("field by field" in step.text for step in result.steps)
+
+
+@pytest.mark.parametrize(
+    ("replies", "expected"),
+    [
+        ([], False),
+        (["reuse"], False),
+        (["Keep the same"], False),
+        (["update the price to 4000"], True),
+        (["reuse but change the budget"], True),
+        (["something else"], True),
+    ],
+)
+def test_wants_update(replies: list[str], expected: bool) -> None:
+    from cartsense.agent import _wants_update
+
+    assert _wants_update(replies) is expected

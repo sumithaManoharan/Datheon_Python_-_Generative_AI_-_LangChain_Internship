@@ -544,6 +544,11 @@ def _unsupported_urls(answer: str, evidence: str) -> list[str]:
     return sorted({url for url in urls if url not in evidence})
 
 
+def _close_to_any(value: float, allowed: set[float]) -> bool:
+    """True if the value is within 1 of an allowed figure (the model may round)."""
+    return any(abs(value - other) < 1.0 for other in allowed)
+
+
 def _unsupported_figures(answer: str, allowed: set[float], calc_scores: set[float]) -> list[str]:
     """Prices and scores in the answer that no tool result supports."""
     bad: list[str] = []
@@ -554,7 +559,7 @@ def _unsupported_figures(answer: str, allowed: set[float], calc_scores: set[floa
 
     for token in [*PRICE_PREFIX.findall(answer), *PRICE_SUFFIX.findall(answer)]:
         value = _number(token)
-        if value is not None and value >= MIN_CHECKED_PRICE and value not in allowed:
+        if value is not None and value >= MIN_CHECKED_PRICE and not _close_to_any(value, allowed):
             flag(f"price {token.strip(',')}")
 
     score_column: int | None = None

@@ -434,3 +434,11 @@ def test_wants_update(replies: list[str], expected: bool) -> None:
     from cartsense.agent import _wants_update
 
     assert _wants_update(replies) is expected
+
+
+def test_rounded_prices_are_accepted_but_invented_ones_are_not() -> None:
+    from cartsense.agent import _unsupported_figures
+
+    allowed = {14652.32, 50787.7}
+    assert _unsupported_figures("₹14,652 a year, ₹50,788 listed", allowed, set()) == []
+    assert _unsupported_figures("₹45,000", allowed, set()) == ["price 45,000"]

@@ -274,3 +274,54 @@ def test_ask_user_is_closed_after_the_wishlist_is_saved(tmp_path: Path) -> None:
     ]
     _, result = _run(script, config=LONG_CONFIG, tools=tools)
     assert "interview is over" in _observations(result)[1]
+
+
+# --- link, figure and query checks ------------------------------------------
+
+
+def test_answer_without_a_link_is_rejected() -> None:
+    script = [AIMessage(content="No link."), AIMessage(content="See https://example.com/p")]
+    _, result = _run(script, config=LONG_CONFIG, requirements=Requirements(require_link=True))
+    assert result.final_answer == "See https://example.com/p"
+    assert any("source link" in step.text for step in result.steps)
+
+
+def test_invented_price_in_the_answer_is_rejected(monkeypatch: pytest.MonkeyPatch) -> None:
+    hits = [{"title": "Chair", "url": "https://example.com/c", "snippet": "Only Rs 2,999"}]
+    monkeypatch.setattr(agent_module, "web_search", lambda query, max_results=5, **kw: hits)
+    script = [
+        _call("web_search", {"query": "chair"}),
+        AIMessage(content="Buy it for ₹14,999."),
+        AIMessage(content="Buy it for ₹2,999."),
+    ]
+    _, result = _run(script, config=LONG_CONFIG, requirements=Requirements(check_figures=True))
+    assert result.final_answer == "Buy it for ₹2,999."
+    assert any("price 14,999" in step.text for step in result.steps)
+
+
+def test_unsupported_prices_and_table_scores_are_found() -> None:
+    from cartsense.agent import _unsupported_figures
+
+    table = (
+        "| Model | Price | Value Score |\n|---|---|---|\n| A | ₹2,999 | 87.5 |\n| B | ₹2,500 | 70 |"
+    )
+    assert _unsupported_figures(table, {2999.0}, {87.5}) == ["price 2,500", "score 70"]
+    assert _unsupported_figures("Value score: 87.5 for ₹2,999", {2999.0}, {87.5}) == []
+
+
+def test_search_query_with_an_invented_price_is_blocked(monkeypatch: pytest.MonkeyPatch) -> None:
+    runs: list[str] = []
+
+    def fake(query: str, max_results: int = 5, **kwargs: Any):
+        runs.append(query)
+        return []
+
+    monkeypatch.setattr(agent_module, "web_search", fake)
+    script = [
+        _call("web_search", {"query": "chair price 14999 INR"}, "c1"),
+        _call("web_search", {"query": "chair FHP1411Z9B 2026"}, "c2"),
+        AIMessage(content="Ok."),
+    ]
+    _, result = _run(script, config=LONG_CONFIG)
+    assert runs == ["chair FHP1411Z9B 2026"]
+    assert _observations(result)[0].startswith("Error: the number 14999")

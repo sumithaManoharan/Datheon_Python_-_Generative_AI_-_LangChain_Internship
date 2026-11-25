@@ -1,6 +1,7 @@
 """Command-line entry point: run the agent and save the recommendation."""
 
 import argparse
+import json
 import logging
 import re
 import sys
@@ -88,6 +89,53 @@ def calculation_log(steps: list[Step]) -> str:
     return "\n".join(lines)
 
 
+LINK_PATTERN = re.compile(r'"title": "((?:[^"\\]|\\.)*)", "url": "((?:[^"\\]|\\.)*)"')
+MAX_LINKS = 10
+MAX_LINK_TITLE = 80
+
+
+def _unescape(value: str) -> str:
+    """Decode JSON string escapes such as \\u20b9; return the text unchanged on failure."""
+    try:
+        return json.loads(f'"{value}"')
+    except ValueError:
+        return value
+
+
+def search_links(steps: list[Step]) -> list[tuple[str, str]]:
+    """Every title and URL from successful web_search results, without duplicates."""
+    links: list[tuple[str, str]] = []
+    seen: set[str] = set()
+    pending = False
+    for step in steps:
+        if step.kind == "action":
+            pending = step.text.startswith("web_search(")
+        elif step.kind == "observation" and pending:
+            pending = False
+            for title, url in LINK_PATTERN.findall(step.text):
+                address = _unescape(url)
+                if address not in seen:
+                    seen.add(address)
+                    links.append((_unescape(title), address))
+    return links
+
+
+def links_section(steps: list[Step]) -> str:
+    """A markdown 'Where to buy' section built from the search results, not by the model."""
+    links = search_links(steps)[:MAX_LINKS]
+    if not links:
+        return ""
+    lines = []
+    for title, url in links:
+        label = re.sub(r"[\[\]]", "", title)[:MAX_LINK_TITLE] or url
+        lines.append(f"- [{label}]({url})")
+    heading = (
+        "## Where to buy (links from the search results; some are listing pages, "
+        "not the exact product page)"
+    )
+    return f"\n{heading}\n\n" + "\n".join(lines) + "\n"
+
+
 def save_recommendation(
     result: AgentResult, request: str, category: str, directory: Path = OUTPUT_DIR
 ) -> Path:
@@ -100,7 +148,7 @@ def save_recommendation(
         appendix = f"\n## Figures computed by the calculator tool (verbatim)\n\n{log}\n"
     path.write_text(
         f"# CartSense recommendation: {category}\n\nRequest: {request}\n\n"
-        f"{result.final_answer}\n{appendix}",
+        f"{result.final_answer}\n{links_section(result.steps)}{appendix}",
         encoding="utf-8",
     )
     return path

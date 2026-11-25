@@ -217,7 +217,7 @@ def _make_web_search_tool(region: str | None, max_searches: int) -> Callable[...
             raise ToolError(SEARCH_LIMIT_NOTE)
         used["count"] += 1
         extra = {"region": region} if region else {}
-        return json.dumps(web_search(query, max_results, **extra))
+        return json.dumps(web_search(query, max_results, **extra), ensure_ascii=False)
 
     return web_search_tool
 
@@ -279,6 +279,60 @@ def _price_checked(func: Callable[..., str], seen: list[str], enabled: bool) -> 
     return wrapper
 
 
+MIN_CHECKED_PRICE = 1000
+NUMBER_PATTERN = re.compile(r"\d[\d,]*(?:\.\d+)?")
+STANDALONE_NUMBER = re.compile(r"(?<![\w,.])\d[\d,]*(?:\.\d+)?(?![\w])")
+UNICODE_ESCAPE = re.compile(r"\\u[0-9a-fA-F]{4}")
+QUERY_NUMBER_NOTE = (
+    "Error: the number {number} in your query is not in the wishlist or any search result. "
+    "Do not guess prices. Search by product name and read prices from the results."
+)
+
+
+def _number(token: str) -> float | None:
+    """Parse a number such as '2,999' or '87.5'; None if it is not one."""
+    try:
+        return round(float(token.replace(",", "")), 2)
+    except ValueError:
+        return None
+
+
+def _numbers(text: str) -> set[float]:
+    """Every number in a text, ignoring commas and JSON unicode escapes."""
+    clean = UNICODE_ESCAPE.sub(" ", text)
+    values = (_number(token) for token in NUMBER_PATTERN.findall(clean))
+    return {value for value in values if value is not None}
+
+
+def _is_year(value: float) -> bool:
+    """True for whole numbers that look like a year, which are fine in a query."""
+    return 1990 <= value <= 2100 and value == int(value)
+
+
+def _query_checked(
+    func: Callable[..., str], seen: list[str], known: list[str]
+) -> Callable[..., str]:
+    """Wrap web_search so a query cannot contain a large number the model made up."""
+
+    @functools.wraps(func)
+    def wrapper(*args: Any, **kwargs: Any) -> str:
+        query = kwargs.get("query", args[0] if args else "")
+        if isinstance(query, str):
+            allowed = _numbers("\n".join([*seen, *known]))
+            for token in STANDALONE_NUMBER.findall(query):
+                value = _number(token)
+                if (
+                    value is not None
+                    and value >= MIN_CHECKED_PRICE
+                    and not _is_year(value)
+                    and value not in allowed
+                ):
+                    return QUERY_NUMBER_NOTE.format(number=token.strip(","))
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
 def build_tools(
     *,
     wishlist_dir: Path = WISHLIST_DIR,
@@ -291,6 +345,8 @@ def build_tools(
 
     ask_user and save_wishlist exist only when a prompter is given (interactive mode).
     """
+    seen_text: list[str] = []  # successful web_search results
+    known_text: list[str] = []  # wishlist contents and the buyer's answers
 
     @_guard
     def read_wishlist_tool(category: str) -> str:
@@ -298,9 +354,9 @@ def build_tools(
         wishlist = read_wishlist(category, wishlist_dir)
         if wishlist is None:
             return f"No saved wishlist for {category!r}."
-        return wishlist.model_dump_json()
-
-    seen_text: list[str] = []
+        text = wishlist.model_dump_json()
+        known_text.append(text)
+        return text
 
     tools: list[BaseTool] = [
         StructuredTool.from_function(
@@ -316,13 +372,16 @@ def build_tools(
         @_guard
         def ask_user_tool(question: str) -> str:
             """Ask the buyer one question and return the answer."""
-            return prompter.ask(question)
+            answer = prompter.ask(question)
+            known_text.append(answer)
+            return answer
 
         @_guard
         def save_wishlist_tool(data: dict[str, Any]) -> str:
             """Validate and save the wishlist; return a confirmation."""
             path = save_wishlist(data, wishlist_dir)
             prompter.close()
+            known_text.append(json.dumps(data))
             return f"Saved wishlist to {path.name}."
 
         tools.append(
@@ -342,9 +401,11 @@ def build_tools(
             )
         )
 
+    search = _remember(_make_web_search_tool(region, max_searches))
+    search = _query_checked(_record_results(search, seen_text), seen_text, known_text)
     tools.append(
         StructuredTool.from_function(
-            func=_record_results(_remember(_make_web_search_tool(region, max_searches)), seen_text),
+            func=search,
             name="web_search",
             description="Search the web for current prices, reviews and specs.",
             args_schema=WebSearchArgs,
@@ -355,8 +416,8 @@ def build_tools(
             func=_remember(_price_checked(_calculator_tool, seen_text, require_price_evidence)),
             name="calculator",
             description=(
-                "Do arithmetic. Pass 'expression', or pass 'function' ('tco' or "
-                "'value_score' or 'running_cost') with its 'arguments' object."
+                "Do arithmetic. Pass 'expression', or pass 'function' ('tco', 'value_score' "
+                "or 'running_cost') with its 'arguments' object."
             ),
             args_schema=CalculatorArgs,
         )
@@ -417,6 +478,9 @@ def _request_final_answer(model: BaseChatModel, history: list[Any]) -> str:
 
 
 URL_PATTERN = re.compile(r"https?://[^\s)\]>|\"']+")
+PRICE_PREFIX = re.compile(r"(?:₹|\bRs\.?|\bINR)\s*(\d[\d,]*(?:\.\d+)?)", re.IGNORECASE)
+PRICE_SUFFIX = re.compile(r"(\d[\d,]*(?:\.\d+)?)\s*(?:INR|rupees)", re.IGNORECASE)
+SCORE_INLINE = re.compile(r"score\W{0,12}?(\d+(?:\.\d+)?)", re.IGNORECASE)
 GATE_MAX_NUDGES = 2
 MIN_QUESTIONS = 6
 
@@ -429,14 +493,17 @@ class Requirements:
     min_questions: int = 0
     save_new_wishlist: bool = False
     check_urls: bool = False
+    require_link: bool = False
+    check_figures: bool = False
 
 
 def build_requirements(interactive: bool) -> Requirements:
     """The steps a real run must complete; the interview applies only when interactive."""
     core = frozenset({"web_search", "calculator"})
+    checks = {"check_urls": True, "require_link": True, "check_figures": True}
     if interactive:
-        return Requirements(core, MIN_QUESTIONS, save_new_wishlist=True, check_urls=True)
-    return Requirements(core, check_urls=True)
+        return Requirements(core, MIN_QUESTIONS, save_new_wishlist=True, **checks)
+    return Requirements(core, **checks)
 
 
 def _unsupported_urls(answer: str, evidence: str) -> list[str]:
@@ -445,12 +512,49 @@ def _unsupported_urls(answer: str, evidence: str) -> list[str]:
     return sorted({url for url in urls if url not in evidence})
 
 
+def _unsupported_figures(answer: str, allowed: set[float], calc_scores: set[float]) -> list[str]:
+    """Prices and scores in the answer that no tool result supports."""
+    bad: list[str] = []
+
+    def flag(label: str) -> None:
+        if label not in bad:
+            bad.append(label)
+
+    for token in [*PRICE_PREFIX.findall(answer), *PRICE_SUFFIX.findall(answer)]:
+        value = _number(token)
+        if value is not None and value >= MIN_CHECKED_PRICE and value not in allowed:
+            flag(f"price {token.strip(',')}")
+
+    score_column: int | None = None
+    for line in answer.splitlines():
+        stripped = line.strip()
+        claimed: list[str] = []
+        if stripped.startswith("|"):
+            cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+            numeric = [bool(re.fullmatch(r"\d+(?:\.\d+)?", cell)) for cell in cells]
+            header = [i for i, cell in enumerate(cells) if "score" in cell.lower()]
+            if header and not any(numeric):
+                score_column = header[0]
+            elif score_column is not None and score_column < len(cells) and numeric[score_column]:
+                claimed = [cells[score_column]]
+        else:
+            score_column = None
+            claimed = SCORE_INLINE.findall(stripped)
+        for token in claimed:
+            value = _number(token)
+            if value is not None and value not in calc_scores:
+                flag(f"score {token}")
+    return bad
+
+
 def _missing_steps(
     req: Requirements,
     answer: str,
     succeeded: dict[str, int],
     wishlist_found: bool,
     evidence: str,
+    allowed: set[float],
+    calc_scores: set[float],
 ) -> list[str]:
     """List the required steps that have not been done yet."""
     missing = [f"call {name} successfully" for name in sorted(req.tools) if not succeeded.get(name)]
@@ -464,10 +568,20 @@ def _missing_steps(
         if req.save_new_wishlist and not succeeded.get("save_wishlist"):
             missing.append("save the buyer's answers with save_wishlist")
     if req.check_urls:
-        bad = _unsupported_urls(answer, evidence)
-        if bad:
+        bad_urls = _unsupported_urls(answer, evidence)
+        if bad_urls:
             missing.append(
-                "remove these URLs, which never appeared in a search result: " + ", ".join(bad[:3])
+                "remove these URLs, which never appeared in a search result: "
+                + ", ".join(bad_urls[:3])
+            )
+    if req.require_link and not URL_PATTERN.search(answer):
+        missing.append("include at least one source link copied from a web_search result")
+    if req.check_figures:
+        bad_figures = _unsupported_figures(answer, allowed, calc_scores)
+        if bad_figures:
+            missing.append(
+                "remove or correct these figures, which no tool result supports: "
+                + ", ".join(bad_figures[:4])
             )
     return missing
 
@@ -499,6 +613,8 @@ def run_agent(
     usage = {"prompt": 0, "completion": 0}
     succeeded: dict[str, int] = {}
     evidence: list[str] = []
+    calc_scores: set[float] = set()
+    calc_inputs: set[float] = set()
     found = {"wishlist": False}
 
     def record(kind: str, text: str) -> None:
@@ -530,6 +646,8 @@ def run_agent(
                             succeeded[name] = succeeded.get(name, 0) + 1
                             if name == "read_wishlist" and not text.startswith("No saved"):
                                 found["wishlist"] = True
+                            if name == "calculator" and not text.startswith("Duplicate call"):
+                                calc_scores.update(_numbers(text))
                         record("observation", text)
                     elif isinstance(message, AIMessage):
                         meta = message.usage_metadata or {}
@@ -540,6 +658,8 @@ def run_agent(
                             if text:
                                 record("thought", text)
                             for call in message.tool_calls:
+                                if call["name"] == "calculator":
+                                    calc_inputs.update(_numbers(json.dumps(call["args"])))
                                 record("action", f"{call['name']}({json.dumps(call['args'])})")
                         else:
                             final_seen, final_text = True, text
@@ -552,18 +672,25 @@ def run_agent(
             final_seen, final_text = run_pass(messages_in)
             if not final_seen:
                 return AgentResult("failed", "The agent ended without a final answer.", steps)
+            evidence_text = "\n".join(evidence)
             missing = _missing_steps(
-                req, final_text, succeeded, found["wishlist"], "\n".join(evidence)
+                req,
+                final_text,
+                succeeded,
+                found["wishlist"],
+                evidence_text,
+                _numbers(evidence_text) | calc_inputs,
+                calc_scores,
             )
             if not missing:
                 break
             listing = "; ".join(missing)
             record("observation", f"CartSense rejected the final answer: {listing}")
             if attempt == GATE_MAX_NUDGES:
-                return AgentResult("failed", f"The agent skipped required steps: {listing}.", steps)
-            history.append(
-                HumanMessage(f"You cannot finish yet. First {listing}. Do not invent results.")
-            )
+                reason = f"The agent skipped required steps: {listing}."
+                return AgentResult("failed", reason, steps)
+            nudge = f"You cannot finish yet. Fix this first: {listing}. Do not invent results."
+            history.append(HumanMessage(nudge))
             messages_in = history[1:]
 
         if not final_text:

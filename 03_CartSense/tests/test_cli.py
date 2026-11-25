@@ -135,3 +135,27 @@ def test_calculation_log_lists_only_successful_calculator_calls() -> None:
     assert "2.0" in log
     assert "Division" not in log
     assert "web_search" not in log
+
+
+def _search_steps():
+    from cartsense.agent import Step
+
+    hit = '[{"title": "Chair", "url": "https://example.com/a", "snippet": "x"}]'
+    return [
+        Step("action", 'web_search({"query": "a"})'),
+        Step("observation", hit),
+        Step("action", 'web_search({"query": "b"})'),
+        Step("observation", hit),
+        Step("action", 'web_search({"query": "c"})'),
+        Step("observation", "Error: Web search is unavailable right now."),
+    ]
+
+
+def test_search_links_are_deduplicated_and_errors_skipped() -> None:
+    assert cli.search_links(_search_steps()) == [("Chair", "https://example.com/a")]
+
+
+def test_saved_file_has_a_where_to_buy_section(tmp_path: Path) -> None:
+    result = AgentResult("done", "Buy it.", _search_steps())
+    path = cli.save_recommendation(result, "buy a chair", "chair", tmp_path)
+    assert "[Chair](https://example.com/a)" in path.read_text()

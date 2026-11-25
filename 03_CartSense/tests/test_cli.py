@@ -158,4 +158,41 @@ def test_search_links_are_deduplicated_and_errors_skipped() -> None:
 def test_saved_file_has_a_where_to_buy_section(tmp_path: Path) -> None:
     result = AgentResult("done", "Buy it.", _search_steps())
     path = cli.save_recommendation(result, "buy a chair", "chair", tmp_path)
-    assert "[Chair](https://example.com/a)" in path.read_text()
+    assert "No direct product link" in path.read_text()
+
+
+@pytest.mark.parametrize(
+    ("url", "expected"),
+    [
+        ("https://www.amazon.in/Bosch-Dishwasher/dp/B07JW77MVJ", True),
+        ("https://www.amazon.in/dp/B07JW77MVJ?th=1", True),
+        ("https://www.flipkart.com/bosch-sms66gi01i-dishwasher/p/itmfckgbrraznm6r", True),
+        ("https://www.flipkart.com/hi/bosch-dishwasher/p/itmfckgbrraznm6r?pid=X", True),
+        ("https://www.bosch-home.in/en/product/dishwashers/SMS66GI01I", True),
+        ("https://www.amazon.in/office-chair-under-4000/s?k=office+chair", False),
+        ("https://www.flipkart.com/dish-washers/pr?sid=j9e,m38,58n", False),
+        ("https://www.smartprix.com/dishwashers/bosch-brand/price-below_50000", False),
+        ("https://www.lg.com/in/dishwasher/", False),
+    ],
+)
+def test_is_product_url(url: str, expected: bool) -> None:
+    assert cli.is_product_url(url) is expected
+
+
+def test_where_to_buy_lists_only_product_pages() -> None:
+    from cartsense.agent import Step
+
+    product = "https://www.amazon.in/Bosch/dp/B07JW77MVJ"
+    listing = "https://www.amazon.in/s?k=dishwasher"
+    hits = (
+        f'[{{"title": "Bosch", "url": "{product}", "snippet": "x"}}, '
+        f'{{"title": "Search", "url": "{listing}", "snippet": "y"}}]'
+    )
+    steps = [Step("action", 'web_search({"query": "a"})'), Step("observation", hits)]
+    section = cli.links_section(steps)
+    assert product in section
+    assert listing not in section
+
+
+def test_where_to_buy_says_so_when_there_is_no_product_page() -> None:
+    assert "No direct product link found" in cli.links_section([])

@@ -120,18 +120,33 @@ def search_links(steps: list[Step]) -> list[tuple[str, str]]:
     return links
 
 
+PRODUCT_URL_PATTERNS = (
+    re.compile(r"amazon\.[a-z.]+/(?:[^/?#]+/)?dp/[A-Z0-9]{10}"),
+    re.compile(r"amazon\.[a-z.]+/gp/product/[A-Z0-9]{10}"),
+    re.compile(r"flipkart\.com/(?:[^/?#]+/)?[^/?#]+/p/itm"),
+    re.compile(r"/(?:product|products|proddetail)/[^/?#]+"),
+)
+LISTING_MARKERS = ("/s?k=", "/pr?sid", "-brand/")
+
+
+def is_product_url(url: str) -> bool:
+    """True for a URL that looks like one product's page, not a search or listing page."""
+    if any(marker in url for marker in LISTING_MARKERS):
+        return False
+    return any(pattern.search(url) for pattern in PRODUCT_URL_PATTERNS)
+
+
 def links_section(steps: list[Step]) -> str:
-    """A markdown 'Where to buy' section built from the search results, not by the model."""
-    links = search_links(steps)[:MAX_LINKS]
+    """A markdown 'Where to buy' section of product pages found in the search results."""
+    links = [(t, u) for t, u in search_links(steps) if is_product_url(u)][:MAX_LINKS]
     if not links:
-        return ""
+        return "\n## Where to buy\n\nNo direct product link found in the search results.\n"
     lines = []
     for title, url in links:
         label = re.sub(r"[\[\]]", "", title)[:MAX_LINK_TITLE] or url
         lines.append(f"- [{label}]({url})")
     heading = (
-        "## Where to buy (links from the search results; some are listing pages, "
-        "not the exact product page)"
+        "## Where to buy (product pages from the search results; stock and price may have changed)"
     )
     return f"\n{heading}\n\n" + "\n".join(lines) + "\n"
 
@@ -199,6 +214,8 @@ def main(
             prompter=prompter,
             region=settings.search_region,
             require_price_evidence=True,
+            provider=settings.search_provider,
+            tavily_api_key=settings.tavily_api_key,
         )
         result = run_agent(
             chat_model,

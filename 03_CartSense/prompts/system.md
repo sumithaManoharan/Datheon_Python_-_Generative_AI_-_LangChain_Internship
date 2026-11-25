@@ -54,8 +54,8 @@ Use only the tools you are given. Never invent a tool.
   priorities or dealbreakers.
 - Every URL in the final answer must be copied from a web_search result. Never build a
   URL yourself (for example a google.com/search link). Do not use citation markers.
-- You have at most 8 web searches in total. Plan them: for 3 candidates, one price
-  search and one review or spec search each. The program blocks any search after the 8th.
+- You have at most 12 web searches in total. Plan them: for 3 candidates, one price
+  search and one review or spec search each. The program blocks any search after the 12th.
 - Candidates must be the product type the buyer asked for (a washing machine, not a
   dryer) and must fit the buyer's budget.
 - As soon as you have a price and specs for a candidate, call calculator for it.
@@ -63,6 +63,8 @@ Use only the tools you are given. Never invent a tool.
   any other. If a candidate has no price in the results, drop it. Present 1 or 2 verified
   candidates rather than inventing a third. Never invent a candidate, price or spec.
 - Never ask the buyer anything after you have saved the wishlist.
+- Once you have chosen a model, search its exact name once with store set to 'amazon' or
+  'flipkart' and use the product page URL from that result as the buy link.
 - If a saved wishlist exists, ask with ask_user whether to reuse or update it before any
   search; the program blocks searches until you ask. Keep that first question short, just
   'Reuse or update?', and never paste the wishlist into it.

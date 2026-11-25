@@ -35,7 +35,7 @@ logger = logging.getLogger(__name__)
 
 PROMPT_PATH = PROJECT_ROOT / "prompts" / "system.md"
 MAX_REQUEST_LENGTH = 500
-MAX_SEARCHES = 8
+MAX_SEARCHES = 12
 SEARCH_LIMIT_NOTE = (
     "Search limit reached. Stop searching. Call calculator (running_cost and "
     "value_score) for each candidate using what you have, then write the final answer."
@@ -131,6 +131,9 @@ class WebSearchArgs(BaseModel):
 
     query: str = Field(description="Search query for prices, reviews or specs.")
     max_results: int = Field(default=5, description="How many results to return (1 to 10).")
+    store: str | None = Field(
+        default=None, description="Optional: 'amazon' or 'flipkart' to search only that store."
+    )
 
 
 class CalculatorArgs(BaseModel):
@@ -206,18 +209,26 @@ def _calculator_tool(
         raise ToolError(f"Bad arguments for {function}: {exc}") from None
 
 
-def _make_web_search_tool(region: str | None, max_searches: int) -> Callable[..., str]:
-    """Build the web_search handler, bound to the buyer's search region."""
+def _make_web_search_tool(
+    region: str | None,
+    max_searches: int,
+    provider: str = "ddgs",
+    tavily_api_key: str = "",
+) -> Callable[..., str]:
+    """Build the web_search handler, bound to the region and the search provider."""
     used = {"count": 0}
 
     @_guard
-    def web_search_tool(query: str, max_results: int = 5) -> str:
+    def web_search_tool(query: str, max_results: int = 5, store: str | None = None) -> str:
         """Return search hits as a JSON string."""
         if used["count"] >= max_searches:
             raise ToolError(SEARCH_LIMIT_NOTE)
         used["count"] += 1
-        extra = {"region": region} if region else {}
-        return json.dumps(web_search(query, max_results, **extra), ensure_ascii=False)
+        extra: dict[str, Any] = {"region": region} if region else {}
+        if provider == "tavily":
+            extra.update(provider="tavily", tavily_api_key=tavily_api_key, store=store)
+        hits = web_search(query, max_results, **extra)
+        return json.dumps(hits, ensure_ascii=False)
 
     return web_search_tool
 
@@ -360,6 +371,8 @@ def build_tools(
     region: str | None = None,
     max_searches: int = MAX_SEARCHES,
     require_price_evidence: bool = False,
+    provider: str = "ddgs",
+    tavily_api_key: str = "",
 ) -> list[BaseTool]:
     """Build the LangChain tools.
 
@@ -423,14 +436,17 @@ def build_tools(
             )
         )
 
-    search = _remember(_make_web_search_tool(region, max_searches))
+    search = _remember(_make_web_search_tool(region, max_searches, provider, tavily_api_key))
     search = _query_checked(_record_results(search, seen_text), seen_text, known_text)
     search = _confirm_first(search, confirm, prompter)
     tools.append(
         StructuredTool.from_function(
             func=search,
             name="web_search",
-            description="Search the web for current prices, reviews and specs.",
+            description=(
+                "Search the web for current prices, reviews and specs. Optional store "
+                "('amazon' or 'flipkart') limits results to that store (Tavily only)."
+            ),
             args_schema=WebSearchArgs,
         )
     )

@@ -61,6 +61,10 @@ def running_cost(
     water_cost_per_use: float = 0.0,
     consumable_cost_per_use: float = 0.0,
     other_yearly_cost: float = 0.0,
+    energy_kwh_per_use: float = 0.0,
+    electricity_rate_per_kwh: float = 0.0,
+    water_litres_per_use: float = 0.0,
+    water_rate_per_litre: float = 0.0,
 ) -> dict[str, float]:
     """Running cost per use, day, week, month and year (purchase price excluded).
 
@@ -72,11 +76,17 @@ def running_cost(
         water_cost_per_use=water_cost_per_use,
         consumable_cost_per_use=consumable_cost_per_use,
         other_yearly_cost=other_yearly_cost,
+        energy_kwh_per_use=energy_kwh_per_use,
+        electricity_rate_per_kwh=electricity_rate_per_kwh,
+        water_litres_per_use=water_litres_per_use,
+        water_rate_per_litre=water_rate_per_litre,
     )
     if uses_per_week <= 0:
         raise ValueError(f"uses_per_week must be positive, got {uses_per_week}")
 
-    per_use = energy_cost_per_use + water_cost_per_use + consumable_cost_per_use
+    energy = energy_cost_per_use + energy_kwh_per_use * electricity_rate_per_kwh
+    water = water_cost_per_use + water_litres_per_use * water_rate_per_litre
+    per_use = energy + water + consumable_cost_per_use
     per_year = per_use * uses_per_week * WEEKS_PER_YEAR + other_yearly_cost
     return {
         "per_use": round(per_use, 2),

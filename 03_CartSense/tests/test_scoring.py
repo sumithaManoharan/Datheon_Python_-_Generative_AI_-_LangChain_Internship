@@ -117,3 +117,24 @@ def test_running_cost_rejects_invalid_input(kwargs: dict[str, float]) -> None:
 
     with pytest.raises(ValueError):
         running_cost(**kwargs)
+
+
+def test_running_cost_from_physical_units() -> None:
+    from cartsense.scoring import running_cost
+
+    result = running_cost(
+        uses_per_week=7,
+        energy_kwh_per_use=1,
+        electricity_rate_per_kwh=7,
+        water_litres_per_use=10,
+        water_rate_per_litre=0.05,
+    )
+    assert result["per_use"] == 7.5
+    assert result["per_year"] == 2730.0
+
+
+def test_running_cost_rejects_negative_physical_units() -> None:
+    from cartsense.scoring import running_cost
+
+    with pytest.raises(ValueError):
+        running_cost(uses_per_week=1, water_litres_per_use=-1)

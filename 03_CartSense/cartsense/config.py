@@ -2,7 +2,7 @@
 
 import os
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -30,6 +30,8 @@ class Config:
     max_steps: int
     temperature: float
     search_region: str = DEFAULT_SEARCH_REGION
+    search_provider: str = "ddgs"
+    tavily_api_key: str = field(default="", repr=False)
 
 
 def _read_int(name: str, default: int) -> int:
@@ -79,6 +81,14 @@ def load_config() -> Config:
     if not re.fullmatch(REGION_PATTERN, region):
         raise ConfigError("CARTSENSE_SEARCH_REGION must look like 'in-en' or 'us-en'.")
 
+    tavily_key = os.environ.get("TAVILY_API_KEY", "").strip()
+    provider = os.environ.get("CARTSENSE_SEARCH_PROVIDER", "").strip().lower()
+    provider = provider or ("tavily" if tavily_key else "ddgs")
+    if provider not in ("ddgs", "tavily"):
+        raise ConfigError("CARTSENSE_SEARCH_PROVIDER must be ddgs or tavily.")
+    if provider == "tavily" and not tavily_key:
+        raise ConfigError("TAVILY_API_KEY is not set. Add it to .env or use ddgs.")
+
     return Config(
         api_key=api_key,
         base_url=os.environ.get("OPENROUTER_BASE_URL", DEFAULT_BASE_URL).strip(),
@@ -86,4 +96,6 @@ def load_config() -> Config:
         max_steps=max_steps,
         temperature=temperature,
         search_region=region,
+        search_provider=provider,
+        tavily_api_key=tavily_key,
     )

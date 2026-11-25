@@ -23,7 +23,7 @@ MAX_EXPRESSION_LENGTH = 200
 MAX_EXPONENT = 100
 MAX_ABS_RESULT = 1e15
 MAX_QUERY_LENGTH = 200
-MAX_SNIPPET_LENGTH = 300
+MAX_SNIPPET_LENGTH = 600
 MAX_RESULTS_LIMIT = 10
 MIN_RESULTS_LIMIT = 3
 SEARCH_MAX_ATTEMPTS = 3
@@ -129,6 +129,40 @@ def _is_ad(url: str) -> bool:
     return any(marker in url for marker in AD_URL_MARKERS)
 
 
+STORE_DOMAINS: dict[str, list[str] | None] = {
+    "any": None,
+    "amazon": ["amazon.in"],
+    "flipkart": ["flipkart.com"],
+}
+
+
+def make_tavily_search(api_key: str, store: str | None = None) -> SearchFn:
+    """Build a Tavily search function, optionally limited to one store's domain."""
+    name = (store or "any").lower()
+    if name not in STORE_DOMAINS:
+        raise ToolError(f"Unknown store {store!r}; use any, amazon or flipkart.")
+    domains = STORE_DOMAINS[name]
+
+    def search(query: str, max_results: int) -> list[dict[str, str]]:
+        """Run a basic-depth Tavily search; imported lazily so tests never need it."""
+        from tavily import TavilyClient
+
+        options: dict[str, object] = {"max_results": max_results, "search_depth": "basic"}
+        if domains:
+            options["include_domains"] = domains
+        response = TavilyClient(api_key=api_key).search(query, **options)
+        return [
+            {
+                "title": hit.get("title", ""),
+                "href": hit.get("url", ""),
+                "body": hit.get("content", ""),
+            }
+            for hit in response.get("results", [])
+        ]
+
+    return search
+
+
 def make_ddgs_search(region: str) -> SearchFn:
     """Build a DuckDuckGo search function bound to a region such as 'in-en'."""
 
@@ -147,6 +181,9 @@ def web_search(
     *,
     region: str = DEFAULT_SEARCH_REGION,
     search_fn: SearchFn | None = None,
+    provider: str = "ddgs",
+    store: str | None = None,
+    tavily_api_key: str = "",
     sleep: Callable[[float], None] = time.sleep,
     max_attempts: int = SEARCH_MAX_ATTEMPTS,
 ) -> list[dict[str, str]]:
@@ -158,7 +195,12 @@ def web_search(
         raise ToolError(f"Search query is longer than {MAX_QUERY_LENGTH} characters.")
     limit = max(MIN_RESULTS_LIMIT, min(max_results, MAX_RESULTS_LIMIT))
 
-    backend = search_fn if search_fn is not None else make_ddgs_search(region)
+    backend = search_fn
+    if backend is None:
+        if provider == "tavily":
+            backend = make_tavily_search(tavily_api_key, store)
+        else:
+            backend = make_ddgs_search(region)
     raw: list[dict[str, str]] = []
     for attempt in range(1, max_attempts + 1):
         try:

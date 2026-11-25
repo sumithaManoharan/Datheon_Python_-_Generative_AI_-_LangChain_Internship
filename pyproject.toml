@@ -20,6 +20,7 @@ dependencies = [
     "rapidocr>=3.10.0",
     "rapidocr-onnxruntime>=1.4.4",
     "streamlit>=1.67.0",
+    "tavily-python>=0.8.5",
 ]
 
 [dependency-groups]

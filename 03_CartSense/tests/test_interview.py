@@ -325,3 +325,59 @@ def test_search_query_with_an_invented_price_is_blocked(monkeypatch: pytest.Monk
     _, result = _run(script, config=LONG_CONFIG)
     assert runs == ["chair FHP1411Z9B 2026"]
     assert _observations(result)[0].startswith("Error: the number 14999")
+
+
+# --- reuse-or-update confirmation -------------------------------------------
+
+
+def test_search_is_blocked_until_the_buyer_is_asked(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    runs: list[str] = []
+
+    def fake(query: str, max_results: int = 5, **kwargs: Any):
+        runs.append(query)
+        return []
+
+    monkeypatch.setattr(agent_module, "web_search", fake)
+    save_wishlist(_wishlist(), tmp_path)
+    tools = build_tools(wishlist_dir=tmp_path, prompter=UserPrompter(_answers("reuse")))
+    script = [
+        _call("read_wishlist", {"category": "phone"}, "c1"),
+        _call("web_search", {"query": "phone"}, "c2"),
+        _call("ask_user", {"question": "Reuse or update?"}, "c3"),
+        _call("web_search", {"query": "phone"}, "c4"),
+        AIMessage(content="Ok."),
+    ]
+    _, result = _run(script, config=LONG_CONFIG, tools=tools)
+    assert _observations(result)[1].startswith("Error: a saved wishlist exists")
+    assert runs == ["phone"]
+
+
+def test_existing_wishlist_without_a_question_is_rejected(tmp_path: Path) -> None:
+    save_wishlist(_wishlist(), tmp_path)
+    tools = build_tools(wishlist_dir=tmp_path, prompter=UserPrompter(_answers("reuse")))
+    script = [
+        _call("read_wishlist", {"category": "phone"}, "c1"),
+        AIMessage(content="Early answer."),
+        _call("ask_user", {"question": "Reuse or update?"}, "c2"),
+        AIMessage(content="Final answer."),
+    ]
+    req = Requirements(confirm_existing=True)
+    _, result = _run(script, config=LONG_CONFIG, tools=tools, requirements=req)
+    assert result.final_answer == "Final answer."
+    assert any("reuse or update" in step.text for step in result.steps)
+
+
+def test_existing_wishlist_with_a_question_passes(tmp_path: Path) -> None:
+    save_wishlist(_wishlist(), tmp_path)
+    tools = build_tools(wishlist_dir=tmp_path, prompter=UserPrompter(_answers("reuse")))
+    script = [
+        _call("read_wishlist", {"category": "phone"}, "c1"),
+        _call("ask_user", {"question": "Reuse or update?"}, "c2"),
+        AIMessage(content="Done."),
+    ]
+    _, result = _run(
+        script, config=LONG_CONFIG, tools=tools, requirements=Requirements(confirm_existing=True)
+    )
+    assert result.status == "done"

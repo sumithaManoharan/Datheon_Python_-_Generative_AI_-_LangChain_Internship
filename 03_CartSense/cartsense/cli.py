@@ -221,6 +221,8 @@ def main(
 
     if result.status != "done":
         print(f"\n{result.final_answer}", file=sys.stderr)
+        print("No file written; any file in output/ is from an earlier run.", file=sys.stderr)
+        print(links_section(result.steps))
         return EXIT_FAILED
 
     category = guess_category(args.category or args.request)
@@ -230,6 +232,7 @@ def main(
         print(f"Could not save the recommendation: {exc}", file=sys.stderr)
         return EXIT_FAILED
     print(f"\nSaved: {output_dir.name}/{path.name}")
+    print(links_section(result.steps))
     return EXIT_OK
 
 

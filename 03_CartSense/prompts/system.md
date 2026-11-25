@@ -63,6 +63,9 @@ Use only the tools you are given. Never invent a tool.
   any other. If a candidate has no price in the results, drop it. Present 1 or 2 verified
   candidates rather than inventing a third. Never invent a candidate, price or spec.
 - Never ask the buyer anything after you have saved the wishlist.
+- If a saved wishlist exists, ask with ask_user whether to reuse or update it before any
+  search; the program blocks searches until you ask. If the buyer says update, ask only
+  about what changed, then call save_wishlist again.
 - For every price you quote, include a link copied from a web_search result. The program
   rejects answers with no link, and any price or score that no tool result supports.
 - Never put a number in a search query unless it came from the wishlist or a search result.

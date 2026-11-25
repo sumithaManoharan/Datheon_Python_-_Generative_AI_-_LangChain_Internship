@@ -333,6 +333,26 @@ def _query_checked(
     return wrapper
 
 
+CONFIRM_NOTE = (
+    "Error: a saved wishlist exists. First ask the buyer with ask_user whether to reuse "
+    "it or update it, then continue."
+)
+
+
+def _confirm_first(
+    func: Callable[..., str], state: dict[str, bool], prompter: UserPrompter | None
+) -> Callable[..., str]:
+    """Block a tool until the buyer was asked about reusing a saved wishlist."""
+
+    @functools.wraps(func)
+    def wrapper(*args: Any, **kwargs: Any) -> str:
+        if state["needed"] and prompter is not None and prompter.asked == 0:
+            return CONFIRM_NOTE
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
 def build_tools(
     *,
     wishlist_dir: Path = WISHLIST_DIR,
@@ -347,6 +367,7 @@ def build_tools(
     """
     seen_text: list[str] = []  # successful web_search results
     known_text: list[str] = []  # wishlist contents and the buyer's answers
+    confirm = {"needed": False}
 
     @_guard
     def read_wishlist_tool(category: str) -> str:
@@ -356,6 +377,7 @@ def build_tools(
             return f"No saved wishlist for {category!r}."
         text = wishlist.model_dump_json()
         known_text.append(text)
+        confirm["needed"] = True
         return text
 
     tools: list[BaseTool] = [
@@ -403,6 +425,7 @@ def build_tools(
 
     search = _remember(_make_web_search_tool(region, max_searches))
     search = _query_checked(_record_results(search, seen_text), seen_text, known_text)
+    search = _confirm_first(search, confirm, prompter)
     tools.append(
         StructuredTool.from_function(
             func=search,
@@ -495,6 +518,7 @@ class Requirements:
     check_urls: bool = False
     require_link: bool = False
     check_figures: bool = False
+    confirm_existing: bool = False
 
 
 def build_requirements(interactive: bool) -> Requirements:
@@ -502,7 +526,9 @@ def build_requirements(interactive: bool) -> Requirements:
     core = frozenset({"web_search", "calculator"})
     checks = {"check_urls": True, "require_link": True, "check_figures": True}
     if interactive:
-        return Requirements(core, MIN_QUESTIONS, save_new_wishlist=True, **checks)
+        return Requirements(
+            core, MIN_QUESTIONS, save_new_wishlist=True, confirm_existing=True, **checks
+        )
     return Requirements(core, **checks)
 
 
@@ -567,6 +593,8 @@ def _missing_steps(
             )
         if req.save_new_wishlist and not succeeded.get("save_wishlist"):
             missing.append("save the buyer's answers with save_wishlist")
+    if wishlist_found and req.confirm_existing and not succeeded.get("ask_user"):
+        missing.append("ask the buyer with ask_user whether to reuse or update the saved wishlist")
     if req.check_urls:
         bad_urls = _unsupported_urls(answer, evidence)
         if bad_urls:

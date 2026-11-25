@@ -196,3 +196,33 @@ def test_where_to_buy_lists_only_product_pages() -> None:
 
 def test_where_to_buy_says_so_when_there_is_no_product_page() -> None:
     assert "No direct product link found" in cli.links_section([])
+
+
+def _product_steps():
+    from cartsense.agent import Step
+
+    one = "https://www.amazon.in/Bosch/dp/B07JW77MVJ"
+    two = "https://www.amazon.in/IFB/dp/B0D7PZ4HW2"
+    hits = (
+        f'[{{"title": "Bosch", "url": "{one}", "snippet": "x"}}, '
+        f'{{"title": "IFB", "url": "{two}", "snippet": "y"}}]'
+    )
+    return [Step("action", 'web_search({"query": "a"})'), Step("observation", hits)], one, two
+
+
+def test_where_to_buy_lists_only_links_used_in_the_answer() -> None:
+    steps, one, two = _product_steps()
+    section = cli.links_section(steps, f"Buy it here: {one}")
+    assert one in section
+    assert two not in section
+
+
+def test_where_to_buy_without_an_answer_lists_all_product_pages() -> None:
+    steps, one, two = _product_steps()
+    section = cli.links_section(steps)
+    assert one in section and two in section
+
+
+def test_link_titles_lose_invisible_characters() -> None:
+    assert cli._clean_title("IFB 16 \u200eHot [wash]") == "IFB 16 Hot wash"
+    assert cli._clean_title("IFB â€Ž16") == "IFB 16"

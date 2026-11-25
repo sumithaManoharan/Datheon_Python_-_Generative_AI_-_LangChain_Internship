@@ -63,6 +63,8 @@ Use only the tools you are given. Never invent a tool.
   any other. If a candidate has no price in the results, drop it. Present 1 or 2 verified
   candidates rather than inventing a third. Never invent a candidate, price or spec.
 - Never ask the buyer anything after you have saved the wishlist.
+- Pass label (the candidate's model name) in every running_cost and value_score call,
+  so each candidate gets its own calculation.
 - Once you have chosen a model, search its exact name once with store set to 'amazon' or
   'flipkart' and use the product page URL from that result as the buy link.
 - If a saved wishlist exists, ask with ask_user whether to reuse or update it before any

@@ -124,7 +124,7 @@ PRODUCT_URL_PATTERNS = (
     re.compile(r"amazon\.[a-z.]+/(?:[^/?#]+/)?dp/[A-Z0-9]{10}"),
     re.compile(r"amazon\.[a-z.]+/gp/product/[A-Z0-9]{10}"),
     re.compile(r"flipkart\.com/(?:[^/?#]+/)?[^/?#]+/p/itm"),
-    re.compile(r"/(?:product|products|proddetail)/[^/?#]+"),
+    re.compile(r"/(?:product|proddetail)/[^/?#]+"),
 )
 LISTING_MARKERS = ("/s?k=", "/pr?sid", "-brand/")
 
@@ -136,14 +136,25 @@ def is_product_url(url: str) -> bool:
     return any(pattern.search(url) for pattern in PRODUCT_URL_PATTERNS)
 
 
-def links_section(steps: list[Step]) -> str:
+INVISIBLE = re.compile("[\u200b-\u200f\u202a-\u202e\ufeff]|â€.")
+
+
+def _clean_title(title: str) -> str:
+    """Remove invisible characters and the garbled left-to-right mark from a link title."""
+    return re.sub(r"[\[\]]", "", INVISIBLE.sub("", title)).strip()
+
+
+def links_section(steps: list[Step], answer: str | None = None) -> str:
     """A markdown 'Where to buy' section of product pages found in the search results."""
-    links = [(t, u) for t, u in search_links(steps) if is_product_url(u)][:MAX_LINKS]
+    links = [(t, u) for t, u in search_links(steps) if is_product_url(u)]
+    if answer is not None:
+        links = [(t, u) for t, u in links if u in answer]
+    links = links[:MAX_LINKS]
     if not links:
         return "\n## Where to buy\n\nNo direct product link found in the search results.\n"
     lines = []
     for title, url in links:
-        label = re.sub(r"[\[\]]", "", title)[:MAX_LINK_TITLE] or url
+        label = _clean_title(title)[:MAX_LINK_TITLE] or url
         lines.append(f"- [{label}]({url})")
     heading = (
         "## Where to buy (product pages from the search results; stock and price may have changed)"
@@ -163,7 +174,7 @@ def save_recommendation(
         appendix = f"\n## Figures computed by the calculator tool (verbatim)\n\n{log}\n"
     path.write_text(
         f"# CartSense recommendation: {category}\n\nRequest: {request}\n\n"
-        f"{result.final_answer}\n{links_section(result.steps)}{appendix}",
+        f"{result.final_answer}\n{links_section(result.steps, result.final_answer)}{appendix}",
         encoding="utf-8",
     )
     return path
@@ -249,7 +260,7 @@ def main(
         print(f"Could not save the recommendation: {exc}", file=sys.stderr)
         return EXIT_FAILED
     print(f"\nSaved: {output_dir.name}/{path.name}")
-    print(links_section(result.steps))
+    print(links_section(result.steps, result.final_answer))
     return EXIT_OK
 
 

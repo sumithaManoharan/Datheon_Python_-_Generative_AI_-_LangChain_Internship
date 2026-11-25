@@ -319,3 +319,16 @@ def test_value_score_rejects_a_price_not_seen_in_search(monkeypatch: pytest.Monk
 def test_price_evidence_is_off_by_default() -> None:
     _, result = _run([_call("calculator", _score_args(2500)), AIMessage(content="Ok.")])
     assert _observations(result) == ["87.5"]
+
+
+def test_label_makes_identical_calculations_distinct() -> None:
+    base = {"function": "running_cost", "arguments": {"uses_per_week": 4, "energy_cost_per_use": 5}}
+    script = [
+        _call("calculator", {**base, "label": "A"}, "c1"),
+        _call("calculator", {**base, "label": "B"}, "c2"),
+        AIMessage(content="Ok."),
+    ]
+    _, result = _run(script)
+    observations = _observations(result)
+    assert "Duplicate" not in observations[1]
+    assert observations[0] == observations[1]

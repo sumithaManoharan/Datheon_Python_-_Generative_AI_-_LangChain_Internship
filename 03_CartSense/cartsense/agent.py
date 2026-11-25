@@ -148,6 +148,10 @@ class CalculatorArgs(BaseModel):
     arguments: dict[str, Any] | None = Field(
         default=None, description="Keyword arguments for the chosen function."
     )
+    label: str | None = Field(
+        default=None,
+        description="Candidate model name this calculation is for.",
+    )
 
 
 def _guard(func: Callable[..., str]) -> Callable[..., str]:
@@ -195,6 +199,7 @@ def _calculator_tool(
     expression: str | None = None,
     function: str | None = None,
     arguments: dict[str, Any] | None = None,
+    label: str | None = None,
 ) -> str:
     """Run a plain expression, or one of the pure scoring functions."""
     if function is None:
@@ -773,7 +778,10 @@ def run_agent(
             if attempt == GATE_MAX_NUDGES:
                 reason = f"The agent skipped required steps: {listing}."
                 return AgentResult("failed", reason, steps)
-            nudge = f"You cannot finish yet. Fix this first: {listing}. Do not invent results."
+            nudge = (
+                f"You cannot finish yet. Fix this first: {listing}. Do not invent results. "
+                "Reply with only the corrected final answer, no preamble."
+            )
             history.append(HumanMessage(nudge))
             messages_in = history[1:]
 

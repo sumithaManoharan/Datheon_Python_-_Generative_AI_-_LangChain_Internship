@@ -112,7 +112,7 @@ def _render_sidebar() -> None:
             with st.spinner("Reading and indexing the folder..."):
                 _record(workspace.add_folder(folder))
         _show_status(workspace)
-        st.button("\U0001f9f9 Clear chat", on_click=_clear_chat, disabled=not state.messages)
+        st.button("\U0001f9f9 Clear chat", on_click=_clear_chat)
         st.button(
             "\U0001f5d1\ufe0f Remove all documents",
             on_click=_remove_documents,

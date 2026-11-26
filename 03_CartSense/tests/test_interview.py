@@ -279,11 +279,18 @@ def test_ask_user_is_closed_after_the_wishlist_is_saved(tmp_path: Path) -> None:
 # --- link, figure and query checks ------------------------------------------
 
 
-def test_answer_without_a_link_is_rejected() -> None:
-    script = [AIMessage(content="No link."), AIMessage(content="See https://example.com/p")]
+def test_answer_without_a_link_is_rejected(monkeypatch: pytest.MonkeyPatch) -> None:
+    product = "https://www.amazon.in/Bosch/dp/B07JW77MVJ"
+    hits = [{"title": "Bosch", "url": product, "snippet": "Rs 52,021"}]
+    monkeypatch.setattr(agent_module, "web_search", lambda q, max_results=5, **kw: hits)
+    script = [
+        _call("web_search", {"query": "bosch"}),
+        AIMessage(content="No link."),
+        AIMessage(content=f"See {product}"),
+    ]
     _, result = _run(script, config=LONG_CONFIG, requirements=Requirements(require_link=True))
-    assert result.final_answer == "See https://example.com/p"
-    assert any("source link" in step.text for step in result.steps)
+    assert result.final_answer == f"See {product}"
+    assert any("product-page link" in step.text for step in result.steps)
 
 
 def test_invented_price_in_the_answer_is_rejected(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -442,3 +449,34 @@ def test_rounded_prices_are_accepted_but_invented_ones_are_not() -> None:
     allowed = {14652.32, 50787.7}
     assert _unsupported_figures("₹14,652 a year, ₹50,788 listed", allowed, set()) == []
     assert _unsupported_figures("₹45,000", allowed, set()) == ["price 45,000"]
+
+
+def test_category_page_link_is_not_a_product_link() -> None:
+    from cartsense.agent import _has_product_link
+
+    category = "https://www.amazon.in/Dishwashers/b?ie=UTF8&node=1"
+    product = "https://www.amazon.in/Bosch/dp/B07JW77MVJ"
+    evidence = f"{category} {product}"
+    assert _has_product_link(f"See {category}", evidence) is False
+    assert _has_product_link(f"See {product}", evidence) is True
+    assert _has_product_link(f"See {product}", category) is False
+
+
+def test_general_searches_cannot_use_the_store_reserve(monkeypatch: pytest.MonkeyPatch) -> None:
+    runs: list[str] = []
+
+    def fake(query: str, max_results: int = 5, **kwargs: Any):
+        runs.append(query)
+        return []
+
+    monkeypatch.setattr(agent_module, "web_search", fake)
+    tools = build_tools(max_searches=6)
+    script = [_call("web_search", {"query": f"g{i}"}, f"g{i}") for i in range(4)]
+    script.append(_call("web_search", {"query": "s0", "store": "amazon"}, "s0"))
+    script.append(AIMessage(content="Ok."))
+    roomy = Config(api_key="k", base_url="u", model="m", max_steps=20, temperature=0.0)
+    _, result = _run(script, config=roomy, tools=tools)
+    observations = _observations(result)
+    assert runs == ["g0", "g1", "s0"]
+    assert observations[2].startswith("Error: General search limit")
+    assert not observations[4].startswith("Error")

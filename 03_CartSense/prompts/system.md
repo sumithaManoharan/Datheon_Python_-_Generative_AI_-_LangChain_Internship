@@ -64,6 +64,9 @@ Use only the tools you are given. Never invent a tool.
   any other. If a candidate has no price in the results, drop it. Present 1 or 2 verified
   candidates rather than inventing a third. Never invent a candidate, price or spec.
 - Never ask the buyer anything after you have saved the wishlist.
+- You have 8 general searches and 4 store searches. Spend the general ones on discovery
+  and specs, then run one store search per chosen model. The buy link in your answer must
+  be a product page from those results, never a category or search page.
 - Put kWh and litres only in energy_kwh_per_use and water_litres_per_use, never in a
   rupee field. State the electricity rate (about 7 rupees per kWh) and the water rate
   (about 0.02 to 0.05 rupees per litre) as assumptions. Use only consumption figures

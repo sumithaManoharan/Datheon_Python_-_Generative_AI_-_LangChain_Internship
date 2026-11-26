@@ -300,3 +300,21 @@ def save_wishlist(data: dict[str, Any], directory: Path = WISHLIST_DIR) -> Path:
         logger.error("Could not write %s: %s", path.name, exc)
         raise ToolError("Could not write the wishlist file.") from exc
     return path
+
+
+# --- product page detection ---------------------------------------------------
+
+PRODUCT_URL_PATTERNS = (
+    re.compile(r"amazon\.[a-z.]+/(?:[^/?#]+/)?dp/[A-Z0-9]{10}"),
+    re.compile(r"amazon\.[a-z.]+/gp/product/[A-Z0-9]{10}"),
+    re.compile(r"flipkart\.com/(?:[^/?#]+/)?[^/?#]+/p/itm"),
+    re.compile(r"/(?:product|proddetail)/[^/?#]+"),
+)
+LISTING_MARKERS = ("/s?k=", "/pr?sid", "-brand/")
+
+
+def is_product_url(url: str) -> bool:
+    """True for a URL that looks like one product's page, not a search or listing page."""
+    if any(marker in url for marker in LISTING_MARKERS):
+        return False
+    return any(pattern.search(url) for pattern in PRODUCT_URL_PATTERNS)

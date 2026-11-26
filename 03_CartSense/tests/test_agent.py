@@ -265,9 +265,9 @@ def test_web_search_is_capped(monkeypatch: pytest.MonkeyPatch) -> None:
     roomy = Config(api_key="k", base_url="u", model="m", max_steps=10, temperature=0.0)
     script = [_call("web_search", {"query": f"q{i}"}, f"c{i}") for i in range(3)]
     script.append(AIMessage(content="Ok."))
-    _, result = _run(script, config=roomy, tools=build_tools(max_searches=2))
+    _, result = _run(script, config=roomy, tools=build_tools(max_searches=6))
     assert runs == ["q0", "q1"]
-    assert _observations(result)[2].startswith("Error: Search limit reached")
+    assert _observations(result)[2].startswith("Error: General search limit reached")
 
 
 @pytest.mark.parametrize(

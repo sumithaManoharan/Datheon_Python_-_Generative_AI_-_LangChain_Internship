@@ -26,7 +26,7 @@ from cartsense.agent import (
 )
 from cartsense.config import PROJECT_ROOT, Config, ConfigError, load_config
 from cartsense.models import CATEGORY_PATTERN, clean_category
-from cartsense.tools import WISHLIST_DIR, UserPrompter
+from cartsense.tools import WISHLIST_DIR, UserPrompter, is_product_url
 
 OUTPUT_DIR = PROJECT_ROOT / "output"
 LOG_DIR = PROJECT_ROOT / "logs"
@@ -118,22 +118,6 @@ def search_links(steps: list[Step]) -> list[tuple[str, str]]:
                     seen.add(address)
                     links.append((_unescape(title), address))
     return links
-
-
-PRODUCT_URL_PATTERNS = (
-    re.compile(r"amazon\.[a-z.]+/(?:[^/?#]+/)?dp/[A-Z0-9]{10}"),
-    re.compile(r"amazon\.[a-z.]+/gp/product/[A-Z0-9]{10}"),
-    re.compile(r"flipkart\.com/(?:[^/?#]+/)?[^/?#]+/p/itm"),
-    re.compile(r"/(?:product|proddetail)/[^/?#]+"),
-)
-LISTING_MARKERS = ("/s?k=", "/pr?sid", "-brand/")
-
-
-def is_product_url(url: str) -> bool:
-    """True for a URL that looks like one product's page, not a search or listing page."""
-    if any(marker in url for marker in LISTING_MARKERS):
-        return False
-    return any(pattern.search(url) for pattern in PRODUCT_URL_PATTERNS)
 
 
 INVISIBLE = re.compile("[\u200b-\u200f\u202a-\u202e\ufeff]|â€.")

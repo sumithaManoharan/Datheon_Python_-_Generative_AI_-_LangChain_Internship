@@ -26,6 +26,7 @@ from cartsense.tools import (
     ToolError,
     UserPrompter,
     calculator,
+    is_product_url,
     read_wishlist,
     save_wishlist,
     web_search,
@@ -36,6 +37,11 @@ logger = logging.getLogger(__name__)
 PROMPT_PATH = PROJECT_ROOT / "prompts" / "system.md"
 MAX_REQUEST_LENGTH = 500
 MAX_SEARCHES = 12
+STORE_SEARCHES = 4
+GENERAL_LIMIT_NOTE = (
+    "General search limit reached. Use the remaining store searches (store set to "
+    "amazon or flipkart) to find each chosen model's product page."
+)
 SEARCH_LIMIT_NOTE = (
     "Search limit reached. Stop searching. Call calculator (running_cost and "
     "value_score) for each candidate using what you have, then write the final answer."
@@ -221,14 +227,17 @@ def _make_web_search_tool(
     tavily_api_key: str = "",
 ) -> Callable[..., str]:
     """Build the web_search handler, bound to the region and the search provider."""
-    used = {"count": 0}
+    used = {"general": 0, "store": 0}
+    general_cap = max(max_searches - STORE_SEARCHES, 1)
 
     @_guard
     def web_search_tool(query: str, max_results: int = 5, store: str | None = None) -> str:
         """Return search hits as a JSON string."""
-        if used["count"] >= max_searches:
-            raise ToolError(SEARCH_LIMIT_NOTE)
-        used["count"] += 1
+        kind = "store" if store else "general"
+        cap = STORE_SEARCHES if store else general_cap
+        if used[kind] >= cap:
+            raise ToolError(SEARCH_LIMIT_NOTE if store else GENERAL_LIMIT_NOTE)
+        used[kind] += 1
         extra: dict[str, Any] = {"region": region} if region else {}
         if provider == "tavily":
             extra.update(provider="tavily", tavily_api_key=tavily_api_key, store=store)
@@ -559,6 +568,12 @@ def build_requirements(interactive: bool) -> Requirements:
     return Requirements(core, **checks)
 
 
+def _has_product_link(answer: str, evidence: str) -> bool:
+    """True if the answer links a product page that appeared in a search result."""
+    urls = (url.rstrip(".,;:") for url in URL_PATTERN.findall(answer))
+    return any(is_product_url(url) and url in evidence for url in urls)
+
+
 def _unsupported_urls(answer: str, evidence: str) -> list[str]:
     """URLs in the answer that never appeared in any tool result."""
     urls = (url.rstrip(".,;:") for url in URL_PATTERN.findall(answer))
@@ -659,8 +674,11 @@ def _missing_steps(
                 "remove these URLs, which never appeared in a search result: "
                 + ", ".join(bad_urls[:3])
             )
-    if req.require_link and not URL_PATTERN.search(answer):
-        missing.append("include at least one source link copied from a web_search result")
+    if req.require_link and not _has_product_link(answer, evidence):
+        missing.append(
+            "include a product-page link (not a category or search page) copied from a "
+            "web_search result"
+        )
     if req.check_figures:
         bad_figures = _unsupported_figures(answer, allowed, calc_scores)
         if bad_figures:

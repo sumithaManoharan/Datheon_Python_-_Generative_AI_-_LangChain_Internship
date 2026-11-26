@@ -3,7 +3,7 @@
 import logging
 import re
 import time
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Iterable, Iterator, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -193,6 +193,68 @@ def _history_messages(history: Sequence[Turn]) -> list[dict[str, str]]:
     return messages
 
 
+def _tokens(usage: Any) -> dict[str, int | None]:
+    """Prompt and completion token counts from a response's usage, when present."""
+    return {
+        "prompt_tokens": getattr(usage, "prompt_tokens", None),
+        "completion_tokens": getattr(usage, "completion_tokens", None),
+    }
+
+
+def _final_answer(
+    text: str, citations: Sequence[Citation], tokens: dict[str, int | None]
+) -> Answer:
+    """The finished answer for the model's full text: normalized markers, or the refusal."""
+    text = _normalize_markers(text)
+    if _is_refusal(text):
+        logger.info("model found no answer in the context; refusing")
+        return Answer(text=REFUSAL_MESSAGE, citations=(), refused=True, **tokens)
+    return Answer(text=text, citations=_cited(text, citations), refused=False, **tokens)
+
+
+def _stream_pieces(response: Iterable[Any], usage: dict[str, int | None]) -> Iterator[str]:
+    """Text pieces of a streamed completion; the closing usage chunk fills `usage`."""
+    for chunk in response:
+        chunk_usage = getattr(chunk, "usage", None)
+        if chunk_usage is not None:
+            usage.update(_tokens(chunk_usage))
+        choices = getattr(chunk, "choices", None)
+        piece = choices[0].delta.content if choices else None
+        if piece:
+            yield piece
+
+
+class AnswerStream:
+    """An answer arriving in pieces. Iterate once; `answer` is ready when iteration ends.
+
+    The streamed text is raw: markers are normalized and a refusal is replaced only in the
+    final `answer`, so a front end should swap its display for `answer.text` at the end.
+    If the stream fails part-way, iteration raises LLMCallError and `answer` stays unavailable.
+    """
+
+    def __init__(self, pieces: Iterable[str], finish: Callable[[str], Answer]) -> None:
+        self._pieces = pieces
+        self._finish = finish
+        self._parts: list[str] = []
+        self._answer: Answer | None = None
+
+    def __iter__(self) -> Iterator[str]:
+        try:
+            for piece in self._pieces:
+                self._parts.append(piece)
+                yield piece
+        except openai.OpenAIError as exc:
+            raise LLMCallError(f"LLM stream failed: {exc}") from exc
+        self._answer = self._finish("".join(self._parts))
+
+    @property
+    def answer(self) -> Answer:
+        """The finished answer; only available after the stream has been read to the end."""
+        if self._answer is None:
+            raise RuntimeError("the answer is not ready until the stream has been fully read")
+        return self._answer
+
+
 class AnswerGenerator:
     """Turns a question and retrieved chunks into a grounded, cited answer.
 
@@ -231,23 +293,49 @@ class AnswerGenerator:
             logger.info("no relevant chunks; refusing without an LLM call")
             return Answer(text=REFUSAL_MESSAGE, citations=(), refused=True)
         citations = _build_citations(retrieved)
+        messages = self._messages(question, citations, retrieved, history)
+        response = self._complete(messages)
+        tokens = _tokens(getattr(response, "usage", None))
+        return _final_answer(_extract_text(response), citations, tokens)
+
+    def answer_stream(
+        self,
+        question: str,
+        retrieved: Sequence[RetrievedChunk],
+        history: Sequence[Turn] = (),
+    ) -> AnswerStream:
+        """Like `answer`, but the text arrives in pieces; read it to the end for the Answer."""
+        question = validate_question(question, self._max_question_chars)
+        if not retrieved:
+            logger.info("no relevant chunks; refusing without an LLM call")
+            refusal = Answer(text=REFUSAL_MESSAGE, citations=(), refused=True)
+            return AnswerStream([REFUSAL_MESSAGE], lambda _text: refusal)
+        citations = _build_citations(retrieved)
+        messages = self._messages(question, citations, retrieved, history)
+        usage: dict[str, int | None] = _tokens(None)
+        response = self._complete(messages, stream=True)
+
+        def finish(text: str) -> Answer:
+            if not text.strip():
+                raise LLMCallError("the model returned an empty answer")
+            return _final_answer(text.strip(), citations, dict(usage))
+
+        return AnswerStream(_stream_pieces(response, usage), finish)
+
+    def _messages(
+        self,
+        question: str,
+        citations: Sequence[Citation],
+        retrieved: Sequence[RetrievedChunk],
+        history: Sequence[Turn],
+    ) -> list[dict[str, str]]:
+        """System prompt (plus the history rule when there is history), history, question."""
         system_prompt = self._system_prompt + HISTORY_RULE if history else self._system_prompt
-        messages = [
+        return [
             {"role": "system", "content": system_prompt},
             *_history_messages(history),
             {"role": "user", "content": _user_message(question, citations, retrieved)},
         ]
-        response = self._complete(messages)
-        text = _normalize_markers(_extract_text(response))
-        usage = getattr(response, "usage", None)
-        tokens = {
-            "prompt_tokens": getattr(usage, "prompt_tokens", None),
-            "completion_tokens": getattr(usage, "completion_tokens", None),
-        }
-        if _is_refusal(text):
-            logger.info("model found no answer in the context; refusing")
-            return Answer(text=REFUSAL_MESSAGE, citations=(), refused=True, **tokens)
-        return Answer(text=text, citations=_cited(text, citations), refused=False, **tokens)
 
     def condense(self, question: str, history: Sequence[Turn]) -> str:
         """Rewrite a follow-up as a standalone question; no history means no LLM call."""
@@ -270,12 +358,18 @@ class AnswerGenerator:
             return question
         return rewritten
 
-    def _complete(self, messages: list[dict[str, str]]) -> Any:
-        """One chat completion with retry on transient errors."""
+    def _complete(self, messages: list[dict[str, str]], *, stream: bool = False) -> Any:
+        """One chat completion with retry on transient errors (retry covers opening a stream)."""
+        extra: dict[str, Any] = (
+            {"stream": True, "stream_options": {"include_usage": True}} if stream else {}
+        )
         try:
             return call_with_retry(
                 lambda: self._client.chat.completions.create(
-                    model=self._model, messages=messages, temperature=self._temperature
+                    model=self._model,
+                    messages=messages,
+                    temperature=self._temperature,
+                    **extra,
                 ),
                 is_transient=is_transient_api_error,
                 max_attempts=self._max_attempts,

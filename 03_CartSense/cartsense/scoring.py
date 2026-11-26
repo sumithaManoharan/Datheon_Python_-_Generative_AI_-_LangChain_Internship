@@ -1,6 +1,7 @@
 """Pure scoring functions: total cost of ownership and value score."""
 
 from statistics import mean
+from typing import Any
 
 WEIGHT_PRIORITIES = 0.50
 WEIGHT_BUDGET = 0.30
@@ -137,3 +138,104 @@ def value_score(
         + WEIGHT_WARRANTY * warranty_fit
     )
     return round(score, 1)
+
+
+MAX_ITEMS = 10
+MAX_ITEM_NAME = 60
+
+
+def _clean_items(raw: object, label: str, packs: bool) -> list[dict[str, Any]]:
+    """Validate a list of accessories (name, price) or consumables (name, pack price, uses)."""
+    if raw is None:
+        return []
+    if not isinstance(raw, list) or len(raw) > MAX_ITEMS:
+        raise ValueError(f"{label} must be a list of at most {MAX_ITEMS} items")
+    key = "pack_price" if packs else "price"
+    cleaned: list[dict[str, Any]] = []
+    for item in raw:
+        name = item.get("name") if isinstance(item, dict) else None
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError(f"every {label} item needs a name")
+        name = name.strip()[:MAX_ITEM_NAME]
+        values = [item.get(key)] + ([item.get("uses_per_pack")] if packs else [])
+        if any(isinstance(v, bool) or not isinstance(v, int | float) for v in values):
+            raise ValueError(f"{name}: {key} and uses_per_pack must be numbers")
+        price = float(item[key])
+        if price < 0:
+            raise ValueError(f"{name}: {key} must not be negative")
+        entry: dict[str, Any] = {"name": name, key: price}
+        if packs:
+            uses = float(item["uses_per_pack"])
+            if uses <= 0:
+                raise ValueError(f"{name}: uses_per_pack must be positive")
+            entry["uses_per_pack"] = uses
+        cleaned.append(entry)
+    return cleaned
+
+
+def _line(name: str, per_use: float, uses_per_year: float) -> dict[str, Any]:
+    """One running-cost line with its cost per use, month and year."""
+    per_year = per_use * uses_per_year
+    return {
+        "name": name,
+        "per_use": round(per_use, 2),
+        "per_month": round(per_year / MONTHS_PER_YEAR, 2),
+        "per_year": round(per_year, 2),
+    }
+
+
+def ownership_cost(
+    product_price: float,
+    uses_per_week: float,
+    accessories: list[dict[str, Any]] | None = None,
+    consumables: list[dict[str, Any]] | None = None,
+    energy_kwh_per_use: float = 0.0,
+    electricity_rate_per_kwh: float = 0.0,
+    water_litres_per_use: float = 0.0,
+    water_rate_per_litre: float = 0.0,
+    other_yearly_cost: float = 0.0,
+) -> dict[str, Any]:
+    """Upfront cost (product plus must-buy accessories) and running cost of owning a product.
+
+    accessories are one-time must-buys: [{"name": ..., "price": ...}].
+    consumables are bought repeatedly: [{"name": ..., "pack_price": ..., "uses_per_pack": ...}].
+    """
+    _require_non_negative(
+        product_price=product_price,
+        energy_kwh_per_use=energy_kwh_per_use,
+        electricity_rate_per_kwh=electricity_rate_per_kwh,
+        water_litres_per_use=water_litres_per_use,
+        water_rate_per_litre=water_rate_per_litre,
+        other_yearly_cost=other_yearly_cost,
+    )
+    if uses_per_week <= 0:
+        raise ValueError(f"uses_per_week must be positive, got {uses_per_week}")
+    extras = _clean_items(accessories, "accessories", packs=False)
+    packs = _clean_items(consumables, "consumables", packs=True)
+
+    uses_per_year = uses_per_week * WEEKS_PER_YEAR
+    upfront = product_price + sum(item["price"] for item in extras)
+    parts = [(p["name"], p["pack_price"] / p["uses_per_pack"]) for p in packs]
+    parts.append(("Electricity", energy_kwh_per_use * electricity_rate_per_kwh))
+    parts.append(("Water", water_litres_per_use * water_rate_per_litre))
+    parts.append(("Other yearly costs", other_yearly_cost / uses_per_year))
+    running = [_line(name, cost, uses_per_year) for name, cost in parts if cost > 0]
+    per_use = sum(cost for _, cost in parts)
+    per_year = per_use * uses_per_year
+    return {
+        "upfront": {
+            "product": round(product_price, 2),
+            "accessories": [
+                {"name": item["name"], "price": round(item["price"], 2)} for item in extras
+            ],
+            "total": round(upfront, 2),
+        },
+        "running": running,
+        "total_running": {
+            "per_use": round(per_use, 2),
+            "per_week": round(per_year / WEEKS_PER_YEAR, 2),
+            "per_month": round(per_year / MONTHS_PER_YEAR, 2),
+            "per_year": round(per_year, 2),
+        },
+        "first_year_total": round(upfront + per_year, 2),
+    }

@@ -55,8 +55,8 @@ Use only the tools you are given. Never invent a tool.
   priorities or dealbreakers.
 - Every URL in the final answer must be copied from a web_search result. Never build a
   URL yourself (for example a google.com/search link). Do not use citation markers.
-- You have at most 12 web searches in total. Plan them: for 3 candidates, one price
-  search and one review or spec search each. The program blocks any search after the 12th.
+- You have at most 16 web searches in total. Plan them: for 3 candidates, one price
+  search and one review or spec search each. The program blocks any search after the 16th.
 - Candidates must be the product type the buyer asked for (a washing machine, not a
   dryer) and must fit the buyer's budget.
 - As soon as you have a price and specs for a candidate, call calculator for it.
@@ -64,7 +64,7 @@ Use only the tools you are given. Never invent a tool.
   any other. If a candidate has no price in the results, drop it. Present 1 or 2 verified
   candidates rather than inventing a third. Never invent a candidate, price or spec.
 - Never ask the buyer anything after you have saved the wishlist.
-- You have 8 general searches and 4 store searches. Spend the general ones on discovery
+- You have 12 general searches and 4 store searches. Spend the general ones on discovery
   and specs, then run one store search per chosen model. The buy link in your answer must
   be a product page from those results, never a category or search page.
 - Put kWh and litres only in energy_kwh_per_use and water_litres_per_use, never in a
@@ -107,3 +107,26 @@ Use only the tools you are given. Never invent a tool.
   characters and never paste the whole wishlist into a question.
 - Prices must come from the search results. Never invent a price. Resale value is 0
   unless you have a source for it.
+
+## Ownership cost (this replaces the earlier running_cost instructions and the rule against totals)
+- A product's real cost is the product plus what you must buy to use it. After choosing your
+  candidates, search for what the product needs, for example "what do I need to buy to use a
+  Bosch dishwasher India salt detergent rinse aid", and for large appliances also accessories
+  such as a stabilizer or a mounting kit. Then search the price of each must-buy item. Cover at
+  most 4 items in total. Use one list of consumables for all candidates unless a model needs
+  something different.
+- For each candidate call calculator with function "ownership_cost" and these arguments:
+  product_price, uses_per_week, accessories (one-time must-buys, each {"name", "price"}),
+  consumables (each {"name", "pack_price", "uses_per_pack"}), energy_kwh_per_use,
+  electricity_rate_per_kwh, water_litres_per_use, water_rate_per_litre, other_yearly_cost.
+  Always pass label (the candidate's model name). Use ownership_cost instead of running_cost;
+  you may still call value_score.
+- Every accessory price, pack price and product price must appear in a search result, and the
+  program rejects any other. If you cannot find a price, leave that item out and write
+  "price not found" for it in the answer. Uses per pack is an assumption unless the pack says
+  it: state it.
+- Your final answer needs an "Accessories and consumables" section that lists each must-buy
+  with its price and a source link, or says "none needed" (for example for a chair). For each
+  candidate then show the upfront cost (product plus accessories) and the running cost per use,
+  per month and per year, copied from the calculator result.
+- You have at most 16 web searches in total: 12 general and 4 store searches.

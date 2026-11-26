@@ -7,7 +7,7 @@ import re
 import sys
 from collections.abc import Callable, Sequence
 from pathlib import Path
-from typing import TextIO
+from typing import Any, TextIO
 
 from langchain_core.language_models.chat_models import BaseChatModel
 
@@ -75,17 +75,25 @@ def guess_category(text: str) -> str:
     return cleaned if re.fullmatch(CATEGORY_PATTERN, cleaned) else FALLBACK_CATEGORY
 
 
+def _paired(steps: list[Step]) -> list[tuple[str, str]]:
+    """Match each action with its observation in order (tool calls can run in parallel)."""
+    waiting: list[str] = []
+    pairs: list[tuple[str, str]] = []
+    for step in steps:
+        if step.kind == "action":
+            waiting.append(step.text)
+        elif step.kind == "observation" and waiting:
+            pairs.append((waiting.pop(0), step.text))
+    return pairs
+
+
 def calculation_log(steps: list[Step]) -> str:
     """List every successful calculator call and its result, verbatim, from the step trace."""
-    lines: list[str] = []
-    pending = ""
-    for step in steps:
-        if step.kind == "action" and step.text.startswith("calculator("):
-            pending = step.text
-        elif step.kind == "observation" and pending:
-            if not step.text.startswith(("Error:", "Duplicate call")):
-                lines.append(f"- `{pending}` -> `{step.text}`")
-            pending = ""
+    lines = [
+        f"- `{action}` -> `{result}`"
+        for action, result in _paired(steps)
+        if action.startswith("calculator(") and not result.startswith(("Error:", "Duplicate call"))
+    ]
     return "\n".join(lines)
 
 
@@ -106,17 +114,14 @@ def search_links(steps: list[Step]) -> list[tuple[str, str]]:
     """Every title and URL from successful web_search results, without duplicates."""
     links: list[tuple[str, str]] = []
     seen: set[str] = set()
-    pending = False
-    for step in steps:
-        if step.kind == "action":
-            pending = step.text.startswith("web_search(")
-        elif step.kind == "observation" and pending:
-            pending = False
-            for title, url in LINK_PATTERN.findall(step.text):
-                address = _unescape(url)
-                if address not in seen:
-                    seen.add(address)
-                    links.append((_unescape(title), address))
+    for action, result in _paired(steps):
+        if not action.startswith("web_search("):
+            continue
+        for title, url in LINK_PATTERN.findall(result):
+            address = _unescape(url)
+            if address not in seen:
+                seen.add(address)
+                links.append((_unescape(title), address))
     return links
 
 
@@ -146,6 +151,67 @@ def links_section(steps: list[Step], answer: str | None = None) -> str:
     return f"\n{heading}\n\n" + "\n".join(lines) + "\n"
 
 
+def _json_or_none(text: str) -> dict[str, Any] | None:
+    """Parse a JSON object from text, or None if it is not one."""
+    try:
+        value = json.loads(text)
+    except ValueError:
+        return None
+    return value if isinstance(value, dict) else None
+
+
+def _row(cells: list[str]) -> str:
+    """One markdown table row."""
+    return "| " + " | ".join(cell.replace("|", "/") for cell in cells) + " |"
+
+
+def _nums(*values: float) -> list[str]:
+    """Format amounts with thousands separators and two decimals."""
+    return [f"{value:,.2f}" for value in values]
+
+
+def _ownership_table(label: str, data: dict[str, Any]) -> str:
+    """One candidate's upfront and running costs as markdown tables."""
+    upfront = data["upfront"]
+    lines = [f"### {label.replace('|', '/')}", "", _row(["Upfront", "Amount"]), "|---|---:|"]
+    lines.append(_row(["Product", *_nums(upfront["product"])]))
+    for item in upfront["accessories"]:
+        lines.append(_row([f"Must-buy: {item['name']}", *_nums(item["price"])]))
+    lines.append(_row(["**Upfront total**", f"**{upfront['total']:,.2f}**"]))
+    lines += [
+        "",
+        _row(["Running cost", "Per use", "Per month", "Per year"]),
+        "|---|---:|---:|---:|",
+    ]
+    for row in data["running"]:
+        values = _nums(row["per_use"], row["per_month"], row["per_year"])
+        lines.append(_row([row["name"], *values]))
+    total = data["total_running"]
+    bold = [
+        f"**{value}**" for value in _nums(total["per_use"], total["per_month"], total["per_year"])
+    ]
+    lines.append(_row(["**Total**", *bold]))
+    first_year = f"{data['first_year_total']:,.2f}"
+    lines += ["", f"First-year cost (upfront plus 12 months of running cost): **{first_year}**"]
+    return "\n".join(lines)
+
+
+def ownership_breakdown(steps: list[Step]) -> str:
+    """Readable cost tables for every successful ownership_cost call, built from the trace."""
+    tables: list[str] = []
+    for action, result in _paired(steps):
+        if not action.startswith("calculator("):
+            continue
+        call = _json_or_none(action[len("calculator(") : -1])
+        data = _json_or_none(result)
+        if call is not None and data is not None and "upfront" in data:
+            tables.append(_ownership_table(str(call.get("label") or "Candidate"), data))
+    if not tables:
+        return ""
+    heading = "## Cost breakdown (computed by the calculator, in your currency)"
+    return f"\n{heading}\n\n" + "\n\n".join(tables) + "\n"
+
+
 def save_recommendation(
     result: AgentResult, request: str, category: str, directory: Path = OUTPUT_DIR
 ) -> Path:
@@ -158,7 +224,8 @@ def save_recommendation(
         appendix = f"\n## Figures computed by the calculator tool (verbatim)\n\n{log}\n"
     path.write_text(
         f"# CartSense recommendation: {category}\n\nRequest: {request}\n\n"
-        f"{result.final_answer}\n{links_section(result.steps, result.final_answer)}{appendix}",
+        f"{result.final_answer}\n{links_section(result.steps, result.final_answer)}"
+        f"{ownership_breakdown(result.steps)}{appendix}",
         encoding="utf-8",
     )
     return path

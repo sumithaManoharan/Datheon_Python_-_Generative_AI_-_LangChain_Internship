@@ -138,3 +138,64 @@ def test_running_cost_rejects_negative_physical_units() -> None:
 
     with pytest.raises(ValueError):
         running_cost(uses_per_week=1, water_litres_per_use=-1)
+
+
+def test_ownership_cost_breaks_down_upfront_and_running_costs() -> None:
+    from cartsense.scoring import ownership_cost
+
+    result = ownership_cost(
+        product_price=40000,
+        uses_per_week=4,
+        accessories=[{"name": "Stabilizer", "price": 2500}],
+        consumables=[
+            {"name": "Salt", "pack_price": 100, "uses_per_pack": 20},
+            {"name": "Detergent", "pack_price": 500, "uses_per_pack": 25},
+        ],
+        energy_kwh_per_use=1,
+        electricity_rate_per_kwh=7,
+        water_litres_per_use=10,
+        water_rate_per_litre=0.05,
+    )
+    assert result["upfront"]["total"] == 42500.0
+    assert result["total_running"]["per_use"] == 32.5
+    assert result["total_running"]["per_year"] == 6760.0
+    assert result["total_running"]["per_month"] == 563.33
+    assert result["first_year_total"] == 49260.0
+    salt = next(row for row in result["running"] if row["name"] == "Salt")
+    assert salt["per_year"] == 1040.0
+
+
+def test_ownership_cost_without_extras_is_just_the_product() -> None:
+    from cartsense.scoring import ownership_cost
+
+    result = ownership_cost(product_price=5000, uses_per_week=7)
+    assert result["upfront"]["total"] == 5000.0
+    assert result["running"] == []
+    assert result["first_year_total"] == 5000.0
+
+
+@pytest.mark.parametrize(
+    "kwargs",
+    [
+        {"product_price": -1, "uses_per_week": 1},
+        {"product_price": 1, "uses_per_week": 0},
+        {"product_price": 1, "uses_per_week": 1, "accessories": [{"name": "x", "price": -5}]},
+        {"product_price": 1, "uses_per_week": 1, "accessories": "stabilizer"},
+        {"product_price": 1, "uses_per_week": 1, "accessories": [{"price": 5}]},
+        {
+            "product_price": 1,
+            "uses_per_week": 1,
+            "consumables": [{"name": "s", "pack_price": 10, "uses_per_pack": 0}],
+        },
+        {
+            "product_price": 1,
+            "uses_per_week": 1,
+            "consumables": [{"name": "s", "pack_price": "10", "uses_per_pack": 5}],
+        },
+    ],
+)
+def test_ownership_cost_rejects_invalid_input(kwargs: dict) -> None:
+    from cartsense.scoring import ownership_cost
+
+    with pytest.raises(ValueError):
+        ownership_cost(**kwargs)

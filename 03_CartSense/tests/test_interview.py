@@ -480,3 +480,49 @@ def test_general_searches_cannot_use_the_store_reserve(monkeypatch: pytest.Monke
     assert runs == ["g0", "g1", "s0"]
     assert observations[2].startswith("Error: General search limit")
     assert not observations[4].startswith("Error")
+
+
+OWNERSHIP_ARGS = {
+    "function": "ownership_cost",
+    "label": "A",
+    "arguments": {"product_price": 1000, "uses_per_week": 7},
+}
+
+
+def test_ownership_prices_must_appear_in_search_results(monkeypatch: pytest.MonkeyPatch) -> None:
+    snippet = "Dishwasher salt Rs 100 per pack; stabilizer Rs 2,500; machine Rs 40,000"
+    hits = [{"title": "Shop", "url": "https://example.com/s", "snippet": snippet}]
+    monkeypatch.setattr(agent_module, "web_search", lambda q, max_results=5, **kw: hits)
+    base = {"product_price": 40000, "uses_per_week": 4}
+    bad = {
+        "function": "ownership_cost",
+        "arguments": {**base, "accessories": [{"name": "S", "price": 3000}]},
+    }
+    good = {
+        "function": "ownership_cost",
+        "arguments": {**base, "accessories": [{"name": "S", "price": 2500}]},
+    }
+    script = [
+        _call("web_search", {"query": "salt"}, "c1"),
+        _call("calculator", bad, "c2"),
+        _call("calculator", good, "c3"),
+        AIMessage(content="Ok."),
+    ]
+    _, result = _run(script, config=LONG_CONFIG, tools=build_tools(require_price_evidence=True))
+    observations = _observations(result)
+    assert observations[1].startswith("Error: price 3000")
+    assert observations[2].startswith('{"upfront"')
+
+
+def test_answer_needs_ownership_cost_and_an_accessories_section() -> None:
+    script = [
+        AIMessage(content="Accessories: none needed."),
+        _call("calculator", OWNERSHIP_ARGS, "c1"),
+        AIMessage(content="No section here."),
+        AIMessage(content="Accessories and consumables: none needed."),
+    ]
+    _, result = _run(script, config=LONG_CONFIG, requirements=Requirements(require_ownership=True))
+    assert result.final_answer == "Accessories and consumables: none needed."
+    texts = [step.text for step in result.steps]
+    assert any("ownership_cost" in text for text in texts)
+    assert any("Accessories and consumables' section" in text for text in texts)

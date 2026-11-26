@@ -20,7 +20,7 @@ from langgraph.errors import GraphRecursionError
 from pydantic import BaseModel, Field
 
 from cartsense.config import PROJECT_ROOT, Config
-from cartsense.scoring import running_cost, tco, value_score
+from cartsense.scoring import ownership_cost, running_cost, tco, value_score
 from cartsense.tools import (
     WISHLIST_DIR,
     ToolError,
@@ -36,7 +36,7 @@ logger = logging.getLogger(__name__)
 
 PROMPT_PATH = PROJECT_ROOT / "prompts" / "system.md"
 MAX_REQUEST_LENGTH = 500
-MAX_SEARCHES = 12
+MAX_SEARCHES = 16
 STORE_SEARCHES = 4
 GENERAL_LIMIT_NOTE = (
     "General search limit reached. Use the remaining store searches (store set to "
@@ -70,6 +70,7 @@ SCORING_FUNCTIONS: dict[str, Callable[..., Any]] = {
     "tco": tco,
     "value_score": value_score,
     "running_cost": running_cost,
+    "ownership_cost": ownership_cost,
 }
 
 
@@ -288,17 +289,46 @@ def _record_results(func: Callable[..., str], seen: list[str]) -> Callable[..., 
     return wrapper
 
 
+ITEM_PRICE_NOT_FOUND = (
+    "Error: price {price:g} was not found in any search result. Use only prices that appear "
+    "in search results. If an accessory or consumable has no price in the results, leave it "
+    "out and write 'price not found' for it in the answer."
+)
+
+
+def _prices_to_check(function: object, inner: object) -> list[float]:
+    """Prices in a calculator call that must appear in search results."""
+    if not isinstance(inner, dict):
+        return []
+    if function == "value_score":
+        candidates = [inner.get("price")]
+    elif function == "ownership_cost":
+        candidates = [inner.get("product_price")]
+        for key, field in (("accessories", "price"), ("consumables", "pack_price")):
+            items = inner.get(key)
+            if isinstance(items, list):
+                candidates += [item.get(field) for item in items if isinstance(item, dict)]
+    else:
+        return []
+    return [
+        float(p)
+        for p in candidates
+        if isinstance(p, int | float) and not isinstance(p, bool) and p > 0
+    ]
+
+
 def _price_checked(func: Callable[..., str], seen: list[str], enabled: bool) -> Callable[..., str]:
-    """Wrap calculator so value_score only accepts prices seen in search results."""
+    """Wrap calculator so scored and costed prices must appear in search results."""
 
     @functools.wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> str:
-        if enabled and kwargs.get("function") == "value_score":
-            inner = kwargs.get("arguments")
-            price = inner.get("price") if isinstance(inner, dict) else None
-            if isinstance(price, int | float) and not isinstance(price, bool):
-                if not _price_in_text(price, "\n".join(seen)):
-                    return PRICE_NOT_FOUND.format(price=price)
+        if enabled:
+            haystack = "\n".join(seen)
+            function = kwargs.get("function")
+            for price in _prices_to_check(function, kwargs.get("arguments")):
+                if not _price_in_text(price, haystack):
+                    note = ITEM_PRICE_NOT_FOUND if function == "ownership_cost" else PRICE_NOT_FOUND
+                    return note.format(price=price)
         return func(*args, **kwargs)
 
     return wrapper
@@ -550,12 +580,18 @@ class Requirements:
     check_figures: bool = False
     confirm_existing: bool = False
     interview_on_update: bool = False
+    require_ownership: bool = False
 
 
 def build_requirements(interactive: bool) -> Requirements:
     """The steps a real run must complete; the interview applies only when interactive."""
     core = frozenset({"web_search", "calculator"})
-    checks = {"check_urls": True, "require_link": True, "check_figures": True}
+    checks = {
+        "check_urls": True,
+        "require_link": True,
+        "check_figures": True,
+        "require_ownership": True,
+    }
     if interactive:
         return Requirements(
             core,
@@ -643,6 +679,7 @@ def _missing_steps(
     allowed: set[float],
     calc_scores: set[float],
     update_requested: bool = False,
+    ownership_done: bool = True,
 ) -> list[str]:
     """List the required steps that have not been done yet."""
     missing = [f"call {name} successfully" for name in sorted(req.tools) if not succeeded.get(name)]
@@ -667,6 +704,17 @@ def _missing_steps(
             )
         elif not succeeded.get("save_wishlist"):
             missing.append("save the updated wishlist with save_wishlist")
+    if req.require_ownership:
+        if not ownership_done:
+            missing.append(
+                "call calculator with function ownership_cost for each candidate "
+                "(product price, must-buy accessories, consumables and running cost)"
+            )
+        if "accessor" not in answer.lower():
+            missing.append(
+                "add an 'Accessories and consumables' section ('none needed' if the product "
+                "needs none)"
+            )
     if req.check_urls:
         bad_urls = _unsupported_urls(answer, evidence)
         if bad_urls:
@@ -719,7 +767,7 @@ def run_agent(
     calc_scores: set[float] = set()
     calc_inputs: set[float] = set()
     replies: list[str] = []
-    found = {"wishlist": False}
+    found = {"wishlist": False, "ownership": False}
 
     def record(kind: str, text: str) -> None:
         """Store a step and show it right away if a listener is attached."""
@@ -754,6 +802,8 @@ def run_agent(
                                 replies.append(text)
                             if name == "calculator" and not text.startswith("Duplicate call"):
                                 calc_scores.update(_numbers(text))
+                                if text.startswith('{"upfront"'):
+                                    found["ownership"] = True
                         record("observation", text)
                     elif isinstance(message, AIMessage):
                         meta = message.usage_metadata or {}
@@ -788,6 +838,7 @@ def run_agent(
                 _numbers(evidence_text) | calc_inputs,
                 calc_scores,
                 _wants_update(replies),
+                found["ownership"],
             )
             if not missing:
                 break

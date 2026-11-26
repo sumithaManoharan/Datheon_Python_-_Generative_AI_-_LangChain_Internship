@@ -226,3 +226,50 @@ def test_where_to_buy_without_an_answer_lists_all_product_pages() -> None:
 def test_link_titles_lose_invisible_characters() -> None:
     assert cli._clean_title("IFB 16 \u200eHot [wash]") == "IFB 16 Hot wash"
     assert cli._clean_title("IFB â€Ž16") == "IFB 16"
+
+
+def test_ownership_breakdown_renders_readable_tables() -> None:
+    import json
+
+    from cartsense.agent import Step
+    from cartsense.scoring import ownership_cost
+
+    inputs = {
+        "product_price": 40000,
+        "uses_per_week": 4,
+        "accessories": [{"name": "Stabilizer", "price": 2500}],
+        "consumables": [{"name": "Salt", "pack_price": 100, "uses_per_pack": 20}],
+    }
+    call = {"function": "ownership_cost", "label": "Bosch A", "arguments": inputs}
+    steps = [
+        Step("action", "calculator(" + json.dumps(call) + ")"),
+        Step("observation", json.dumps(ownership_cost(**inputs))),
+    ]
+    text = cli.ownership_breakdown(steps)
+    assert "### Bosch A" in text
+    assert "Upfront total" in text
+    assert "Must-buy: Stabilizer" in text
+    assert "| Salt |" in text
+    assert "First-year cost" in text
+
+
+def test_ownership_breakdown_is_empty_without_ownership_calls() -> None:
+    from cartsense.agent import Step
+
+    assert cli.ownership_breakdown([]) == ""
+    steps = [Step("action", 'calculator({"expression": "1 + 1"})'), Step("observation", "2.0")]
+    assert cli.ownership_breakdown(steps) == ""
+
+
+def test_parallel_tool_calls_are_paired_in_order() -> None:
+    from cartsense.agent import Step
+
+    one = "https://www.amazon.in/A/dp/B07JW77MVJ"
+    two = "https://www.amazon.in/B/dp/B0D7PZ4HW2"
+    steps = [
+        Step("action", 'web_search({"query": "a"})'),
+        Step("action", 'web_search({"query": "b"})'),
+        Step("observation", f'[{{"title": "A", "url": "{one}", "snippet": "x"}}]'),
+        Step("observation", f'[{{"title": "B", "url": "{two}", "snippet": "y"}}]'),
+    ]
+    assert [url for _, url in cli.search_links(steps)] == [one, two]

@@ -4,6 +4,14 @@ Task 1 of the Datheon Python + Generative AI & LangChain internship. Hirelyzer r
 
 **Task 2:** a document Q&A assistant with RAG, source citations and refusal lives in [`02_DocQA_RAG/`](02_DocQA_RAG/README.md).
 
+## Tasks
+
+| Task | Folder | Run (from the folder) |
+|---|---|---|
+| 1. Structured JSON extractor (Hirelyzer) | [`01_Hirelyzer/`](01_Hirelyzer/) | `uv run python -m hirelyzer.cli <resume file>` |
+| 2. Document Q&A with RAG | [`02_DocQA_RAG/`](02_DocQA_RAG/README.md) | see its README |
+| 3. Multi-tool agent (CartSense) | [`03_CartSense/`](03_CartSense/README.md) | `uv run python -m cartsense.cli "I want to buy a phone"` |
+
 ## Quick start
 
 ```bash

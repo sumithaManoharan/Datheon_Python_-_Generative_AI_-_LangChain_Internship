@@ -4,6 +4,8 @@ Task 1 of the Datheon Python + Generative AI & LangChain internship. Hirelyzer r
 
 **Task 2:** a document Q&A assistant with RAG, source citations and refusal lives in [`02_DocQA_RAG/`](02_DocQA_RAG/README.md).
 
+**Task 4:** a streaming Streamlit chat app for your own documents, built on Task 2, lives in [`04_DocQA_Streamlit/`](04_DocQA_Streamlit/README.md).
+
 ## Tasks
 
 | Task | Folder | Run (from the folder) |

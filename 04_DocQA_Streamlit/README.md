@@ -136,8 +136,13 @@ retry on opening, memory and telemetry written only at the end), the workspace (
 the table above, isolation from the main store, cleanup, folders, zips, limits, a
 password-protected entry) and the upload and theme helpers (including HTML escaping).
 
-The screen itself (`ui.py`) is a thin layer over those modules and is checked by hand in the
-browser.
+The screen itself is tested headlessly with Streamlit's `AppTest`, using a fake workspace placed
+in `st.session_state`: the empty state and cards, the status pill, a streamed answer with
+sources, the hand-off of the session memory, a refusal, a failure part-way through an answer,
+Clear chat, Remove all documents, the folder box, a failed file listed by name, and the start-up
+messages for a missing API key and an invalid setting. These tests found a real bug (Clear chat
+stayed disabled after the first answer), which is fixed. How the page looks is not tested; it
+was checked by eye in the browser.
 
 ## Known limits
 
@@ -171,3 +176,4 @@ browser.
 - **LangChain.** As in Task 2, LangChain is used only for the text splitter; retrieval,
   prompting and streaming use the OpenAI-compatible client directly, which keeps the streaming
   and retry behaviour explicit and testable.
+  

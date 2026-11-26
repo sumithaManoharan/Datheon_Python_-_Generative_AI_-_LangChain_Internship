@@ -5,6 +5,8 @@ from typing import Protocol
 
 from docqa_web.workspace import DocumentWorkspace, FileResult
 
+ZIP_SUFFIX = ".zip"
+
 
 class Upload(Protocol):
     """What the app needs from an uploaded file (Streamlit's UploadedFile has all of it)."""
@@ -20,7 +22,7 @@ class Upload(Protocol):
 def ingest_new_uploads(
     workspace: DocumentWorkspace, uploads: Iterable[Upload], seen: set[str]
 ) -> list[FileResult]:
-    """Ingest the uploads not handled before, and return one result per new file.
+    """Ingest the uploads not handled before; a zip gives one result per file inside it.
 
     Streamlit re-runs the script on every click and the uploader keeps returning the same
     files, so `seen` (file ids) stops a file being read twice. A file that failed is marked
@@ -31,5 +33,8 @@ def ingest_new_uploads(
         if upload.file_id in seen:
             continue
         seen.add(upload.file_id)
-        results.append(workspace.add_file(upload.name, upload.getvalue()))
+        if upload.name.lower().endswith(ZIP_SUFFIX):
+            results.extend(workspace.add_zip(upload.name, upload.getvalue()))
+        else:
+            results.append(workspace.add_file(upload.name, upload.getvalue()))
     return results

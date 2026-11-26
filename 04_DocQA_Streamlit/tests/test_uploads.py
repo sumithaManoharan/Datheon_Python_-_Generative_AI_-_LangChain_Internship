@@ -10,6 +10,11 @@ class FakeWorkspace:
     def __init__(self, failing=()) -> None:
         self._failing = set(failing)
         self.added: list[tuple[str, bytes]] = []
+        self.zips: list[tuple[str, bytes]] = []
+
+    def add_zip(self, name: str, data: bytes) -> list[FileResult]:
+        self.zips.append((name, data))
+        return [FileResult("inner1.md", True, "added"), FileResult("inner2.md", False, "bad")]
 
     def add_file(self, name: str, data: bytes) -> FileResult:
         self.added.append((name, data))
@@ -63,3 +68,21 @@ def test_a_failed_file_is_reported_and_not_retried():
 
 def test_no_uploads_gives_no_results():
     assert ingest_new_uploads(FakeWorkspace(), [], set()) == []
+
+
+def test_a_zip_goes_to_add_zip_and_gives_one_result_per_inner_file():
+    workspace = FakeWorkspace()
+    results = ingest_new_uploads(
+        workspace, [_upload("1", "Bundle.ZIP", b"PK"), _upload("2", "a.md")], set()
+    )
+
+    assert workspace.zips == [("Bundle.ZIP", b"PK")]
+    assert [r.name for r in results] == ["inner1.md", "inner2.md", "a.md"]
+    assert [name for name, _ in workspace.added] == ["a.md"]
+
+
+def test_a_zip_already_seen_is_not_opened_again():
+    workspace, seen = FakeWorkspace(), {"1"}
+
+    assert ingest_new_uploads(workspace, [_upload("1", "bundle.zip")], seen) == []
+    assert workspace.zips == []

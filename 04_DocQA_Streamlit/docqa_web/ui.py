@@ -16,11 +16,11 @@ from docqa.logging_setup import configure_logging
 from dotenv import find_dotenv, load_dotenv
 from streamlit.delta_generator import DeltaGenerator
 
-from docqa_web.uploads import ingest_new_uploads
-from docqa_web.workspace import DocumentWorkspace
+from docqa_web.uploads import ZIP_SUFFIX, ingest_new_uploads
+from docqa_web.workspace import DocumentWorkspace, FileResult
 
 PAGE_TITLE = "DocQA Chat"
-UPLOAD_TYPES = [suffix.lstrip(".") for suffix in sorted(SUPPORTED_SUFFIXES)]
+UPLOAD_TYPES = [suffix.lstrip(".") for suffix in sorted(SUPPORTED_SUFFIXES | {ZIP_SUFFIX})]
 CURSOR = "▌"
 THINKING = "_Searching your documents..._"
 
@@ -86,38 +86,55 @@ def _init_state() -> None:
 
 
 def _render_sidebar() -> None:
-    """Upload box, per-file results, what is loaded, and the two reset buttons."""
+    """Upload box, folder box, what went wrong, what is loaded, and the two reset buttons."""
     state = st.session_state
     workspace = state.workspace
     with st.sidebar:
         st.header("Documents")
         uploads = st.file_uploader(
-            "Add documents",
+            "Add files or a zip",
             type=UPLOAD_TYPES,
             accept_multiple_files=True,
             key=f"uploader-{state.uploader_key}",
-            help=f"Supported: {', '.join(UPLOAD_TYPES)}",
+            help="Select or drop many files at once. A .zip is opened and its documents added.",
         )
         if uploads:
             with st.spinner("Reading and indexing your documents..."):
-                results = ingest_new_uploads(workspace, uploads, state.seen_uploads)
-            state.upload_status.update({result.name: result for result in results})
-        for result in state.upload_status.values():
-            if result.ok:
-                st.success(f"{result.name}: {result.message}")
-            else:
-                st.error(f"{result.name}: {result.message}")
-        if workspace.documents:
-            st.markdown(
-                f"**{len(workspace.documents)} document(s) ready** "
-                f"({workspace.chunk_count} passages)"
-            )
+                _record(ingest_new_uploads(workspace, uploads, state.seen_uploads))
+        folder = st.text_input(
+            "Or a folder on this computer",
+            key=f"folder-{state.uploader_key}",
+            placeholder="/home/you/Documents/policies",
+        )
+        if st.button("Load folder", disabled=not folder.strip()):
+            with st.spinner("Reading and indexing the folder..."):
+                _record(workspace.add_folder(folder))
+        _show_status(workspace)
         st.button("Clear chat", on_click=_clear_chat, disabled=not state.messages)
         st.button(
             "Remove all documents",
             on_click=_remove_documents,
             disabled=not (workspace.documents or state.upload_status),
         )
+
+
+def _record(results: list[FileResult]) -> None:
+    """Remember the latest result for each file name, so the sidebar can show problems."""
+    st.session_state.upload_status.update({result.name: result for result in results})
+
+
+def _show_status(workspace: DocumentWorkspace) -> None:
+    """Each file that could not be added, then a summary of what is ready to search."""
+    for result in st.session_state.upload_status.values():
+        if not result.ok:
+            st.error(f"{result.name}: {result.message}")
+    if workspace.documents:
+        st.success(
+            f"{len(workspace.documents)} document(s) ready ({workspace.chunk_count} passages)"
+        )
+        with st.expander("Show documents"):
+            for name in workspace.documents:
+                st.text(name)
 
 
 def _render_history() -> None:

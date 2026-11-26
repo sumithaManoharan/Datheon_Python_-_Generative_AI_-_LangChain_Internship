@@ -1,0 +1,16 @@
+# Colour theme and tidy-ups for the DocQA chat app.
+# Streamlit reads this file from the folder it is started in, so run the app from here.
+
+[theme]
+base = "light"
+primaryColor = "#6C5CE7"
+backgroundColor = "#FBFAFF"
+secondaryBackgroundColor = "#F1EEFF"
+textColor = "#1F1B3A"
+font = "sans serif"
+
+[client]
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false

@@ -1,0 +1,148 @@
+/* DocQA Chat look and feel.
+   Accents only (no page or text colours), so it sits on top of any Streamlit base theme. */
+
+:root {
+  --dq-violet: #6c5ce7;
+  --dq-violet-soft: #8e6cf0;
+  --dq-teal: #00b8a9;
+  --dq-mint: #2ed8a7;
+  --dq-coral: #ff7675;
+  --dq-sun: #fdcb6e;
+}
+
+.block-container {
+  padding-top: 1.6rem;
+  max-width: 52rem;
+}
+
+/* ---------- header banner ---------- */
+.dq-banner {
+  background: linear-gradient(120deg, var(--dq-violet) 0%, var(--dq-violet-soft) 45%, var(--dq-coral) 100%);
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 1.5rem 1.7rem;
+  margin-bottom: 1.3rem;
+  box-shadow: 0 12px 32px rgba(108, 92, 231, 0.30);
+}
+.dq-title {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+.dq-tagline {
+  margin-top: 0.4rem;
+  font-size: 1.02rem;
+  opacity: 0.94;
+}
+
+/* ---------- "how it works" cards ---------- */
+.dq-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.9rem;
+  margin: 0.4rem 0 1rem;
+}
+.dq-step {
+  border-radius: 16px;
+  padding: 1.05rem 1.1rem;
+  border: 1px solid rgba(108, 92, 231, 0.28);
+  background: rgba(108, 92, 231, 0.07);
+  border-top-width: 5px;
+  border-top-color: var(--dq-violet);
+}
+.dq-step:nth-child(2) {
+  border-color: rgba(0, 184, 169, 0.32);
+  border-top-color: var(--dq-teal);
+  background: rgba(0, 184, 169, 0.07);
+}
+.dq-step:nth-child(3) {
+  border-color: rgba(255, 118, 117, 0.34);
+  border-top-color: var(--dq-coral);
+  background: rgba(255, 118, 117, 0.07);
+}
+.dq-step-head {
+  font-weight: 800;
+  font-size: 1.05rem;
+  margin-bottom: 0.25rem;
+}
+.dq-step-body {
+  font-size: 0.93rem;
+  opacity: 0.85;
+}
+
+/* ---------- chat ---------- */
+div[data-testid="stChatMessage"] {
+  border-radius: 18px;
+  padding: 0.95rem 1.05rem;
+  margin-bottom: 0.7rem;
+  border: 1px solid rgba(127, 127, 127, 0.18);
+}
+div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+  background: rgba(108, 92, 231, 0.10);
+  border-left: 5px solid var(--dq-violet);
+}
+div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {
+  background: rgba(0, 184, 169, 0.08);
+  border-left: 5px solid var(--dq-teal);
+}
+div[data-testid="stChatInput"] {
+  border-radius: 18px;
+  border: 1.5px solid rgba(108, 92, 231, 0.50);
+}
+div[data-testid="stChatInput"]:focus-within {
+  border-color: var(--dq-violet);
+  box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.18);
+}
+
+/* ---------- source chips and status pill ---------- */
+.dq-chip {
+  display: inline-block;
+  padding: 0.12rem 0.6rem;
+  margin-right: 0.45rem;
+  border-radius: 999px;
+  background: var(--dq-teal);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.dq-pill {
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  margin: 0.3rem 0 0.5rem;
+  border-radius: 16px;
+  background: linear-gradient(90deg, var(--dq-teal), var(--dq-mint));
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.86rem;
+  box-shadow: 0 4px 12px rgba(0, 184, 169, 0.30);
+}
+
+/* ---------- sidebar and buttons ---------- */
+section[data-testid="stSidebar"] {
+  background: linear-gradient(180deg, rgba(108, 92, 231, 0.13), rgba(0, 184, 169, 0.07));
+}
+.stButton > button {
+  border-radius: 12px;
+  font-weight: 600;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.stButton > button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(108, 92, 231, 0.28);
+  border-color: var(--dq-violet);
+}
+
+/* ---------- small screens ---------- */
+@media (max-width: 640px) {
+  .block-container {
+    padding-top: 1rem;
+  }
+  .dq-banner {
+    padding: 1.1rem 1.1rem;
+    border-radius: 16px;
+  }
+  .dq-title {
+    font-size: 1.45rem;
+  }
+}

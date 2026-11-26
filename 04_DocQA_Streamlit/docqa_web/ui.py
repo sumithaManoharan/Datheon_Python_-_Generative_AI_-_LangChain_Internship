@@ -16,6 +16,14 @@ from docqa.logging_setup import configure_logging
 from dotenv import find_dotenv, load_dotenv
 from streamlit.delta_generator import DeltaGenerator
 
+from docqa_web.theme import (
+    banner_html,
+    load_css,
+    ready_pill_html,
+    source_chip_html,
+    steps_html,
+    style_tag,
+)
 from docqa_web.uploads import ZIP_SUFFIX, ingest_new_uploads
 from docqa_web.workspace import DocumentWorkspace, FileResult
 
@@ -35,23 +43,17 @@ class ChatMessage:
     error: str | None = None
 
 
-def source_line(citation: Citation) -> str:
-    """The source line shown under an answer, e.g. '**[1] guide.pdf** (page 3)'."""
-    location = f" ({citation.location()})" if citation.location() else ""
-    return f"**[{citation.number}] {citation.source}**{location}"
-
-
 def render() -> None:
     """Draw the whole page for this run of the script."""
     st.set_page_config(page_title=PAGE_TITLE, page_icon="\U0001f4ac")
+    st.markdown(style_tag(load_css()), unsafe_allow_html=True)
     _init_state()
     _render_sidebar()
-    st.title("Chat with your documents")
-    st.caption("Answers come only from the documents you upload, with sources.")
+    st.markdown(banner_html(), unsafe_allow_html=True)
     _render_history()
     ready = bool(st.session_state.workspace.documents)
     if not ready:
-        st.info("Upload one or more documents in the sidebar to start asking questions.")
+        st.markdown(steps_html(), unsafe_allow_html=True)
     prompt = st.chat_input(
         "Ask a question about your documents",
         max_chars=st.session_state.settings.max_question_chars,
@@ -90,7 +92,7 @@ def _render_sidebar() -> None:
     state = st.session_state
     workspace = state.workspace
     with st.sidebar:
-        st.header("Documents")
+        st.header("\U0001f4da Your documents")
         uploads = st.file_uploader(
             "Add files or a zip",
             type=UPLOAD_TYPES,
@@ -106,13 +108,13 @@ def _render_sidebar() -> None:
             key=f"folder-{state.uploader_key}",
             placeholder="/home/you/Documents/policies",
         )
-        if st.button("Load folder", disabled=not folder.strip()):
+        if st.button("\U0001f4c2 Load folder", disabled=not folder.strip()):
             with st.spinner("Reading and indexing the folder..."):
                 _record(workspace.add_folder(folder))
         _show_status(workspace)
-        st.button("Clear chat", on_click=_clear_chat, disabled=not state.messages)
+        st.button("\U0001f9f9 Clear chat", on_click=_clear_chat, disabled=not state.messages)
         st.button(
-            "Remove all documents",
+            "\U0001f5d1\ufe0f Remove all documents",
             on_click=_remove_documents,
             disabled=not (workspace.documents or state.upload_status),
         )
@@ -129,8 +131,9 @@ def _show_status(workspace: DocumentWorkspace) -> None:
         if not result.ok:
             st.error(f"{result.name}: {result.message}")
     if workspace.documents:
-        st.success(
-            f"{len(workspace.documents)} document(s) ready ({workspace.chunk_count} passages)"
+        st.markdown(
+            ready_pill_html(len(workspace.documents), workspace.chunk_count),
+            unsafe_allow_html=True,
         )
         with st.expander("Show documents"):
             for name in workspace.documents:
@@ -148,9 +151,9 @@ def _render_history() -> None:
 def _show_extras(message: ChatMessage) -> None:
     """Sources (as an expander) and an error line, when the message has them."""
     if message.citations:
-        with st.expander(f"Sources ({len(message.citations)})"):
+        with st.expander(f"\U0001f4da Sources ({len(message.citations)})"):
             for citation in message.citations:
-                st.markdown(source_line(citation))
+                st.markdown(source_chip_html(citation), unsafe_allow_html=True)
                 st.text(citation.snippet)
     if message.error:
         st.error(message.error)

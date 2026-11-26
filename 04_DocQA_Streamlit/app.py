@@ -1,8 +1,9 @@
 """Entry point for the DocQA chat web app.
 
-Run from the repository root:
+Run from this folder, so Streamlit finds `.streamlit/config.toml` (the colour theme):
 
-    PYTHONPATH=02_DocQA_RAG uv run streamlit run 04_DocQA_Streamlit/app.py
+    cd 04_DocQA_Streamlit
+    PYTHONPATH=../02_DocQA_RAG uv run streamlit run app.py
 """
 
 from docqa_web.ui import render

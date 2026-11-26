@@ -3,20 +3,27 @@
 import logging
 import time
 from collections import defaultdict
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Iterator, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
 from openai import OpenAI
 
-from docqa.answer import Answer, AnswerGenerator, Turn, load_system_prompt, validate_question
+from docqa.answer import (
+    Answer,
+    AnswerGenerator,
+    AnswerStream,
+    Turn,
+    load_system_prompt,
+    validate_question,
+)
 from docqa.chunking import Chunk, chunk_documents
 from docqa.config import Settings
 from docqa.conversation import ConversationMemory
 from docqa.embeddings import OpenAIEmbedder
 from docqa.errors import DocQAError
 from docqa.loader import load_directory
-from docqa.retriever import Retriever
+from docqa.retriever import RetrievedChunk, Retriever
 from docqa.store import VectorStore, content_key
 from docqa.telemetry import QueryRecord, TelemetryLog, telemetry_path, utc_timestamp
 
@@ -34,6 +41,26 @@ class IngestSummary:
     skipped: int
     failures: tuple[str, ...]
     total_chunks: int
+
+
+class ChatStream:
+    """A chat answer arriving in pieces; memory and telemetry are updated when it ends.
+
+    Iterate once. If the reader stops early or the stream fails, nothing is recorded.
+    """
+
+    def __init__(self, stream: AnswerStream, on_complete: Callable[[Answer], None]) -> None:
+        self._stream = stream
+        self._on_complete = on_complete
+
+    def __iter__(self) -> Iterator[str]:
+        yield from self._stream
+        self._on_complete(self._stream.answer)
+
+    @property
+    def answer(self) -> Answer:
+        """The finished answer; only available after the stream has been read to the end."""
+        return self._stream.answer
 
 
 class DocQAPipeline:
@@ -110,6 +137,26 @@ class DocQAPipeline:
         memory.add(question, answer.text)
         return answer
 
+    def chat_stream(self, question: str, memory: ConversationMemory) -> ChatStream:
+        """Like `chat`, but the answer streams in pieces.
+
+        The follow-up is rewritten and the passages are retrieved before this returns, so
+        those errors surface here. The exchange is added to `memory` and the telemetry record
+        is written only once the stream has been read to the end.
+        """
+        question = validate_question(question, self._max_question_chars)
+        history = memory.turns
+        started = self._clock()
+        search_text, retrieved = self._search(question, history)
+        retrieved_at = self._clock()
+        stream = self._generator.answer_stream(search_text, retrieved, history)
+
+        def on_complete(answer: Answer) -> None:
+            self._record(question, len(retrieved), answer, started, retrieved_at)
+            memory.add(question, answer.text)
+
+        return ChatStream(stream, on_complete)
+
     def _answer_question(self, question: str, history: Sequence[Turn]) -> Answer:
         """Retrieve and answer; refuses when nothing relevant is found.
 
@@ -117,17 +164,30 @@ class DocQAPipeline:
         When telemetry is configured, one record per answered question is appended.
         """
         started = self._clock()
-        search_text = self._generator.condense(question, history) if history else question
-        retrieved = self._retriever.retrieve(search_text)
+        search_text, retrieved = self._search(question, history)
         retrieved_at = self._clock()
         answer = self._generator.answer(search_text, retrieved, history)
+        self._record(question, len(retrieved), answer, started, retrieved_at)
+        return answer
+
+    def _search(
+        self, question: str, history: Sequence[Turn]
+    ) -> tuple[str, Sequence[RetrievedChunk]]:
+        """The text searched for (a standalone rewrite when there is history) and its hits."""
+        search_text = self._generator.condense(question, history) if history else question
+        return search_text, self._retriever.retrieve(search_text)
+
+    def _record(
+        self, question: str, retrieved: int, answer: Answer, started: float, retrieved_at: float
+    ) -> None:
+        """Append one telemetry record, when telemetry is configured."""
         finished = self._clock()
         if self._telemetry is not None:
             self._telemetry.record(
                 QueryRecord(
                     timestamp=utc_timestamp(),
                     question_chars=len(question),
-                    retrieved=len(retrieved),
+                    retrieved=retrieved,
                     refused=answer.refused,
                     retrieve_seconds=round(retrieved_at - started, TIMING_DECIMALS),
                     generate_seconds=round(finished - retrieved_at, TIMING_DECIMALS),
@@ -135,7 +195,6 @@ class DocQAPipeline:
                     completion_tokens=answer.completion_tokens or 0,
                 )
             )
-        return answer
 
 
 def build_pipeline(

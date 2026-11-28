@@ -39,30 +39,66 @@ question -> chat_input -> pipeline.chat_stream(question, memory)
    4. at the end: final answer and citations, memory updated, telemetry written
 ```
 
-## How to run
+## How to run: the notebook is the main guide
+
+[`Task4_Streamlit_AI_Chatbot.ipynb`](Task4_Streamlit_AI_Chatbot.ipynb) is the main way to understand
+and run this project. It walks through everything in order: objective and key concepts, what the app
+does, the architecture, the source of every part of the web app, the streaming pieces in the Task 2
+pipeline, the per-session store and its upload checks, how to run the app, screenshots, tests, design
+decisions and limitations. It can also start the real Streamlit app from inside the notebook and show
+it in a frame.
+
+**1. Install and add your API key (once)**
 
 ```bash
-uv sync                          # from the repository root (Python 3.12)
-# put OPENROUTER_API_KEY in a .env file (see 02_DocQA_RAG/.env.example)
+uv sync                                                          # from the repository root (Python 3.12)
+cp 02_DocQA_RAG/.env.example 04_DocQA_Streamlit/.env             # then set OPENROUTER_API_KEY in .env
+```
 
+**2. Open the notebook from the repository root**
+
+```bash
+uv run --with jupyter jupyter lab
+```
+
+Open `Task4_Streamlit_AI_Chatbot.ipynb` and choose **Run All Cells**. This does not change the project
+dependencies. The notebook finds the app folder and the Task 2 folder by itself. The app is a web
+server, so it is **not** started by "Run All". To start it inside the notebook, set `START_APP = True`
+in the "Run the app" section and run that cell, and run the stop cell when you are finished. The
+app needs the API key from step 1 to answer questions.
+
+The notebook does not duplicate the code. It reads the project files and the Task 2 classes from
+disk, so it always matches the tested code.
+
+## Optional: detailed review
+
+The items in this section are optional. They are for a reviewer who wants to go deeper than the notebook.
+
+- **Full project documentation:** [`04_DocQA_Streamlit/README.md`](04_DocQA_Streamlit/README.md) covers the look and feel, the upload checks and safety rules, the layout, tests, known limits and design decisions.
+- **Run the app in a terminal, without the notebook:**
+
+```bash
 cd 04_DocQA_Streamlit
 PYTHONPATH=../02_DocQA_RAG uv run streamlit run app.py
 ```
 
-Streamlit prints a local address (usually http://localhost:8501). Start the app from this folder so
-it finds `.streamlit/config.toml`.
+  Streamlit prints a local address (usually http://localhost:8501). Start the app from this folder so
+  it finds `.streamlit/config.toml`. `PYTHONPATH` points at the Task 2 package (`docqa`), which the app imports.
+
+- **Tests:**
 
 ```bash
 uv run pytest -q                 # offline tests, no network or API key needed
 ```
 
-The screen is tested headlessly with Streamlit's `AppTest` (streamed answer, refusal, mid-answer
-failure, Clear chat, Remove all documents, missing API key).
+  The screen is tested headlessly with Streamlit's `AppTest` (streamed answer, refusal, mid-answer
+  failure, Clear chat, Remove all documents, missing API key).
 
 ## Where things are
 
 | Path | What |
 |---|---|
+| `Task4_Streamlit_AI_Chatbot.ipynb` | Notebook walkthrough of the whole project (repository root) |
 | `04_DocQA_Streamlit/app.py` | Entry point |
 | `04_DocQA_Streamlit/docqa_web/` | `ui.py`, `workspace.py`, `uploads.py`, `theme.py`, `style.css` |
 | `04_DocQA_Streamlit/.streamlit/config.toml` | Colour theme |

@@ -85,6 +85,20 @@ uv run ruff check . && uv run ruff format --check .
 All tests use scripted fake models and fake search functions. No test touches the network or
 spends search credits.
 
+## Web UI
+
+A Gradio front end for the same agent, in `ui/app.py`. It is presentation only, so the agent code is unchanged.
+
+From `03_CartSense/`, after completing Setup:
+
+```bash
+uv run --with "gradio>=5,<6" python ui/app.py
+```
+
+Open the local URL that Gradio prints in the terminal (usually http://127.0.0.1:7860).
+
+The UI reads the same `.env` settings as the CLI, so `OPENROUTER_API_KEY` must be set.
+
 ## Limitations
 
 - Checks confirm that a number appears in the search results, not that it belongs to the

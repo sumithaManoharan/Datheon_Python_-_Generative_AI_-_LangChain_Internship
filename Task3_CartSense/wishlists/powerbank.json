@@ -1,0 +1,20 @@
+{
+  "category": "powerbank",
+  "budget": 5000.0,
+  "currency": "INR",
+  "years_of_use": 5.0,
+  "warranty_years": 1.0,
+  "priorities": [
+    "fast charging",
+    "reliability"
+  ],
+  "dealbreakers": [
+    "must not overheat",
+    "must have USB-C",
+    "no heavy weight"
+  ],
+  "specs": {
+    "capacity_mah": "5000",
+    "devices_to_charge": "1"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "category": "phone",
+  "budget": 25000.0,
+  "currency": "INR",
+  "years_of_use": 3.0,
+  "warranty_years": 1.0,
+  "priorities": [
+    "design",
+    "sleek look"
+  ],
+  "dealbreakers": [
+    "need fast charging"
+  ],
+  "specs": {
+    "ram": "8 GB",
+    "storage": "128 GB"
+  }
+}

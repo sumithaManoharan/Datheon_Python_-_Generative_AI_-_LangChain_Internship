@@ -1,0 +1,19 @@
+{
+  "category": "dishwasher",
+  "budget": 50000.0,
+  "currency": "INR",
+  "years_of_use": 10.0,
+  "warranty_years": 5.0,
+  "priorities": [
+    "energy efficiency",
+    "high capacity"
+  ],
+  "dealbreakers": [
+    "no self cleaning",
+    "low water pressure"
+  ],
+  "specs": {
+    "household_size": "4",
+    "loads_per_week": "3 to 5"
+  }
+}

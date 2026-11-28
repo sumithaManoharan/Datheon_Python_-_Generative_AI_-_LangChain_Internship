@@ -1,0 +1,20 @@
+{
+  "category": "washing machine",
+  "budget": 45000.0,
+  "currency": "INR",
+  "years_of_use": 15.0,
+  "warranty_years": 5.0,
+  "priorities": [
+    "less noise",
+    "front load"
+  ],
+  "dealbreakers": [
+    "high electricity consumption",
+    "more time to wash cloths",
+    "less settings"
+  ],
+  "specs": {
+    "loads_per_week": "7 to 10",
+    "household_size": "4"
+  }
+}

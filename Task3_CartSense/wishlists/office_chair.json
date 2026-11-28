@@ -1,0 +1,18 @@
+{
+  "category": "office chair",
+  "budget": 4000.0,
+  "currency": "INR",
+  "years_of_use": 5.0,
+  "warranty_years": 1.0,
+  "priorities": [
+    "comfortness",
+    "wheels"
+  ],
+  "dealbreakers": [
+    "not comfortable"
+  ],
+  "specs": {
+    "weight_capacity": "100kg",
+    "seat_width": "as wide as possible"
+  }
+}

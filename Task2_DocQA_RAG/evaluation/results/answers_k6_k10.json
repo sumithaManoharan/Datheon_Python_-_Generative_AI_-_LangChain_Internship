@@ -1,0 +1,5156 @@
+{
+  "answers": [
+    {
+      "question": "Who won the prestigious IIOTY award in 2023?",
+      "category": "direct_fact",
+      "keywords": [
+        "Maxine",
+        "Thompson",
+        "IIOTY"
+      ],
+      "k": 6,
+      "text": "The prestigious IIOTY award in 2023 was won by **Maxine Thompson**[1][5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1124,
+      "completion_tokens": 134,
+      "seconds": 3.104015143995639,
+      "error": null
+    },
+    {
+      "question": "When was Insurellm founded?",
+      "category": "direct_fact",
+      "keywords": [
+        "2015",
+        "founded"
+      ],
+      "k": 6,
+      "text": "Insurellm was founded in 2015. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1011,
+      "completion_tokens": 108,
+      "seconds": 2.1876056579931173,
+      "error": null
+    },
+    {
+      "question": "Who founded Insurellm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Avery",
+        "Lancaster"
+      ],
+      "k": 6,
+      "text": "Insurellm was founded by Avery Lancaster[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1010,
+      "completion_tokens": 77,
+      "seconds": 1.722255763001158,
+      "error": null
+    },
+    {
+      "question": "How many employees does Insurellm currently have?",
+      "category": "direct_fact",
+      "keywords": [
+        "32",
+        "employees"
+      ],
+      "k": 6,
+      "text": "Insurellm currently has 32 employees. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1014,
+      "completion_tokens": 456,
+      "seconds": 4.607366825002828,
+      "error": null
+    },
+    {
+      "question": "What was Insurellm's first product?",
+      "category": "direct_fact",
+      "keywords": [
+        "Markellm",
+        "first"
+      ],
+      "k": 6,
+      "text": "Insurellm’s first product was **Markellm**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 854,
+      "completion_tokens": 85,
+      "seconds": 2.151133920007851,
+      "error": null
+    },
+    {
+      "question": "How many active contracts does Insurellm manage?",
+      "category": "direct_fact",
+      "keywords": [
+        "32",
+        "contracts"
+      ],
+      "k": 6,
+      "text": "Insurellm manages **32 active contracts**[1][4][5].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1032,
+      "completion_tokens": 169,
+      "seconds": 2.4575877399911406,
+      "error": null
+    },
+    {
+      "question": "Where is Insurellm's headquarters located?",
+      "category": "direct_fact",
+      "keywords": [
+        "San Francisco",
+        "headquarters"
+      ],
+      "k": 6,
+      "text": "Insurellm’s headquarters is located in San Francisco. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1026,
+      "completion_tokens": 119,
+      "seconds": 2.560705894997227,
+      "error": null
+    },
+    {
+      "question": "How many office locations does Insurellm maintain?",
+      "category": "direct_fact",
+      "keywords": [
+        "offices in",
+        "5"
+      ],
+      "k": 6,
+      "text": "Insurellm maintains five office locations: San Francisco (HQ) plus satellite offices in New York, Austin, Chicago, and Denver. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1027,
+      "completion_tokens": 295,
+      "seconds": 1.4251658790017245,
+      "error": null
+    },
+    {
+      "question": "What is Insurellm's vision statement?",
+      "category": "direct_fact",
+      "keywords": [
+        "revolutionize",
+        "insurance",
+        "technology"
+      ],
+      "k": 6,
+      "text": "To revolutionize the insurance industry through innovative technology that makes insurance accessible, transparent, and effortless for everyone. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 833,
+      "completion_tokens": 96,
+      "seconds": 1.2880947640078375,
+      "error": null
+    },
+    {
+      "question": "How many Bizllm contracts has Insurellm secured?",
+      "category": "direct_fact",
+      "keywords": [
+        "7",
+        "Bizllm"
+      ],
+      "k": 6,
+      "text": "Insurellm has secured **7** Bizllm contracts[1][5].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1054,
+      "completion_tokens": 103,
+      "seconds": 1.7920688260055613,
+      "error": null
+    },
+    {
+      "question": "How many Claimllm contracts does Insurellm have?",
+      "category": "direct_fact",
+      "keywords": [
+        "7",
+        "Claimllm"
+      ],
+      "k": 6,
+      "text": "Insurellm has 7 Claimllm contracts[1][3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1050,
+      "completion_tokens": 103,
+      "seconds": 2.036398003998329,
+      "error": null
+    },
+    {
+      "question": "How many life insurance contracts has Lifellm secured?",
+      "category": "direct_fact",
+      "keywords": [
+        "6",
+        "Lifellm"
+      ],
+      "k": 6,
+      "text": "Lifellm has secured three life‑insurance contracts: one with Metropolitan Life Group, one with Evergreen Life Insurance, and one with Guardian Life Partners[1][2][3].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1055,
+      "completion_tokens": 217,
+      "seconds": 2.827947014986421,
+      "error": null
+    },
+    {
+      "question": "How many health insurance contracts does Healthllm have?",
+      "category": "direct_fact",
+      "keywords": [
+        "6",
+        "Healthllm"
+      ],
+      "k": 6,
+      "text": "Healthllm has three health‑insurance contracts: one with WellCare Insurance Co. [3], one with United Healthcare Alliance [2], and one with Harmony Health Plans [4].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1109,
+      "completion_tokens": 210,
+      "seconds": 2.5558270170004107,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Carllm's Basic Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$1,000",
+        "Basic",
+        "Carllm"
+      ],
+      "k": 6,
+      "text": "$1,000/month[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1277,
+      "completion_tokens": 63,
+      "seconds": 2.076242192997597,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Carllm's Enterprise Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$5,000",
+        "Enterprise",
+        "Carllm"
+      ],
+      "k": 6,
+      "text": "$5,000/month[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1306,
+      "completion_tokens": 253,
+      "seconds": 2.9139035530097317,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Homellm's Standard Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$10,000",
+        "Standard",
+        "Homellm"
+      ],
+      "k": 6,
+      "text": "The Homellm Standard Tier costs **$10,000 per month**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1138,
+      "completion_tokens": 146,
+      "seconds": 2.3570792070095195,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Bizllm's Professional Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$12,000",
+        "Professional",
+        "Bizllm"
+      ],
+      "k": 6,
+      "text": "$12,000/month[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1241,
+      "completion_tokens": 128,
+      "seconds": 2.778458977001719,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Claimllm's Core Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$4,500",
+        "Core",
+        "Claimllm"
+      ],
+      "k": 6,
+      "text": "The monthly cost of Claimllm's Core Tier is **$4,500/month**[1][2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1280,
+      "completion_tokens": 113,
+      "seconds": 1.980083944989019,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Healthllm's Essential Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$8,000",
+        "Essential",
+        "Healthllm"
+      ],
+      "k": 6,
+      "text": "$8,000 per month[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1289,
+      "completion_tokens": 102,
+      "seconds": 1.9112794649990974,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Lifellm's Starter Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$3,500",
+        "Starter",
+        "Lifellm"
+      ],
+      "k": 6,
+      "text": "The monthly cost of Lifellm's Starter Tier is $3,500/month. [1][3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1239,
+      "completion_tokens": 120,
+      "seconds": 2.5104373350040987,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Rellm's Basic Plan?",
+      "category": "direct_fact",
+      "keywords": [
+        "$5,000",
+        "Basic",
+        "Rellm"
+      ],
+      "k": 6,
+      "text": "$5,000/month[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1202,
+      "completion_tokens": 71,
+      "seconds": 1.6488203430053545,
+      "error": null
+    },
+    {
+      "question": "What is Maxine Thompson's current job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Senior Data Engineer",
+        "Maxine"
+      ],
+      "k": 6,
+      "text": "Maxine Thompson’s current job title is **Senior Data Engineer**[5][6]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 914,
+      "completion_tokens": 185,
+      "seconds": 2.4418012500100303,
+      "error": null
+    },
+    {
+      "question": "What is Maxine Thompson's current salary?",
+      "category": "direct_fact",
+      "keywords": [
+        "$120,000",
+        "Maxine"
+      ],
+      "k": 6,
+      "text": "$120,000[1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 770,
+      "completion_tokens": 85,
+      "seconds": 3.5012874319945695,
+      "error": null
+    },
+    {
+      "question": "Where is Maxine Thompson located?",
+      "category": "direct_fact",
+      "keywords": [
+        "Austin",
+        "Texas",
+        "Maxine"
+      ],
+      "k": 6,
+      "text": "Austin, Texas[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 924,
+      "completion_tokens": 54,
+      "seconds": 2.1024102849914925,
+      "error": null
+    },
+    {
+      "question": "What is Avery Lancaster's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "CEO",
+        "Avery",
+        "Lancaster"
+      ],
+      "k": 6,
+      "text": "Avery Lancaster’s job title is **Co‑Founder & Chief Executive Officer (CEO)**[1][6]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 804,
+      "completion_tokens": 114,
+      "seconds": 2.3698332909989404,
+      "error": null
+    },
+    {
+      "question": "What is Avery Lancaster's current salary?",
+      "category": "direct_fact",
+      "keywords": [
+        "$225,000",
+        "Avery"
+      ],
+      "k": 6,
+      "text": "Avery Lancaster’s current salary is **$225,000**[1][2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 849,
+      "completion_tokens": 118,
+      "seconds": 2.286482772004092,
+      "error": null
+    },
+    {
+      "question": "What is James Wilson's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "CTO",
+        "James",
+        "Wilson"
+      ],
+      "k": 6,
+      "text": "Chief Technology Officer (CTO)[1][5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 880,
+      "completion_tokens": 100,
+      "seconds": 2.0225701029994525,
+      "error": null
+    },
+    {
+      "question": "What is James Wilson's current salary?",
+      "category": "direct_fact",
+      "keywords": [
+        "$285,000",
+        "James",
+        "Wilson"
+      ],
+      "k": 6,
+      "text": "$285,000[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 897,
+      "completion_tokens": 88,
+      "seconds": 1.8872056899999734,
+      "error": null
+    },
+    {
+      "question": "What is Priya Sharma's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Senior Data Scientist",
+        "Priya"
+      ],
+      "k": 6,
+      "text": "Senior Data Scientist[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1054,
+      "completion_tokens": 82,
+      "seconds": 1.6900211979955202,
+      "error": null
+    },
+    {
+      "question": "What is Priya Sharma's current salary?",
+      "category": "direct_fact",
+      "keywords": [
+        "$145,000",
+        "Priya"
+      ],
+      "k": 6,
+      "text": "Priya Sharma’s current salary is $145,000[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1054,
+      "completion_tokens": 108,
+      "seconds": 1.465347004996147,
+      "error": null
+    },
+    {
+      "question": "What is Robert Chen's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Senior Full Stack Engineer",
+        "Robert"
+      ],
+      "k": 6,
+      "text": "Senior Full Stack Engineer[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 998,
+      "completion_tokens": 105,
+      "seconds": 1.7408297259971732,
+      "error": null
+    },
+    {
+      "question": "What is Robert Chen's current salary?",
+      "category": "direct_fact",
+      "keywords": [
+        "$152,000",
+        "Robert"
+      ],
+      "k": 6,
+      "text": "Robert Chen’s current salary is **$152,000**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 921,
+      "completion_tokens": 113,
+      "seconds": 2.662751500000013,
+      "error": null
+    },
+    {
+      "question": "Which product does Robert Chen serve as technical lead for?",
+      "category": "direct_fact",
+      "keywords": [
+        "Homellm",
+        "Robert",
+        "Chen"
+      ],
+      "k": 6,
+      "text": "Robert Chen serves as technical lead for the **Homellm home insurance portal**[3].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1069,
+      "completion_tokens": 103,
+      "seconds": 2.151814868004294,
+      "error": null
+    },
+    {
+      "question": "What is David Kim's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "DevOps Engineer",
+        "David",
+        "Kim"
+      ],
+      "k": 6,
+      "text": "David Kim’s job title is **DevOps Engineer**[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 876,
+      "completion_tokens": 94,
+      "seconds": 2.733051187999081,
+      "error": null
+    },
+    {
+      "question": "What is Sarah Williams's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "UX Designer",
+        "Sarah"
+      ],
+      "k": 6,
+      "text": "UX Designer[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1084,
+      "completion_tokens": 84,
+      "seconds": 1.9758936740108766,
+      "error": null
+    },
+    {
+      "question": "Which product does Sarah Williams lead design for?",
+      "category": "direct_fact",
+      "keywords": [
+        "Homellm",
+        "Sarah"
+      ],
+      "k": 6,
+      "text": "Sarah Williams leads design for the Homellm home insurance portal. [4]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1085,
+      "completion_tokens": 96,
+      "seconds": 2.0479136089998065,
+      "error": null
+    },
+    {
+      "question": "What is Marcus Johnson's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Customer Success Manager",
+        "Marcus"
+      ],
+      "k": 6,
+      "text": "Marcus Johnson’s job title is **Customer Success Manager**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 972,
+      "completion_tokens": 95,
+      "seconds": 2.8092914989974815,
+      "error": null
+    },
+    {
+      "question": "What is Marcus Johnson's client retention rate?",
+      "category": "direct_fact",
+      "keywords": [
+        "95%",
+        "retention",
+        "Marcus"
+      ],
+      "k": 6,
+      "text": "Marcus Johnson’s client retention rate is 95% over the past three years. [4]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 993,
+      "completion_tokens": 81,
+      "seconds": 2.0628035010013264,
+      "error": null
+    },
+    {
+      "question": "What is Lisa Anderson's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Marketing Manager",
+        "Lisa"
+      ],
+      "k": 6,
+      "text": "Lisa Anderson’s job title is **Marketing Manager**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1069,
+      "completion_tokens": 91,
+      "seconds": 1.9887244910059962,
+      "error": null
+    },
+    {
+      "question": "What is the size of Lisa Anderson's annual marketing budget?",
+      "category": "direct_fact",
+      "keywords": [
+        "$2M",
+        "Lisa"
+      ],
+      "k": 6,
+      "text": "Lisa Anderson manages an annual marketing budget of $2 M[5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1008,
+      "completion_tokens": 77,
+      "seconds": 1.6388484650087776,
+      "error": null
+    },
+    {
+      "question": "What is Emily Carter's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Account Executive",
+        "Emily"
+      ],
+      "k": 6,
+      "text": "Emily Carter’s job title is **Account Executive**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 959,
+      "completion_tokens": 91,
+      "seconds": 1.3234674730047118,
+      "error": null
+    },
+    {
+      "question": "What is the contract number for DriveSmart Insurance's Carllm agreement?",
+      "category": "direct_fact",
+      "keywords": [
+        "CR-2025-E-0078",
+        "DriveSmart"
+      ],
+      "k": 6,
+      "text": "The contract number is **CR-2025-E-0078**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1055,
+      "completion_tokens": 91,
+      "seconds": 2.1582088520081015,
+      "error": null
+    },
+    {
+      "question": "What is the duration of the DriveSmart Insurance Carllm contract?",
+      "category": "direct_fact",
+      "keywords": [
+        "36 months",
+        "DriveSmart"
+      ],
+      "k": 6,
+      "text": "The DriveSmart Insurance Carllm contract is effective for a period of **36 months** from the contract date. [3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 943,
+      "completion_tokens": 122,
+      "seconds": 1.9459408300026553,
+      "error": null
+    },
+    {
+      "question": "What is the total contract value for DriveSmart Insurance's Carllm agreement?",
+      "category": "direct_fact",
+      "keywords": [
+        "$702,000",
+        "DriveSmart"
+      ],
+      "k": 6,
+      "text": "The total contract value for DriveSmart Insurance’s Carllm agreement is **$702,000**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1114,
+      "completion_tokens": 154,
+      "seconds": 1.5361004719889024,
+      "error": null
+    },
+    {
+      "question": "How many active auto policies does DriveSmart Insurance have?",
+      "category": "direct_fact",
+      "keywords": [
+        "85,000",
+        "DriveSmart",
+        "policies"
+      ],
+      "k": 6,
+      "text": "DriveSmart Insurance has **85,000+ active auto policies**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1099,
+      "completion_tokens": 207,
+      "seconds": 2.4262778450065525,
+      "error": null
+    },
+    {
+      "question": "What is the uptime SLA guarantee for DriveSmart Insurance?",
+      "category": "direct_fact",
+      "keywords": [
+        "99.9%",
+        "uptime",
+        "DriveSmart"
+      ],
+      "k": 6,
+      "text": "The contract guarantees **99.9% platform uptime measured monthly** for DriveSmart Insurance. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1220,
+      "completion_tokens": 209,
+      "seconds": 2.693973442001152,
+      "error": null
+    },
+    {
+      "question": "Who signed the DriveSmart Insurance contract on behalf of Insurellm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Jennifer Rodriguez",
+        "DriveSmart"
+      ],
+      "k": 6,
+      "text": "Jennifer Rodriguez, Chief Executive Officer of Insurellm, Inc. signed the contract on behalf of Insurellm[2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1066,
+      "completion_tokens": 156,
+      "seconds": 2.2991837519948604,
+      "error": null
+    },
+    {
+      "question": "What is the monthly payment for Greenstone Insurance's Homellm contract?",
+      "category": "direct_fact",
+      "keywords": [
+        "$10,000",
+        "Greenstone"
+      ],
+      "k": 6,
+      "text": "The monthly payment for Greenstone Insurance’s Homellm contract is $10,000 per month. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1066,
+      "completion_tokens": 154,
+      "seconds": 3.8215206430031685,
+      "error": null
+    },
+    {
+      "question": "What tier did Harmony Health Plans subscribe to for Healthllm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Professional",
+        "Harmony"
+      ],
+      "k": 6,
+      "text": "Harmony Health Plans subscribed to the **Professional Tier** of Healthllm. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1126,
+      "completion_tokens": 85,
+      "seconds": 1.4565040990128182,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost for Harmony Health Plans' Healthllm subscription?",
+      "category": "direct_fact",
+      "keywords": [
+        "$15,000",
+        "Harmony"
+      ],
+      "k": 6,
+      "text": "$15,000/month[1][5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1049,
+      "completion_tokens": 87,
+      "seconds": 1.9136080839962233,
+      "error": null
+    },
+    {
+      "question": "How many covered members does Harmony Health Plans have?",
+      "category": "direct_fact",
+      "keywords": [
+        "38,000",
+        "Harmony"
+      ],
+      "k": 6,
+      "text": "Harmony Health Plans currently covers **38,000** members across 3 states. [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1081,
+      "completion_tokens": 81,
+      "seconds": 1.9324289409996709,
+      "error": null
+    },
+    {
+      "question": "Who signed the Harmony Health Plans contract on behalf of Insurellm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Sarah Chen",
+        "Harmony"
+      ],
+      "k": 6,
+      "text": "Sarah Chen, Vice President of Sales, Insurellm, Inc. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1059,
+      "completion_tokens": 132,
+      "seconds": 2.0932463240023935,
+      "error": null
+    },
+    {
+      "question": "What is the contract number for Metropolitan Life Group's Lifellm agreement?",
+      "category": "direct_fact",
+      "keywords": [
+        "LF-2025-E-0087",
+        "Metropolitan"
+      ],
+      "k": 6,
+      "text": "The contract number is **LF-2025-E-0087**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1025,
+      "completion_tokens": 86,
+      "seconds": 1.638163903990062,
+      "error": null
+    },
+    {
+      "question": "What is the total contract value for Metropolitan Life Group's Lifellm agreement?",
+      "category": "direct_fact",
+      "keywords": [
+        "$1,098,000",
+        "Metropolitan"
+      ],
+      "k": 6,
+      "text": "The total contract value is $1,098,000 over the 36‑month term. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 977,
+      "completion_tokens": 109,
+      "seconds": 2.2530221789929783,
+      "error": null
+    },
+    {
+      "question": "How many active policies does Metropolitan Life Group manage?",
+      "category": "direct_fact",
+      "keywords": [
+        "50,000",
+        "Metropolitan"
+      ],
+      "k": 6,
+      "text": "Metropolitan Life Group manages **50,000+ active policies**[3].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1162,
+      "completion_tokens": 135,
+      "seconds": 2.0478919229935855,
+      "error": null
+    },
+    {
+      "question": "Who signed the Metropolitan Life Group contract on behalf of the client?",
+      "category": "direct_fact",
+      "keywords": [
+        "Richard Thompson",
+        "Metropolitan"
+      ],
+      "k": 6,
+      "text": "Jennifer Rodriguez, Chief Executive Officer of Insurellm, Inc. signed the contract on behalf of the client[3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1087,
+      "completion_tokens": 96,
+      "seconds": 1.9458701429975918,
+      "error": null
+    },
+    {
+      "question": "What tier did FastTrack Insurance Services subscribe to for Claimllm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Advanced",
+        "FastTrack"
+      ],
+      "k": 6,
+      "text": "FastTrack Insurance Services subscribed to the **Advanced Tier** of Claimllm. [2][6]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1118,
+      "completion_tokens": 138,
+      "seconds": 2.1508217220107326,
+      "error": null
+    },
+    {
+      "question": "What is the monthly payment for FastTrack Insurance Services' Claimllm contract?",
+      "category": "direct_fact",
+      "keywords": [
+        "$9,500",
+        "FastTrack"
+      ],
+      "k": 6,
+      "text": "The monthly payment is $9,500[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1081,
+      "completion_tokens": 86,
+      "seconds": 1.2283609689911827,
+      "error": null
+    },
+    {
+      "question": "What is the duration of the FastTrack Insurance Services contract?",
+      "category": "direct_fact",
+      "keywords": [
+        "18 months",
+        "FastTrack"
+      ],
+      "k": 6,
+      "text": "The contract is for an 18‑month term. [3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1000,
+      "completion_tokens": 150,
+      "seconds": 1.2284324729989748,
+      "error": null
+    },
+    {
+      "question": "Who signed the FastTrack Insurance Services contract on behalf of Insurellm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Sarah Chen",
+        "FastTrack"
+      ],
+      "k": 6,
+      "text": "Sarah Chen, VP of Sales[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1062,
+      "completion_tokens": 155,
+      "seconds": 1.297800852000364,
+      "error": null
+    },
+    {
+      "question": "What tier did Atlantic Risk Solutions subscribe to for Bizllm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Professional",
+        "Atlantic"
+      ],
+      "k": 6,
+      "text": "Atlantic Risk Solutions subscribed to the **Professional Tier** of Bizllm. [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1162,
+      "completion_tokens": 86,
+      "seconds": 1.977773486985825,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost for Atlantic Risk Solutions' Bizllm subscription?",
+      "category": "direct_fact",
+      "keywords": [
+        "$12,000",
+        "Atlantic"
+      ],
+      "k": 6,
+      "text": "The monthly cost for Atlantic Risk Solutions’ Bizllm subscription is **$12,000/month**[1][4]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1258,
+      "completion_tokens": 100,
+      "seconds": 1.4355069610028295,
+      "error": null
+    },
+    {
+      "question": "How many user licenses are included in Atlantic Risk Solutions' contract?",
+      "category": "direct_fact",
+      "keywords": [
+        "35",
+        "Atlantic"
+      ],
+      "k": 6,
+      "text": "The contract includes **35 named user licenses**[2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1162,
+      "completion_tokens": 75,
+      "seconds": 1.8449941980070435,
+      "error": null
+    },
+    {
+      "question": "Who signed the Atlantic Risk Solutions contract on behalf of Insurellm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Michael Torres",
+        "Atlantic"
+      ],
+      "k": 6,
+      "text": "Michael Torres, Chief Revenue Officer of Insurellm, Inc. signed the contract on behalf of Insurellm[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1164,
+      "completion_tokens": 107,
+      "seconds": 2.0497994890029076,
+      "error": null
+    },
+    {
+      "question": "What is the monthly fee for Belvedere Insurance's Markellm listing?",
+      "category": "direct_fact",
+      "keywords": [
+        "$199",
+        "Belvedere"
+      ],
+      "k": 6,
+      "text": "$199 per month[1][3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1131,
+      "completion_tokens": 159,
+      "seconds": 2.658735967008397,
+      "error": null
+    },
+    {
+      "question": "When did Maxine Thompson join Insurellm?",
+      "category": "temporal",
+      "keywords": [
+        "January 2017",
+        "Maxine"
+      ],
+      "k": 6,
+      "text": "Maxine Thompson joined Insurellm in **January 2017**[2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1039,
+      "completion_tokens": 166,
+      "seconds": 2.66320425500453,
+      "error": null
+    },
+    {
+      "question": "When did James Wilson join Insurellm?",
+      "category": "temporal",
+      "keywords": [
+        "January 2017",
+        "James",
+        "Wilson"
+      ],
+      "k": 6,
+      "text": "James Wilson joined Insurellm in **January 2017**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1140,
+      "completion_tokens": 115,
+      "seconds": 2.2503361470007803,
+      "error": null
+    },
+    {
+      "question": "When did Insurellm reach its peak of 200 employees?",
+      "category": "temporal",
+      "keywords": [
+        "2020",
+        "200"
+      ],
+      "k": 6,
+      "text": "Insurellm reached its peak of 200 employees in 2020[4][3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 985,
+      "completion_tokens": 154,
+      "seconds": 1.4354970189888263,
+      "error": null
+    },
+    {
+      "question": "When did Insurellm undergo strategic restructuring?",
+      "category": "temporal",
+      "keywords": [
+        "2022-2023",
+        "restructuring"
+      ],
+      "k": 6,
+      "text": "Insurellm underwent strategic restructuring in 2022‑2023[1][4]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1026,
+      "completion_tokens": 127,
+      "seconds": 5.426985893005622,
+      "error": null
+    },
+    {
+      "question": "When is Carllm's telematics-based pricing feature scheduled to launch?",
+      "category": "temporal",
+      "keywords": [
+        "Q2 2025",
+        "telematics"
+      ],
+      "k": 6,
+      "text": "The telematics‑based pricing feature is scheduled to launch in **Q2 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1038,
+      "completion_tokens": 183,
+      "seconds": 2.6666832889895886,
+      "error": null
+    },
+    {
+      "question": "When is Homellm version 2.0 scheduled for release?",
+      "category": "temporal",
+      "keywords": [
+        "Q1 2025",
+        "Homellm"
+      ],
+      "k": 6,
+      "text": "Homellm version 2.0 is scheduled for release in **Q1 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 971,
+      "completion_tokens": 92,
+      "seconds": 1.7365796670055715,
+      "error": null
+    },
+    {
+      "question": "When is Bizllm version 1.0 scheduled to launch?",
+      "category": "temporal",
+      "keywords": [
+        "Q2 2025",
+        "Bizllm"
+      ],
+      "k": 6,
+      "text": "Bizllm version 1.0 is scheduled to launch in **Q2 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1039,
+      "completion_tokens": 91,
+      "seconds": 2.151963665994117,
+      "error": null
+    },
+    {
+      "question": "When is Claimllm version 1.0 scheduled to launch?",
+      "category": "temporal",
+      "keywords": [
+        "Q1 2025",
+        "Claimllm"
+      ],
+      "k": 6,
+      "text": "Claimllm version 1.0 is scheduled to launch in **Q1 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 803,
+      "completion_tokens": 90,
+      "seconds": 2.0487099169986323,
+      "error": null
+    },
+    {
+      "question": "When is Lifellm version 1.0 scheduled to launch?",
+      "category": "temporal",
+      "keywords": [
+        "Q2 2025",
+        "Lifellm"
+      ],
+      "k": 6,
+      "text": "Lifellm version 1.0 is scheduled to launch in **Q2 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1139,
+      "completion_tokens": 111,
+      "seconds": 1.9434252729988657,
+      "error": null
+    },
+    {
+      "question": "When is Healthllm version 1.0 scheduled to launch?",
+      "category": "temporal",
+      "keywords": [
+        "Q1 2025",
+        "Healthllm"
+      ],
+      "k": 6,
+      "text": "Healthllm version 1.0 is scheduled to launch in **Q1 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1051,
+      "completion_tokens": 129,
+      "seconds": 2.481246209994424,
+      "error": null
+    },
+    {
+      "question": "When was the DriveSmart Insurance contract for Carllm signed?",
+      "category": "temporal",
+      "keywords": [
+        "March 20, 2025",
+        "DriveSmart"
+      ],
+      "k": 6,
+      "text": "The contract was signed on **March 20, 2025**[1][3].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1053,
+      "completion_tokens": 110,
+      "seconds": 1.758348383998964,
+      "error": null
+    },
+    {
+      "question": "When was the Harmony Health Plans Healthllm contract effective?",
+      "category": "temporal",
+      "keywords": [
+        "January 25, 2025",
+        "Harmony"
+      ],
+      "k": 6,
+      "text": "The contract became effective on **January 25, 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1067,
+      "completion_tokens": 89,
+      "seconds": 2.0673879419919103,
+      "error": null
+    },
+    {
+      "question": "When was the Metropolitan Life Group Lifellm contract signed?",
+      "category": "temporal",
+      "keywords": [
+        "April 5, 2025",
+        "Metropolitan"
+      ],
+      "k": 6,
+      "text": "The Metropolitan Life Group Lifellm contract was signed on **April 5, 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1017,
+      "completion_tokens": 118,
+      "seconds": 3.0926611899922136,
+      "error": null
+    },
+    {
+      "question": "When was the FastTrack Insurance Services Claimllm contract signed?",
+      "category": "temporal",
+      "keywords": [
+        "May 10, 2025",
+        "FastTrack"
+      ],
+      "k": 6,
+      "text": "The contract was signed on **May 10, 2025**[1][4].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1086,
+      "completion_tokens": 129,
+      "seconds": 2.7774496450001607,
+      "error": null
+    },
+    {
+      "question": "When was the Atlantic Risk Solutions Bizllm contract effective?",
+      "category": "temporal",
+      "keywords": [
+        "January 15, 2025",
+        "Atlantic"
+      ],
+      "k": 6,
+      "text": "The contract became effective on **January 15, 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1148,
+      "completion_tokens": 86,
+      "seconds": 2.065315465006279,
+      "error": null
+    },
+    {
+      "question": "How much did Priya Sharma's recommendation engine increase conversion by for Marketllm?",
+      "category": "comparative",
+      "keywords": [
+        "28%",
+        "Priya",
+        "Marketllm"
+      ],
+      "k": 6,
+      "text": "Priya Sharma’s recommendation engine for Marketllm increased conversion by **28%**[2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1172,
+      "completion_tokens": 87,
+      "seconds": 3.0737646399938967,
+      "error": null
+    },
+    {
+      "question": "By what percentage did David Kim reduce deployment time with CI/CD pipelines?",
+      "category": "comparative",
+      "keywords": [
+        "60%",
+        "David",
+        "Kim"
+      ],
+      "k": 6,
+      "text": "David Kim reduced deployment time by **60%** with the CI/CD pipelines. [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 992,
+      "completion_tokens": 79,
+      "seconds": 1.4319436949881492,
+      "error": null
+    },
+    {
+      "question": "By what percentage did Sarah Williams improve user satisfaction scores?",
+      "category": "comparative",
+      "keywords": [
+        "35%",
+        "Sarah"
+      ],
+      "k": 6,
+      "text": "Sarah Williams improved user satisfaction scores by **35%**[2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1036,
+      "completion_tokens": 92,
+      "seconds": 1.4369191849982599,
+      "error": null
+    },
+    {
+      "question": "By what percentage has Lisa Anderson increased qualified leads since 2021?",
+      "category": "comparative",
+      "keywords": [
+        "65%",
+        "Lisa"
+      ],
+      "k": 6,
+      "text": "Lisa Anderson has increased qualified leads by **65%** since 2021. [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1006,
+      "completion_tokens": 81,
+      "seconds": 1.6405064540012972,
+      "error": null
+    },
+    {
+      "question": "By what percentage did Emily Carter exceed her annual sales target in 2022?",
+      "category": "comparative",
+      "keywords": [
+        "30%",
+        "Emily",
+        "Carter"
+      ],
+      "k": 6,
+      "text": "Emily Carter exceeded her annual sales target by 30% in 2022. [3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 982,
+      "completion_tokens": 94,
+      "seconds": 1.640249952004524,
+      "error": null
+    },
+    {
+      "question": "What is the performance-based pricing for Belvedere Insurance's Markellm contract?",
+      "category": "comparative",
+      "keywords": [
+        "$25",
+        "Belvedere"
+      ],
+      "k": 6,
+      "text": "$25 per lead generated[2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 986,
+      "completion_tokens": 78,
+      "seconds": 1.949694069000543,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost for Stellar Insurance Co.'s Rellm subscription?",
+      "category": "comparative",
+      "keywords": [
+        "$10,000",
+        "Stellar"
+      ],
+      "k": 6,
+      "text": "The monthly cost for Stellar Insurance Co.’s Rellm subscription is **$10,000** per month. [1][5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1011,
+      "completion_tokens": 104,
+      "seconds": 2.04864848399302,
+      "error": null
+    },
+    {
+      "question": "What are Insurellm's four core values?",
+      "category": "comparative",
+      "keywords": [
+        "Innovation First",
+        "Customer Obsession",
+        "Collaborative Excellence"
+      ],
+      "k": 6,
+      "text": "Insurellm’s four core values are:  \n- Innovation First  \n- Customer Obsession  \n- Integrity & Transparency  \n- Collaborative Excellence[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 818,
+      "completion_tokens": 290,
+      "seconds": 3.9966976559953764,
+      "error": null
+    },
+    {
+      "question": "What award did Alex Harper win in 2022?",
+      "category": "comparative",
+      "keywords": [
+        "SDR of the Year",
+        "Alex",
+        "Harper"
+      ],
+      "k": 6,
+      "text": "Alex Harper won the **Insurellm \"SDR of the Year\" Award** in 2022. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1102,
+      "completion_tokens": 160,
+      "seconds": 1.3461418920051074,
+      "error": null
+    },
+    {
+      "question": "When was the Stellar Insurance Co. Rellm contract effective?",
+      "category": "comparative",
+      "keywords": [
+        "January 1, 2024",
+        "Stellar"
+      ],
+      "k": 6,
+      "text": "The contract became effective on **January 1, 2024**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 872,
+      "completion_tokens": 92,
+      "seconds": 2.340518543991493,
+      "error": null
+    },
+    {
+      "question": "How many claims does FastTrack Insurance Services project for year 1?",
+      "category": "numerical",
+      "keywords": [
+        "22,000",
+        "FastTrack"
+      ],
+      "k": 6,
+      "text": "FastTrack Insurance Services projects **22,000 claims** in year 1. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1066,
+      "completion_tokens": 90,
+      "seconds": 1.702882077996037,
+      "error": null
+    },
+    {
+      "question": "How much annual revenue does Marcus Johnson's portfolio generate?",
+      "category": "numerical",
+      "keywords": [
+        "$5M",
+        "Marcus"
+      ],
+      "k": 6,
+      "text": "Marcus Johnson’s portfolio generates **$5 million in annual revenue**[5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1084,
+      "completion_tokens": 85,
+      "seconds": 2.085037615004694,
+      "error": null
+    },
+    {
+      "question": "What percentage of quota did Jennifer Adams achieve in 2023?",
+      "category": "numerical",
+      "keywords": [
+        "78%",
+        "Jennifer"
+      ],
+      "k": 6,
+      "text": "Jennifer Adams achieved **78% of her lead generation quota in 2023** [1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 957,
+      "completion_tokens": 81,
+      "seconds": 2.150148037006147,
+      "error": null
+    },
+    {
+      "question": "How many products does Insurellm offer?",
+      "category": "numerical",
+      "keywords": [
+        "8",
+        "products"
+      ],
+      "k": 6,
+      "text": "Insurellm offers 8 products. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 895,
+      "completion_tokens": 104,
+      "seconds": 1.9467645340046147,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Carllm's Professional Tier?",
+      "category": "numerical",
+      "keywords": [
+        "$2,500",
+        "Professional",
+        "Carllm"
+      ],
+      "k": 6,
+      "text": "$2,500 per month[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1293,
+      "completion_tokens": 107,
+      "seconds": 1.7391808649990708,
+      "error": null
+    },
+    {
+      "question": "What are the core insurance portals offered by Insurellm?",
+      "category": "relationship",
+      "keywords": [
+        "Core Insurance Portals",
+        "Carllm"
+      ],
+      "k": 6,
+      "text": "The core insurance portals offered by Insurellm are:\n\n- Carllm  \n- Homellm  \n- Lifellm  \n- Healthllm  \n- Bizllm[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 866,
+      "completion_tokens": 138,
+      "seconds": 2.35650739200355,
+      "error": null
+    },
+    {
+      "question": "What are the marketplace and infrastructure products offered by Insurellm?",
+      "category": "relationship",
+      "keywords": [
+        "Marketplace & Infrastructure",
+        "Markellm"
+      ],
+      "k": 6,
+      "text": "The marketplace and infrastructure products offered by Insurellm are **Markellm**, **Claimllm**, and **Rellm**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 830,
+      "completion_tokens": 205,
+      "seconds": 2.563326963005238,
+      "error": null
+    },
+    {
+      "question": "Which product does Jessica Liu develop for?",
+      "category": "relationship",
+      "keywords": [
+        "Rellm",
+        "Jessica"
+      ],
+      "k": 6,
+      "text": "Jessica Liu develops user interfaces for the **Rellm reinsurance platform**[2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1060,
+      "completion_tokens": 115,
+      "seconds": 1.9322196620050818,
+      "error": null
+    },
+    {
+      "question": "What is Tyler Brooks's job title?",
+      "category": "relationship",
+      "keywords": [
+        "Junior Backend Developer",
+        "Tyler"
+      ],
+      "k": 6,
+      "text": "Tyler Brooks’s job title is **Junior Backend Developer**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 868,
+      "completion_tokens": 89,
+      "seconds": 2.0581214699923294,
+      "error": null
+    },
+    {
+      "question": "Which product does Tyler Brooks work on?",
+      "category": "relationship",
+      "keywords": [
+        "Carllm",
+        "Tyler"
+      ],
+      "k": 6,
+      "text": "Tyler Brooks works on the **Carllm auto insurance portal**[5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 958,
+      "completion_tokens": 102,
+      "seconds": 1.5744196209998336,
+      "error": null
+    },
+    {
+      "question": "What is the job title of the IIOTY award winner?",
+      "category": "spanning",
+      "keywords": [
+        "Maxine",
+        "Thompson",
+        "Senior Data Engineer",
+        "IIOTY"
+      ],
+      "k": 6,
+      "text": "The IIOTY award winner, Maxine Thompson, holds the job title of **Senior Data Engineer**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1110,
+      "completion_tokens": 264,
+      "seconds": 4.024816566001391,
+      "error": null
+    },
+    {
+      "question": "Who is the technical lead for the product that costs $10,000/month for Standard Tier?",
+      "category": "spanning",
+      "keywords": [
+        "Robert",
+        "Chen",
+        "Homellm",
+        "$10,000"
+      ],
+      "k": 6,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 1174,
+      "completion_tokens": 139,
+      "seconds": 2.7981025600020075,
+      "error": null
+    },
+    {
+      "question": "What is the salary of the CTO who joined in January 2017?",
+      "category": "spanning",
+      "keywords": [
+        "James",
+        "Wilson",
+        "$285,000",
+        "January 2017"
+      ],
+      "k": 6,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 859,
+      "completion_tokens": 172,
+      "seconds": 2.459295574997668,
+      "error": null
+    },
+    {
+      "question": "What is the current salary of the founder of Insurellm?",
+      "category": "spanning",
+      "keywords": [
+        "Avery",
+        "Lancaster",
+        "$225,000",
+        "founder"
+      ],
+      "k": 6,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 943,
+      "completion_tokens": 107,
+      "seconds": 1.945416987000499,
+      "error": null
+    },
+    {
+      "question": "Which product did the Senior Data Scientist build a recommendation engine for that increased conversion by 28%?",
+      "category": "spanning",
+      "keywords": [
+        "Priya",
+        "Sharma",
+        "Marketllm",
+        "28%"
+      ],
+      "k": 6,
+      "text": "The recommendation engine was built for **Marketllm**[3].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1114,
+      "completion_tokens": 130,
+      "seconds": 2.368351609009551,
+      "error": null
+    },
+    {
+      "question": "Which product does the UX Designer who improved user satisfaction by 35% lead design for?",
+      "category": "spanning",
+      "keywords": [
+        "Sarah",
+        "Williams",
+        "Homellm",
+        "35%"
+      ],
+      "k": 6,
+      "text": "The UX Designer who improved user satisfaction by 35% leads design for the Homellm home insurance portal. [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1117,
+      "completion_tokens": 151,
+      "seconds": 2.519774682004936,
+      "error": null
+    },
+    {
+      "question": "What is the annual marketing budget managed by the Marketing Manager in Austin?",
+      "category": "spanning",
+      "keywords": [
+        "Lisa",
+        "Anderson",
+        "$2M",
+        "Austin"
+      ],
+      "k": 6,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 715,
+      "completion_tokens": 95,
+      "seconds": 1.2577547219989356,
+      "error": null
+    },
+    {
+      "question": "Who signed the contract on behalf of Insurellm for the client that pays $18,000 per month for Carllm?",
+      "category": "spanning",
+      "keywords": [
+        "Jennifer",
+        "Rodriguez",
+        "DriveSmart",
+        "$18,000"
+      ],
+      "k": 6,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 1163,
+      "completion_tokens": 290,
+      "seconds": 3.6902607460069703,
+      "error": null
+    },
+    {
+      "question": "What tier did the client with 35 user licenses subscribe to for Bizllm?",
+      "category": "spanning",
+      "keywords": [
+        "Atlantic",
+        "Risk",
+        "Solutions",
+        "Professional",
+        "35"
+      ],
+      "k": 6,
+      "text": "The client with 35 user licenses subscribed to the **Professional Tier** of Bizllm. [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1278,
+      "completion_tokens": 101,
+      "seconds": 2.512713800999336,
+      "error": null
+    },
+    {
+      "question": "How many covered members does the client who subscribed to Healthllm Professional Tier for $15,000/month have?",
+      "category": "spanning",
+      "keywords": [
+        "Harmony",
+        "Health",
+        "Plans",
+        "38,000",
+        "$15,000"
+      ],
+      "k": 6,
+      "text": "32,000 covered members [1] and 38,000 covered members [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1343,
+      "completion_tokens": 1142,
+      "seconds": 2.5042077219986822,
+      "error": null
+    },
+    {
+      "question": "Who signed the Metropolitan Life Group contract that totals $1,098,000?",
+      "category": "spanning",
+      "keywords": [
+        "Jennifer",
+        "Rodriguez",
+        "Richard",
+        "Thompson",
+        "$1,098,000"
+      ],
+      "k": 6,
+      "text": "Jennifer Rodriguez, Chief Executive Officer of Insurellm, Inc. and Richard Thompson, Chairman & Chief Executive Officer of Metropolitan Life Group, Inc. signed the contract totaling $1,098,000[5][3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 978,
+      "completion_tokens": 435,
+      "seconds": 5.2242028010077775,
+      "error": null
+    },
+    {
+      "question": "What is the total contract value for the client paying $12,000 per month for Bizllm Professional Tier?",
+      "category": "spanning",
+      "keywords": [
+        "Atlantic",
+        "$144,000",
+        "12 months",
+        "$12,000"
+      ],
+      "k": 6,
+      "text": "$144,000[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1312,
+      "completion_tokens": 461,
+      "seconds": 4.609155662998091,
+      "error": null
+    },
+    {
+      "question": "By what percentage did the DevOps Engineer in New York reduce deployment time?",
+      "category": "spanning",
+      "keywords": [
+        "David",
+        "Kim",
+        "60%",
+        "New York"
+      ],
+      "k": 6,
+      "text": "The DevOps Engineer reduced deployment time by **60%**[3].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 995,
+      "completion_tokens": 131,
+      "seconds": 1.9463737080077408,
+      "error": null
+    },
+    {
+      "question": "What is the annual revenue generated by the portfolio managed by the Customer Success Manager in New York?",
+      "category": "spanning",
+      "keywords": [
+        "Marcus",
+        "Johnson",
+        "$5M",
+        "New York"
+      ],
+      "k": 6,
+      "text": "The portfolio managed by the Customer Success Manager in New York generates **$5 million in annual revenue**[3].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1191,
+      "completion_tokens": 160,
+      "seconds": 2.458670809995965,
+      "error": null
+    },
+    {
+      "question": "By what percentage did the Account Executive in Austin exceed their annual sales target in 2022?",
+      "category": "spanning",
+      "keywords": [
+        "Emily",
+        "Carter",
+        "30%",
+        "Austin",
+        "2022"
+      ],
+      "k": 6,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 1125,
+      "completion_tokens": 230,
+      "seconds": 2.8679740619991207,
+      "error": null
+    },
+    {
+      "question": "When is the telematics-based pricing feature scheduled to launch for the product that costs $1,000/month for Basic Tier?",
+      "category": "spanning",
+      "keywords": [
+        "Carllm",
+        "Q2 2025",
+        "telematics",
+        "$1,000"
+      ],
+      "k": 6,
+      "text": "The telematics‑based pricing feature is scheduled to launch in Q2 2025 for the $1,000/month Basic Tier product. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1049,
+      "completion_tokens": 152,
+      "seconds": 2.3404423629981466,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost for the Basic Listing Fee on the marketplace that was Insurellm's first product?",
+      "category": "spanning",
+      "keywords": [
+        "Markellm",
+        "$199",
+        "first product"
+      ],
+      "k": 6,
+      "text": "The Basic Listing Fee on Insurellm’s first marketplace product, Markellm, is $199 per month[1][2][4].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1107,
+      "completion_tokens": 141,
+      "seconds": 2.7776641889940947,
+      "error": null
+    },
+    {
+      "question": "How many core values does the company founded by Avery Lancaster have?",
+      "category": "spanning",
+      "keywords": [
+        "four",
+        "core values",
+        "Avery",
+        "Lancaster",
+        "founded"
+      ],
+      "k": 6,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 959,
+      "completion_tokens": 87,
+      "seconds": 1.6256259840010898,
+      "error": null
+    },
+    {
+      "question": "What tier of Healthllm costs $15,000 per month and includes Advanced Medication Management?",
+      "category": "spanning",
+      "keywords": [
+        "Professional",
+        "Healthllm",
+        "$15,000",
+        "Advanced Medication Management"
+      ],
+      "k": 6,
+      "text": "The tier that costs $15,000 per month and includes Advanced Medication Management is the **Professional Tier**[1][5].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1132,
+      "completion_tokens": 296,
+      "seconds": 4.07494185800897,
+      "error": null
+    },
+    {
+      "question": "How many active policies does the client who pays $28,000 per month for Lifellm manage?",
+      "category": "spanning",
+      "keywords": [
+        "Metropolitan",
+        "Life",
+        "Group",
+        "50,000",
+        "$28,000"
+      ],
+      "k": 6,
+      "text": "The client that pays $28,000 per month—Metropolitan Life Group—manages **50,000+ active policies**[2][6].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1306,
+      "completion_tokens": 215,
+      "seconds": 2.913102708000224,
+      "error": null
+    },
+    {
+      "question": "What is Alex Chen's current job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Backend Software Engineer",
+        "Alex Chen"
+      ],
+      "k": 6,
+      "text": "Alex Chen’s job title is listed as **Backend Software Engineer** in the summary [1], but the career progression notes that he was awarded the title of **Senior Backend Software Engineer** in March 2023 [6]. The two passages disagree on his current title.",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 910,
+      "completion_tokens": 284,
+      "seconds": 2.616047397998045,
+      "error": null
+    },
+    {
+      "question": "What is Carlos Rodriguez's current salary?",
+      "category": "direct_fact",
+      "keywords": [
+        "$125,000",
+        "Carlos"
+      ],
+      "k": 6,
+      "text": "Carlos Rodriguez’s current salary is $125,000[2][1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1052,
+      "completion_tokens": 99,
+      "seconds": 2.285216987002059,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of the Bizllm Business Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$6,000",
+        "Business",
+        "Bizllm"
+      ],
+      "k": 6,
+      "text": "$6,000 per month[1][4]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1262,
+      "completion_tokens": 109,
+      "seconds": 1.5019658980017994,
+      "error": null
+    },
+    {
+      "question": "What is Nina Patel's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Business Intelligence Analyst",
+        "Nina"
+      ],
+      "k": 6,
+      "text": "Business Intelligence Analyst[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1007,
+      "completion_tokens": 79,
+      "seconds": 2.2851640919980127,
+      "error": null
+    },
+    {
+      "question": "What is the contract number for the GreenValley Insurance Homellm agreement?",
+      "category": "direct_fact",
+      "keywords": [
+        "HV-2023-0458",
+        "GreenValley"
+      ],
+      "k": 6,
+      "text": "The contract number is **HV-2023-0458**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 949,
+      "completion_tokens": 66,
+      "seconds": 1.947601146006491,
+      "error": null
+    },
+    {
+      "question": "When did Alex Chen join Insurellm?",
+      "category": "temporal",
+      "keywords": [
+        "April 2020",
+        "Alex Chen"
+      ],
+      "k": 6,
+      "text": "Alex Chen joined Insurellm in **April 2020**[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1093,
+      "completion_tokens": 88,
+      "seconds": 2.455800932002603,
+      "error": null
+    },
+    {
+      "question": "When was the GreenValley Insurance Homellm contract signed?",
+      "category": "temporal",
+      "keywords": [
+        "October 6, 2023",
+        "GreenValley"
+      ],
+      "k": 6,
+      "text": "The contract was signed on **October 6, 2023**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 981,
+      "completion_tokens": 79,
+      "seconds": 1.3247701649961527,
+      "error": null
+    },
+    {
+      "question": "When was the Summit Commercial Insurance Bizllm contract effective?",
+      "category": "temporal",
+      "keywords": [
+        "March 15, 2025",
+        "Summit"
+      ],
+      "k": 6,
+      "text": "The contract became effective on **March 15, 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 944,
+      "completion_tokens": 110,
+      "seconds": 2.669296410997049,
+      "error": null
+    },
+    {
+      "question": "When was the Roadway Insurance Carllm contract effective?",
+      "category": "temporal",
+      "keywords": [
+        "January 1, 2025",
+        "Roadway"
+      ],
+      "k": 6,
+      "text": "The Roadway Insurance Carllm contract became effective on **January 1, 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1062,
+      "completion_tokens": 94,
+      "seconds": 1.946426598005928,
+      "error": null
+    },
+    {
+      "question": "When was the Evergreen Life Insurance Lifellm contract signed?",
+      "category": "temporal",
+      "keywords": [
+        "January 20, 2025",
+        "Evergreen"
+      ],
+      "k": 6,
+      "text": "The contract was signed on **January 20, 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 980,
+      "completion_tokens": 107,
+      "seconds": 0.956973715001368,
+      "error": null
+    },
+    {
+      "question": "How many employees did Insurellm have at its peak in 2020?",
+      "category": "numerical",
+      "keywords": [
+        "200",
+        "2020",
+        "peak"
+      ],
+      "k": 6,
+      "text": "Insurellm had a peak of 200 employees in 2020. [4][3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 988,
+      "completion_tokens": 181,
+      "seconds": 1.360860856002546,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost for Apex Reinsurance's Rellm subscription?",
+      "category": "numerical",
+      "keywords": [
+        "$10,000",
+        "Apex"
+      ],
+      "k": 6,
+      "text": "The monthly cost for Apex Reinsurance’s Rellm subscription is $10,000 per month. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1202,
+      "completion_tokens": 138,
+      "seconds": 1.9807030189986108,
+      "error": null
+    },
+    {
+      "question": "How many active policies does Evergreen Life Insurance currently manage?",
+      "category": "numerical",
+      "keywords": [
+        "1,400",
+        "Evergreen"
+      ],
+      "k": 6,
+      "text": "Evergreen Life Insurance currently manages **1,400 active policies**[3].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1119,
+      "completion_tokens": 174,
+      "seconds": 2.4112684029969387,
+      "error": null
+    },
+    {
+      "question": "How many user licenses are provided for onboarding training in the Summit Commercial Insurance contract?",
+      "category": "numerical",
+      "keywords": [
+        "15",
+        "Summit"
+      ],
+      "k": 6,
+      "text": "Up to 15 user licenses are provided for onboarding training[2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 979,
+      "completion_tokens": 502,
+      "seconds": 4.272922937001567,
+      "error": null
+    },
+    {
+      "question": "How much new business did Michael O'Brien generate over the past 3 years?",
+      "category": "numerical",
+      "keywords": [
+        "$8.2M",
+        "Michael",
+        "O'Brien"
+      ],
+      "k": 6,
+      "text": "Michael O'Brien generated **$8.2 million** in new business over the past 3 years[6].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1111,
+      "completion_tokens": 96,
+      "seconds": 2.6353249499952653,
+      "error": null
+    },
+    {
+      "question": "Which product does Rachel Martinez lead product strategy for?",
+      "category": "relationship",
+      "keywords": [
+        "Carllm",
+        "Rachel",
+        "Martinez"
+      ],
+      "k": 6,
+      "text": "Rachel Martinez leads product strategy for **Carllm, the auto insurance portal**[3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1115,
+      "completion_tokens": 97,
+      "seconds": 1.741697050005314,
+      "error": null
+    },
+    {
+      "question": "Which mobile app does Kevin Zhang lead iOS development for?",
+      "category": "relationship",
+      "keywords": [
+        "Marketllm",
+        "Kevin",
+        "Zhang"
+      ],
+      "k": 6,
+      "text": "Kevin Zhang leads iOS development for the **Marketllm consumer mobile app**[2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 970,
+      "completion_tokens": 95,
+      "seconds": 2.866681569998036,
+      "error": null
+    },
+    {
+      "question": "Which tier of Bizllm did Summit Commercial Insurance subscribe to?",
+      "category": "relationship",
+      "keywords": [
+        "Business",
+        "Summit"
+      ],
+      "k": 6,
+      "text": "Summit Commercial Insurance subscribed to the **Business Tier** of Bizllm. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1042,
+      "completion_tokens": 132,
+      "seconds": 2.9705842480034335,
+      "error": null
+    },
+    {
+      "question": "What award did Carlos Rodriguez win in 2023?",
+      "category": "relationship",
+      "keywords": [
+        "Solutions Engineer of the Year",
+        "Carlos"
+      ],
+      "k": 6,
+      "text": "Carlos Rodriguez won the **Solutions Engineer of the Year 2023** award. [3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1055,
+      "completion_tokens": 97,
+      "seconds": 2.655646125000203,
+      "error": null
+    },
+    {
+      "question": "Who signed the Summit Commercial Insurance contract on behalf of Insurellm?",
+      "category": "relationship",
+      "keywords": [
+        "Michael Torres",
+        "Summit"
+      ],
+      "k": 6,
+      "text": "Michael Torres[2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1047,
+      "completion_tokens": 131,
+      "seconds": 1.748029882000992,
+      "error": null
+    },
+    {
+      "question": "How many employees at Insurellm have a current salary under $80,000?",
+      "category": "holistic",
+      "keywords": [
+        "salary",
+        "employees"
+      ],
+      "k": 6,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 982,
+      "completion_tokens": 112,
+      "seconds": 2.5754719359974843,
+      "error": null
+    },
+    {
+      "question": "What is the total contract value of all Healthllm contracts combined?",
+      "category": "holistic",
+      "keywords": [
+        "Healthllm",
+        "contract value"
+      ],
+      "k": 6,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 1027,
+      "completion_tokens": 461,
+      "seconds": 5.292627032002201,
+      "error": null
+    },
+    {
+      "question": "Which product line has the most active contracts according to the company overview?",
+      "category": "holistic",
+      "keywords": [
+        "contracts",
+        "products"
+      ],
+      "k": 6,
+      "text": "Commercial Insurance (Bizllm) and Claims Processing (Claimllm) each have the most active contracts, with 7 contracts apiece[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1106,
+      "completion_tokens": 368,
+      "seconds": 4.319676051993156,
+      "error": null
+    },
+    {
+      "question": "How many total employees work at Insurellm across all locations?",
+      "category": "holistic",
+      "keywords": [
+        "employees",
+        "total"
+      ],
+      "k": 6,
+      "text": "32 employees [1][2][3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 985,
+      "completion_tokens": 199,
+      "seconds": 3.3793286669970257,
+      "error": null
+    },
+    {
+      "question": "What is the average monthly subscription cost across all Carllm contracts?",
+      "category": "holistic",
+      "keywords": [
+        "Carllm",
+        "monthly cost"
+      ],
+      "k": 6,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 1227,
+      "completion_tokens": 234,
+      "seconds": 3.8083493169979192,
+      "error": null
+    },
+    {
+      "question": "How many different insurance product lines does Insurellm offer in total?",
+      "category": "holistic",
+      "keywords": [
+        "products",
+        "insurance lines"
+      ],
+      "k": 6,
+      "text": "Insurellm offers **8** different insurance product lines in total. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 971,
+      "completion_tokens": 101,
+      "seconds": 2.8504775839974172,
+      "error": null
+    },
+    {
+      "question": "Which product has the fewest active contracts according to the portfolio breakdown?",
+      "category": "holistic",
+      "keywords": [
+        "contracts",
+        "fewest"
+      ],
+      "k": 6,
+      "text": "The fewest active contracts are 2, held by both **Insurance Marketplace (Markellm)** and **Reinsurance (Rellm)**[2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 912,
+      "completion_tokens": 329,
+      "seconds": 4.6095539669913705,
+      "error": null
+    },
+    {
+      "question": "What is the total number of active contracts across all Insurellm products?",
+      "category": "holistic",
+      "keywords": [
+        "contracts",
+        "total"
+      ],
+      "k": 6,
+      "text": "The total number of active contracts across all Insurellm products is **32** [1][4].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 994,
+      "completion_tokens": 121,
+      "seconds": 2.764546648002579,
+      "error": null
+    },
+    {
+      "question": "How many states does United Healthcare Alliance operate in according to their contract?",
+      "category": "holistic",
+      "keywords": [
+        "United Healthcare",
+        "states"
+      ],
+      "k": 6,
+      "text": "United Healthcare Alliance operates in 12 states according to the contract. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1104,
+      "completion_tokens": 121,
+      "seconds": 1.84363602999656,
+      "error": null
+    },
+    {
+      "question": "What is the longest contract duration among all Insurellm contracts?",
+      "category": "holistic",
+      "keywords": [
+        "contract",
+        "duration"
+      ],
+      "k": 6,
+      "text": "The longest contract duration is **48 months**[4].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1239,
+      "completion_tokens": 172,
+      "seconds": 3.584596770000644,
+      "error": null
+    },
+    {
+      "question": "Who won the prestigious IIOTY award in 2023?",
+      "category": "direct_fact",
+      "keywords": [
+        "Maxine",
+        "Thompson",
+        "IIOTY"
+      ],
+      "k": 10,
+      "text": "The prestigious IIOTY award in 2023 was won by **Maxine Thompson**[1][5].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1770,
+      "completion_tokens": 201,
+      "seconds": 3.225252232994535,
+      "error": null
+    },
+    {
+      "question": "When was Insurellm founded?",
+      "category": "direct_fact",
+      "keywords": [
+        "2015",
+        "founded"
+      ],
+      "k": 10,
+      "text": "Insurellm was founded in 2015. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1360,
+      "completion_tokens": 104,
+      "seconds": 2.458045831997879,
+      "error": null
+    },
+    {
+      "question": "Who founded Insurellm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Avery",
+        "Lancaster"
+      ],
+      "k": 10,
+      "text": "Insurellm was founded by Avery Lancaster in 2015. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1429,
+      "completion_tokens": 94,
+      "seconds": 2.4578483890072675,
+      "error": null
+    },
+    {
+      "question": "How many employees does Insurellm currently have?",
+      "category": "direct_fact",
+      "keywords": [
+        "32",
+        "employees"
+      ],
+      "k": 10,
+      "text": "Insurellm currently has 32 employees. [1][2][3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1462,
+      "completion_tokens": 323,
+      "seconds": 1.530049938999582,
+      "error": null
+    },
+    {
+      "question": "What was Insurellm's first product?",
+      "category": "direct_fact",
+      "keywords": [
+        "Markellm",
+        "first"
+      ],
+      "k": 10,
+      "text": "Insurellm’s first product was **Markellm**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1362,
+      "completion_tokens": 116,
+      "seconds": 2.2613508329959586,
+      "error": null
+    },
+    {
+      "question": "How many active contracts does Insurellm manage?",
+      "category": "direct_fact",
+      "keywords": [
+        "32",
+        "contracts"
+      ],
+      "k": 10,
+      "text": "Insurellm manages **32 active contracts**[1][4].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1628,
+      "completion_tokens": 286,
+      "seconds": 2.866438223994919,
+      "error": null
+    },
+    {
+      "question": "Where is Insurellm's headquarters located?",
+      "category": "direct_fact",
+      "keywords": [
+        "San Francisco",
+        "headquarters"
+      ],
+      "k": 10,
+      "text": "Insurellm’s headquarters is located in San Francisco. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1350,
+      "completion_tokens": 120,
+      "seconds": 2.1511877440061653,
+      "error": null
+    },
+    {
+      "question": "How many office locations does Insurellm maintain?",
+      "category": "direct_fact",
+      "keywords": [
+        "offices in",
+        "5"
+      ],
+      "k": 10,
+      "text": "Insurellm maintains five office locations: its San Francisco headquarters plus satellite offices in New York, Austin, Chicago, and Denver. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1487,
+      "completion_tokens": 235,
+      "seconds": 1.4330571659957059,
+      "error": null
+    },
+    {
+      "question": "What is Insurellm's vision statement?",
+      "category": "direct_fact",
+      "keywords": [
+        "revolutionize",
+        "insurance",
+        "technology"
+      ],
+      "k": 10,
+      "text": "Insurellm’s vision statement is: “To revolutionize the insurance industry through innovative technology that makes insurance accessible, transparent, and effortless for everyone.”[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1237,
+      "completion_tokens": 106,
+      "seconds": 2.2387833100074204,
+      "error": null
+    },
+    {
+      "question": "How many Bizllm contracts has Insurellm secured?",
+      "category": "direct_fact",
+      "keywords": [
+        "7",
+        "Bizllm"
+      ],
+      "k": 10,
+      "text": "Insurellm has secured **7** Bizllm contracts[1][5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1532,
+      "completion_tokens": 109,
+      "seconds": 1.5507710840029176,
+      "error": null
+    },
+    {
+      "question": "How many Claimllm contracts does Insurellm have?",
+      "category": "direct_fact",
+      "keywords": [
+        "7",
+        "Claimllm"
+      ],
+      "k": 10,
+      "text": "Insurellm has 7 Claimllm contracts. [1][3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1611,
+      "completion_tokens": 122,
+      "seconds": 2.1124689400021452,
+      "error": null
+    },
+    {
+      "question": "How many life insurance contracts has Lifellm secured?",
+      "category": "direct_fact",
+      "keywords": [
+        "6",
+        "Lifellm"
+      ],
+      "k": 10,
+      "text": "Lifellm has secured four life‑insurance contracts: one with Metropolitan Life Group [1], one with Evergreen Life Insurance [2], one with Guardian Life Partners [3], and one with Heritage Life Assurance [10].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1593,
+      "completion_tokens": 201,
+      "seconds": 2.686429098001099,
+      "error": null
+    },
+    {
+      "question": "How many health insurance contracts does Healthllm have?",
+      "category": "direct_fact",
+      "keywords": [
+        "6",
+        "Healthllm"
+      ],
+      "k": 10,
+      "text": "Healthllm has three health‑insurance contracts: one with WellCare Insurance Co. [1], one with United Healthcare Alliance [2], and one with Harmony Health Plans [4].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1609,
+      "completion_tokens": 438,
+      "seconds": 4.586738654004876,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Carllm's Basic Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$1,000",
+        "Basic",
+        "Carllm"
+      ],
+      "k": 10,
+      "text": "$1,000/month[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1795,
+      "completion_tokens": 78,
+      "seconds": 2.6770040900009917,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Carllm's Enterprise Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$5,000",
+        "Enterprise",
+        "Carllm"
+      ],
+      "k": 10,
+      "text": "The standard monthly cost for Carllm’s Enterprise Tier is $5,000/month[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1871,
+      "completion_tokens": 178,
+      "seconds": 2.516127434995724,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Homellm's Standard Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$10,000",
+        "Standard",
+        "Homellm"
+      ],
+      "k": 10,
+      "text": "The Homellm Standard Tier costs **$10,000 per month**[1][2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1783,
+      "completion_tokens": 143,
+      "seconds": 2.447326367997448,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Bizllm's Professional Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$12,000",
+        "Professional",
+        "Bizllm"
+      ],
+      "k": 10,
+      "text": "$12,000/month[1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1853,
+      "completion_tokens": 118,
+      "seconds": 1.7869678910064977,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Claimllm's Core Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$4,500",
+        "Core",
+        "Claimllm"
+      ],
+      "k": 10,
+      "text": "$4,500 per month[1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1917,
+      "completion_tokens": 100,
+      "seconds": 1.985137120995205,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Healthllm's Essential Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$8,000",
+        "Essential",
+        "Healthllm"
+      ],
+      "k": 10,
+      "text": "$8,000 per month[1][3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1936,
+      "completion_tokens": 116,
+      "seconds": 2.8236490660056006,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Lifellm's Starter Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$3,500",
+        "Starter",
+        "Lifellm"
+      ],
+      "k": 10,
+      "text": "$3,500 per month[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1873,
+      "completion_tokens": 140,
+      "seconds": 3.274296065006638,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Rellm's Basic Plan?",
+      "category": "direct_fact",
+      "keywords": [
+        "$5,000",
+        "Basic",
+        "Rellm"
+      ],
+      "k": 10,
+      "text": "$5,000/month[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1858,
+      "completion_tokens": 80,
+      "seconds": 2.355830849992344,
+      "error": null
+    },
+    {
+      "question": "What is Maxine Thompson's current job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Senior Data Engineer",
+        "Maxine"
+      ],
+      "k": 10,
+      "text": "Maxine Thompson’s current job title is **Senior Data Engineer**[5][6]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1387,
+      "completion_tokens": 197,
+      "seconds": 3.0683030619984493,
+      "error": null
+    },
+    {
+      "question": "What is Maxine Thompson's current salary?",
+      "category": "direct_fact",
+      "keywords": [
+        "$120,000",
+        "Maxine"
+      ],
+      "k": 10,
+      "text": "$120,000[2][1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1386,
+      "completion_tokens": 92,
+      "seconds": 2.5589733170054387,
+      "error": null
+    },
+    {
+      "question": "Where is Maxine Thompson located?",
+      "category": "direct_fact",
+      "keywords": [
+        "Austin",
+        "Texas",
+        "Maxine"
+      ],
+      "k": 10,
+      "text": "Austin, Texas[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1371,
+      "completion_tokens": 59,
+      "seconds": 1.84239095900557,
+      "error": null
+    },
+    {
+      "question": "What is Avery Lancaster's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "CEO",
+        "Avery",
+        "Lancaster"
+      ],
+      "k": 10,
+      "text": "Avery Lancaster’s job title is **Co‑Founder & Chief Executive Officer (CEO)**[1][6]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1410,
+      "completion_tokens": 115,
+      "seconds": 3.6035356930078706,
+      "error": null
+    },
+    {
+      "question": "What is Avery Lancaster's current salary?",
+      "category": "direct_fact",
+      "keywords": [
+        "$225,000",
+        "Avery"
+      ],
+      "k": 10,
+      "text": "Avery Lancaster’s current salary is $225,000[1][2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1406,
+      "completion_tokens": 94,
+      "seconds": 2.4355861470103264,
+      "error": null
+    },
+    {
+      "question": "What is James Wilson's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "CTO",
+        "James",
+        "Wilson"
+      ],
+      "k": 10,
+      "text": "James Wilson’s job title is **Chief Technology Officer (CTO)**[1][5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1535,
+      "completion_tokens": 95,
+      "seconds": 2.7915033850003965,
+      "error": null
+    },
+    {
+      "question": "What is James Wilson's current salary?",
+      "category": "direct_fact",
+      "keywords": [
+        "$285,000",
+        "James",
+        "Wilson"
+      ],
+      "k": 10,
+      "text": "James Wilson’s current salary is $285,000[1][2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1447,
+      "completion_tokens": 93,
+      "seconds": 2.4295016619871603,
+      "error": null
+    },
+    {
+      "question": "What is Priya Sharma's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Senior Data Scientist",
+        "Priya"
+      ],
+      "k": 10,
+      "text": "Priya Sharma’s job title is **Senior Data Scientist**[1][5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1626,
+      "completion_tokens": 91,
+      "seconds": 1.4333556649944512,
+      "error": null
+    },
+    {
+      "question": "What is Priya Sharma's current salary?",
+      "category": "direct_fact",
+      "keywords": [
+        "$145,000",
+        "Priya"
+      ],
+      "k": 10,
+      "text": "Priya Sharma’s current salary is **$145,000**[1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1490,
+      "completion_tokens": 159,
+      "seconds": 2.8664728040021146,
+      "error": null
+    },
+    {
+      "question": "What is Robert Chen's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Senior Full Stack Engineer",
+        "Robert"
+      ],
+      "k": 10,
+      "text": "Robert Chen’s job title is **Senior Full Stack Engineer**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1480,
+      "completion_tokens": 96,
+      "seconds": 1.843022203000146,
+      "error": null
+    },
+    {
+      "question": "What is Robert Chen's current salary?",
+      "category": "direct_fact",
+      "keywords": [
+        "$152,000",
+        "Robert"
+      ],
+      "k": 10,
+      "text": "Robert Chen’s current salary is $152,000[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1450,
+      "completion_tokens": 102,
+      "seconds": 1.230617234003148,
+      "error": null
+    },
+    {
+      "question": "Which product does Robert Chen serve as technical lead for?",
+      "category": "direct_fact",
+      "keywords": [
+        "Homellm",
+        "Robert",
+        "Chen"
+      ],
+      "k": 10,
+      "text": "Robert Chen serves as technical lead for the **Homellm home insurance portal**[3].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1559,
+      "completion_tokens": 139,
+      "seconds": 1.354976809991058,
+      "error": null
+    },
+    {
+      "question": "What is David Kim's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "DevOps Engineer",
+        "David",
+        "Kim"
+      ],
+      "k": 10,
+      "text": "David Kim’s job title is **DevOps Engineer**[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1218,
+      "completion_tokens": 79,
+      "seconds": 1.626118154003052,
+      "error": null
+    },
+    {
+      "question": "What is Sarah Williams's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "UX Designer",
+        "Sarah"
+      ],
+      "k": 10,
+      "text": "Sarah Williams’s job title is **UX Designer**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1576,
+      "completion_tokens": 89,
+      "seconds": 1.3153820059960708,
+      "error": null
+    },
+    {
+      "question": "Which product does Sarah Williams lead design for?",
+      "category": "direct_fact",
+      "keywords": [
+        "Homellm",
+        "Sarah"
+      ],
+      "k": 10,
+      "text": "Sarah Williams leads design for the **Homellm home insurance portal**[4].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1660,
+      "completion_tokens": 219,
+      "seconds": 2.5529827540012775,
+      "error": null
+    },
+    {
+      "question": "What is Marcus Johnson's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Customer Success Manager",
+        "Marcus"
+      ],
+      "k": 10,
+      "text": "Marcus Johnson’s job title is **Customer Success Manager**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1316,
+      "completion_tokens": 100,
+      "seconds": 1.9774955140019301,
+      "error": null
+    },
+    {
+      "question": "What is Marcus Johnson's client retention rate?",
+      "category": "direct_fact",
+      "keywords": [
+        "95%",
+        "retention",
+        "Marcus"
+      ],
+      "k": 10,
+      "text": "Marcus Johnson’s client retention rate is **95%**[4].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1448,
+      "completion_tokens": 77,
+      "seconds": 1.8702636109956075,
+      "error": null
+    },
+    {
+      "question": "What is Lisa Anderson's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Marketing Manager",
+        "Lisa"
+      ],
+      "k": 10,
+      "text": "Lisa Anderson’s job title is **Marketing Manager**[1][3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1401,
+      "completion_tokens": 78,
+      "seconds": 3.2239201630000025,
+      "error": null
+    },
+    {
+      "question": "What is the size of Lisa Anderson's annual marketing budget?",
+      "category": "direct_fact",
+      "keywords": [
+        "$2M",
+        "Lisa"
+      ],
+      "k": 10,
+      "text": "Lisa Anderson manages an annual marketing budget of $2 million[5].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1433,
+      "completion_tokens": 81,
+      "seconds": 1.6949084320076508,
+      "error": null
+    },
+    {
+      "question": "What is Emily Carter's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Account Executive",
+        "Emily"
+      ],
+      "k": 10,
+      "text": "Emily Carter’s job title is **Account Executive**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1376,
+      "completion_tokens": 91,
+      "seconds": 1.8893336309993174,
+      "error": null
+    },
+    {
+      "question": "What is the contract number for DriveSmart Insurance's Carllm agreement?",
+      "category": "direct_fact",
+      "keywords": [
+        "CR-2025-E-0078",
+        "DriveSmart"
+      ],
+      "k": 10,
+      "text": "The contract number is **CR-2025-E-0078**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1550,
+      "completion_tokens": 100,
+      "seconds": 3.5850151919876225,
+      "error": null
+    },
+    {
+      "question": "What is the duration of the DriveSmart Insurance Carllm contract?",
+      "category": "direct_fact",
+      "keywords": [
+        "36 months",
+        "DriveSmart"
+      ],
+      "k": 10,
+      "text": "The DriveSmart Insurance Carllm contract is effective for a period of **36 months** from the contract date. [3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1625,
+      "completion_tokens": 120,
+      "seconds": 2.356934867988457,
+      "error": null
+    },
+    {
+      "question": "What is the total contract value for DriveSmart Insurance's Carllm agreement?",
+      "category": "direct_fact",
+      "keywords": [
+        "$702,000",
+        "DriveSmart"
+      ],
+      "k": 10,
+      "text": "The total contract value for DriveSmart Insurance’s Carllm agreement is **$702,000** over the 36‑month term. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1752,
+      "completion_tokens": 174,
+      "seconds": 2.249559848001809,
+      "error": null
+    },
+    {
+      "question": "How many active auto policies does DriveSmart Insurance have?",
+      "category": "direct_fact",
+      "keywords": [
+        "85,000",
+        "DriveSmart",
+        "policies"
+      ],
+      "k": 10,
+      "text": "DriveSmart Insurance has 85,000 active auto policies. [4]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1858,
+      "completion_tokens": 167,
+      "seconds": 3.5845259099878604,
+      "error": null
+    },
+    {
+      "question": "What is the uptime SLA guarantee for DriveSmart Insurance?",
+      "category": "direct_fact",
+      "keywords": [
+        "99.9%",
+        "uptime",
+        "DriveSmart"
+      ],
+      "k": 10,
+      "text": "The contract guarantees **99.9% platform uptime measured monthly** for DriveSmart Insurance. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1718,
+      "completion_tokens": 254,
+      "seconds": 1.6380318769952282,
+      "error": null
+    },
+    {
+      "question": "Who signed the DriveSmart Insurance contract on behalf of Insurellm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Jennifer Rodriguez",
+        "DriveSmart"
+      ],
+      "k": 10,
+      "text": "Jennifer Rodriguez, Chief Executive Officer of Insurellm, Inc. signed the contract on behalf of Insurellm[2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1584,
+      "completion_tokens": 178,
+      "seconds": 2.470999130004202,
+      "error": null
+    },
+    {
+      "question": "What is the monthly payment for Greenstone Insurance's Homellm contract?",
+      "category": "direct_fact",
+      "keywords": [
+        "$10,000",
+        "Greenstone"
+      ],
+      "k": 10,
+      "text": "The monthly payment for Greenstone Insurance’s Homellm contract is $10,000 per month. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1567,
+      "completion_tokens": 168,
+      "seconds": 2.5452699750021566,
+      "error": null
+    },
+    {
+      "question": "What tier did Harmony Health Plans subscribe to for Healthllm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Professional",
+        "Harmony"
+      ],
+      "k": 10,
+      "text": "Harmony Health Plans subscribed to the **Professional Tier** of Healthllm. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1561,
+      "completion_tokens": 86,
+      "seconds": 2.1502993180038175,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost for Harmony Health Plans' Healthllm subscription?",
+      "category": "direct_fact",
+      "keywords": [
+        "$15,000",
+        "Harmony"
+      ],
+      "k": 10,
+      "text": "The monthly cost for Harmony Health Plans’ Healthllm subscription is **$15,000/month**[1][5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1591,
+      "completion_tokens": 102,
+      "seconds": 2.7743676700047217,
+      "error": null
+    },
+    {
+      "question": "How many covered members does Harmony Health Plans have?",
+      "category": "direct_fact",
+      "keywords": [
+        "38,000",
+        "Harmony"
+      ],
+      "k": 10,
+      "text": "Harmony Health Plans currently covers 38,000 members across 3 states. [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1664,
+      "completion_tokens": 103,
+      "seconds": 2.244310106994817,
+      "error": null
+    },
+    {
+      "question": "Who signed the Harmony Health Plans contract on behalf of Insurellm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Sarah Chen",
+        "Harmony"
+      ],
+      "k": 10,
+      "text": "The contract was signed on behalf of Insurellm by **Sarah Chen**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1659,
+      "completion_tokens": 153,
+      "seconds": 4.20043652500317,
+      "error": null
+    },
+    {
+      "question": "What is the contract number for Metropolitan Life Group's Lifellm agreement?",
+      "category": "direct_fact",
+      "keywords": [
+        "LF-2025-E-0087",
+        "Metropolitan"
+      ],
+      "k": 10,
+      "text": "The contract number is **LF-2025-E-0087**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1632,
+      "completion_tokens": 92,
+      "seconds": 1.3913328959897626,
+      "error": null
+    },
+    {
+      "question": "What is the total contract value for Metropolitan Life Group's Lifellm agreement?",
+      "category": "direct_fact",
+      "keywords": [
+        "$1,098,000",
+        "Metropolitan"
+      ],
+      "k": 10,
+      "text": "The total contract value is $1,098,000 over the 36‑month term. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1607,
+      "completion_tokens": 83,
+      "seconds": 2.280086835002294,
+      "error": null
+    },
+    {
+      "question": "How many active policies does Metropolitan Life Group manage?",
+      "category": "direct_fact",
+      "keywords": [
+        "50,000",
+        "Metropolitan"
+      ],
+      "k": 10,
+      "text": "Metropolitan Life Group manages **50,000+ active policies**[3].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1745,
+      "completion_tokens": 136,
+      "seconds": 2.333236645994475,
+      "error": null
+    },
+    {
+      "question": "Who signed the Metropolitan Life Group contract on behalf of the client?",
+      "category": "direct_fact",
+      "keywords": [
+        "Richard Thompson",
+        "Metropolitan"
+      ],
+      "k": 10,
+      "text": "Jennifer Rodriguez, Chief Executive Officer of Insurellm, Inc. signed the contract on behalf of the client[3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1642,
+      "completion_tokens": 142,
+      "seconds": 1.456985094002448,
+      "error": null
+    },
+    {
+      "question": "What tier did FastTrack Insurance Services subscribe to for Claimllm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Advanced",
+        "FastTrack"
+      ],
+      "k": 10,
+      "text": "FastTrack Insurance Services subscribed to the **Advanced Tier** of Claimllm. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1599,
+      "completion_tokens": 166,
+      "seconds": 1.5467306390055455,
+      "error": null
+    },
+    {
+      "question": "What is the monthly payment for FastTrack Insurance Services' Claimllm contract?",
+      "category": "direct_fact",
+      "keywords": [
+        "$9,500",
+        "FastTrack"
+      ],
+      "k": 10,
+      "text": "The monthly payment for FastTrack Insurance Services’ Claimllm contract is **$9,500**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1722,
+      "completion_tokens": 186,
+      "seconds": 3.686164564001956,
+      "error": null
+    },
+    {
+      "question": "What is the duration of the FastTrack Insurance Services contract?",
+      "category": "direct_fact",
+      "keywords": [
+        "18 months",
+        "FastTrack"
+      ],
+      "k": 10,
+      "text": "The contract with FastTrack Insurance Services is for an 18‑month term. [3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1591,
+      "completion_tokens": 142,
+      "seconds": 2.002508321995265,
+      "error": null
+    },
+    {
+      "question": "Who signed the FastTrack Insurance Services contract on behalf of Insurellm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Sarah Chen",
+        "FastTrack"
+      ],
+      "k": 10,
+      "text": "Sarah Chen, VP of Sales[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1476,
+      "completion_tokens": 119,
+      "seconds": 1.3452997929998673,
+      "error": null
+    },
+    {
+      "question": "What tier did Atlantic Risk Solutions subscribe to for Bizllm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Professional",
+        "Atlantic"
+      ],
+      "k": 10,
+      "text": "Atlantic Risk Solutions subscribed to the **Professional Tier** of Bizllm. [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1767,
+      "completion_tokens": 108,
+      "seconds": 2.42362454799877,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost for Atlantic Risk Solutions' Bizllm subscription?",
+      "category": "direct_fact",
+      "keywords": [
+        "$12,000",
+        "Atlantic"
+      ],
+      "k": 10,
+      "text": "$12,000 per month[1][4]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1756,
+      "completion_tokens": 88,
+      "seconds": 2.435980511989328,
+      "error": null
+    },
+    {
+      "question": "How many user licenses are included in Atlantic Risk Solutions' contract?",
+      "category": "direct_fact",
+      "keywords": [
+        "35",
+        "Atlantic"
+      ],
+      "k": 10,
+      "text": "The contract includes **35 named user licenses**[2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1734,
+      "completion_tokens": 78,
+      "seconds": 3.465947756994865,
+      "error": null
+    },
+    {
+      "question": "Who signed the Atlantic Risk Solutions contract on behalf of Insurellm?",
+      "category": "direct_fact",
+      "keywords": [
+        "Michael Torres",
+        "Atlantic"
+      ],
+      "k": 10,
+      "text": "Michael Torres, Chief Revenue Officer of Insurellm, Inc. signed the contract on behalf of Insurellm[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1722,
+      "completion_tokens": 174,
+      "seconds": 2.251945385010913,
+      "error": null
+    },
+    {
+      "question": "What is the monthly fee for Belvedere Insurance's Markellm listing?",
+      "category": "direct_fact",
+      "keywords": [
+        "$199",
+        "Belvedere"
+      ],
+      "k": 10,
+      "text": "$199 per month[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1633,
+      "completion_tokens": 125,
+      "seconds": 2.4579964129952714,
+      "error": null
+    },
+    {
+      "question": "When did Maxine Thompson join Insurellm?",
+      "category": "temporal",
+      "keywords": [
+        "January 2017",
+        "Maxine"
+      ],
+      "k": 10,
+      "text": "Maxine Thompson joined Insurellm in **January 2017**[2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1578,
+      "completion_tokens": 150,
+      "seconds": 2.2378400349989533,
+      "error": null
+    },
+    {
+      "question": "When did James Wilson join Insurellm?",
+      "category": "temporal",
+      "keywords": [
+        "January 2017",
+        "James",
+        "Wilson"
+      ],
+      "k": 10,
+      "text": "James Wilson joined Insurellm in **January 2017**[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1536,
+      "completion_tokens": 119,
+      "seconds": 2.473359898009221,
+      "error": null
+    },
+    {
+      "question": "When did Insurellm reach its peak of 200 employees?",
+      "category": "temporal",
+      "keywords": [
+        "2020",
+        "200"
+      ],
+      "k": 10,
+      "text": "Insurellm reached its peak of 200 employees in 2020. [4]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1561,
+      "completion_tokens": 167,
+      "seconds": 2.298761514000944,
+      "error": null
+    },
+    {
+      "question": "When did Insurellm undergo strategic restructuring?",
+      "category": "temporal",
+      "keywords": [
+        "2022-2023",
+        "restructuring"
+      ],
+      "k": 10,
+      "text": "Insurellm underwent strategic restructuring in **2022‑2023**[1][4]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1433,
+      "completion_tokens": 180,
+      "seconds": 3.5359240249963477,
+      "error": null
+    },
+    {
+      "question": "When is Carllm's telematics-based pricing feature scheduled to launch?",
+      "category": "temporal",
+      "keywords": [
+        "Q2 2025",
+        "telematics"
+      ],
+      "k": 10,
+      "text": "The telematics‑based pricing feature is scheduled to launch in **Q2 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1550,
+      "completion_tokens": 238,
+      "seconds": 1.5505225009983405,
+      "error": null
+    },
+    {
+      "question": "When is Homellm version 2.0 scheduled for release?",
+      "category": "temporal",
+      "keywords": [
+        "Q1 2025",
+        "Homellm"
+      ],
+      "k": 10,
+      "text": "Homellm version 2.0 is scheduled for release in **Q1 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1507,
+      "completion_tokens": 94,
+      "seconds": 1.5206871940026758,
+      "error": null
+    },
+    {
+      "question": "When is Bizllm version 1.0 scheduled to launch?",
+      "category": "temporal",
+      "keywords": [
+        "Q2 2025",
+        "Bizllm"
+      ],
+      "k": 10,
+      "text": "Bizllm version 1.0 is scheduled to launch in **Q2 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1646,
+      "completion_tokens": 104,
+      "seconds": 2.484374583000317,
+      "error": null
+    },
+    {
+      "question": "When is Claimllm version 1.0 scheduled to launch?",
+      "category": "temporal",
+      "keywords": [
+        "Q1 2025",
+        "Claimllm"
+      ],
+      "k": 10,
+      "text": "Claimllm version 1.0 is scheduled to launch in **Q1 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1392,
+      "completion_tokens": 97,
+      "seconds": 3.4542118350072997,
+      "error": null
+    },
+    {
+      "question": "When is Lifellm version 1.0 scheduled to launch?",
+      "category": "temporal",
+      "keywords": [
+        "Q2 2025",
+        "Lifellm"
+      ],
+      "k": 10,
+      "text": "Lifellm version 1.0 is scheduled to launch in **Q2 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1587,
+      "completion_tokens": 93,
+      "seconds": 1.4324609299947042,
+      "error": null
+    },
+    {
+      "question": "When is Healthllm version 1.0 scheduled to launch?",
+      "category": "temporal",
+      "keywords": [
+        "Q1 2025",
+        "Healthllm"
+      ],
+      "k": 10,
+      "text": "Healthllm version 1.0 is scheduled to launch in **Q1 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1609,
+      "completion_tokens": 108,
+      "seconds": 3.482139946994721,
+      "error": null
+    },
+    {
+      "question": "When was the DriveSmart Insurance contract for Carllm signed?",
+      "category": "temporal",
+      "keywords": [
+        "March 20, 2025",
+        "DriveSmart"
+      ],
+      "k": 10,
+      "text": "The DriveSmart Insurance contract for Carllm was signed on **March 20, 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1529,
+      "completion_tokens": 156,
+      "seconds": 2.355087571006152,
+      "error": null
+    },
+    {
+      "question": "When was the Harmony Health Plans Healthllm contract effective?",
+      "category": "temporal",
+      "keywords": [
+        "January 25, 2025",
+        "Harmony"
+      ],
+      "k": 10,
+      "text": "The contract became effective on **January 25, 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1577,
+      "completion_tokens": 87,
+      "seconds": 1.7369918129988946,
+      "error": null
+    },
+    {
+      "question": "When was the Metropolitan Life Group Lifellm contract signed?",
+      "category": "temporal",
+      "keywords": [
+        "April 5, 2025",
+        "Metropolitan"
+      ],
+      "k": 10,
+      "text": "The Metropolitan Life Group Lifellm contract was signed on **April 5, 2025**[1][6]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1661,
+      "completion_tokens": 122,
+      "seconds": 2.357631096005207,
+      "error": null
+    },
+    {
+      "question": "When was the FastTrack Insurance Services Claimllm contract signed?",
+      "category": "temporal",
+      "keywords": [
+        "May 10, 2025",
+        "FastTrack"
+      ],
+      "k": 10,
+      "text": "The FastTrack Insurance Services Claimllm contract was signed on **May 10, 2025**[1][4]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1416,
+      "completion_tokens": 147,
+      "seconds": 2.8672541299893055,
+      "error": null
+    },
+    {
+      "question": "When was the Atlantic Risk Solutions Bizllm contract effective?",
+      "category": "temporal",
+      "keywords": [
+        "January 15, 2025",
+        "Atlantic"
+      ],
+      "k": 10,
+      "text": "The contract became effective on **January 15, 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1608,
+      "completion_tokens": 87,
+      "seconds": 2.1501984390051803,
+      "error": null
+    },
+    {
+      "question": "How much did Priya Sharma's recommendation engine increase conversion by for Marketllm?",
+      "category": "comparative",
+      "keywords": [
+        "28%",
+        "Priya",
+        "Marketllm"
+      ],
+      "k": 10,
+      "text": "Priya Sharma’s recommendation engine for Marketllm increased conversion by **28%**[2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1656,
+      "completion_tokens": 117,
+      "seconds": 2.252678717006347,
+      "error": null
+    },
+    {
+      "question": "By what percentage did David Kim reduce deployment time with CI/CD pipelines?",
+      "category": "comparative",
+      "keywords": [
+        "60%",
+        "David",
+        "Kim"
+      ],
+      "k": 10,
+      "text": "David Kim reduced deployment time by **60%** with CI/CD pipelines. [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1665,
+      "completion_tokens": 113,
+      "seconds": 1.6377749130042503,
+      "error": null
+    },
+    {
+      "question": "By what percentage did Sarah Williams improve user satisfaction scores?",
+      "category": "comparative",
+      "keywords": [
+        "35%",
+        "Sarah"
+      ],
+      "k": 10,
+      "text": "Sarah Williams improved user satisfaction scores by **35%**[2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1608,
+      "completion_tokens": 132,
+      "seconds": 2.0484258749929722,
+      "error": null
+    },
+    {
+      "question": "By what percentage has Lisa Anderson increased qualified leads since 2021?",
+      "category": "comparative",
+      "keywords": [
+        "65%",
+        "Lisa"
+      ],
+      "k": 10,
+      "text": "Lisa Anderson has increased qualified leads by **65%** since 2021[2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1619,
+      "completion_tokens": 137,
+      "seconds": 2.2301627400011057,
+      "error": null
+    },
+    {
+      "question": "By what percentage did Emily Carter exceed her annual sales target in 2022?",
+      "category": "comparative",
+      "keywords": [
+        "30%",
+        "Emily",
+        "Carter"
+      ],
+      "k": 10,
+      "text": "Emily Carter exceeded her annual sales target by **30%** in 2022[3].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1606,
+      "completion_tokens": 175,
+      "seconds": 2.9916886140126735,
+      "error": null
+    },
+    {
+      "question": "What is the performance-based pricing for Belvedere Insurance's Markellm contract?",
+      "category": "comparative",
+      "keywords": [
+        "$25",
+        "Belvedere"
+      ],
+      "k": 10,
+      "text": "The performance‑based pricing for Belvedere Insurance’s Markellm contract is $25 per lead generated. [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1688,
+      "completion_tokens": 250,
+      "seconds": 2.8931206629931694,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost for Stellar Insurance Co.'s Rellm subscription?",
+      "category": "comparative",
+      "keywords": [
+        "$10,000",
+        "Stellar"
+      ],
+      "k": 10,
+      "text": "The monthly cost for Stellar Insurance Co.’s Rellm subscription is **$10,000** per month[1][5].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1484,
+      "completion_tokens": 105,
+      "seconds": 1.370827577993623,
+      "error": null
+    },
+    {
+      "question": "What are Insurellm's four core values?",
+      "category": "comparative",
+      "keywords": [
+        "Innovation First",
+        "Customer Obsession",
+        "Collaborative Excellence"
+      ],
+      "k": 10,
+      "text": "Insurellm’s four core values are:  \n- **Innovation First**  \n- **Customer Obsession**  \n- **Integrity & Transparency**  \n- **Collaborative Excellence**[1][4][3][6]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1234,
+      "completion_tokens": 182,
+      "seconds": 3.8252777339948807,
+      "error": null
+    },
+    {
+      "question": "What award did Alex Harper win in 2022?",
+      "category": "comparative",
+      "keywords": [
+        "SDR of the Year",
+        "Alex",
+        "Harper"
+      ],
+      "k": 10,
+      "text": "Alex Harper won the **Insurellm \"SDR of the Year\" Award** in 2022. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1668,
+      "completion_tokens": 168,
+      "seconds": 3.0726547069934895,
+      "error": null
+    },
+    {
+      "question": "When was the Stellar Insurance Co. Rellm contract effective?",
+      "category": "comparative",
+      "keywords": [
+        "January 1, 2024",
+        "Stellar"
+      ],
+      "k": 10,
+      "text": "The Stellar Insurance Co. Rellm contract became effective on **January 1, 2024**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1313,
+      "completion_tokens": 106,
+      "seconds": 2.354356824012939,
+      "error": null
+    },
+    {
+      "question": "How many claims does FastTrack Insurance Services project for year 1?",
+      "category": "numerical",
+      "keywords": [
+        "22,000",
+        "FastTrack"
+      ],
+      "k": 10,
+      "text": "FastTrack Insurance Services projects **22,000 claims** in year 1. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1631,
+      "completion_tokens": 105,
+      "seconds": 1.229971642998862,
+      "error": null
+    },
+    {
+      "question": "How much annual revenue does Marcus Johnson's portfolio generate?",
+      "category": "numerical",
+      "keywords": [
+        "$5M",
+        "Marcus"
+      ],
+      "k": 10,
+      "text": "$5 million in annual revenue[5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1583,
+      "completion_tokens": 95,
+      "seconds": 2.2448810530040646,
+      "error": null
+    },
+    {
+      "question": "What percentage of quota did Jennifer Adams achieve in 2023?",
+      "category": "numerical",
+      "keywords": [
+        "78%",
+        "Jennifer"
+      ],
+      "k": 10,
+      "text": "Jennifer Adams achieved **78%** of her lead generation quota in 2023. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1655,
+      "completion_tokens": 91,
+      "seconds": 2.159073005008395,
+      "error": null
+    },
+    {
+      "question": "How many products does Insurellm offer?",
+      "category": "numerical",
+      "keywords": [
+        "8",
+        "products"
+      ],
+      "k": 10,
+      "text": "Insurellm offers 8 insurance software products. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1449,
+      "completion_tokens": 117,
+      "seconds": 2.354162214003736,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of Carllm's Professional Tier?",
+      "category": "numerical",
+      "keywords": [
+        "$2,500",
+        "Professional",
+        "Carllm"
+      ],
+      "k": 10,
+      "text": "$2,500/month[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1864,
+      "completion_tokens": 96,
+      "seconds": 1.4325869570020586,
+      "error": null
+    },
+    {
+      "question": "What are the core insurance portals offered by Insurellm?",
+      "category": "relationship",
+      "keywords": [
+        "Core Insurance Portals",
+        "Carllm"
+      ],
+      "k": 10,
+      "text": "The core insurance portals offered by Insurellm are:\n\n- Carllm  \n- Homellm  \n- Lifellm  \n- Healthllm  \n- Bizllm[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1333,
+      "completion_tokens": 138,
+      "seconds": 1.6378046370082302,
+      "error": null
+    },
+    {
+      "question": "What are the marketplace and infrastructure products offered by Insurellm?",
+      "category": "relationship",
+      "keywords": [
+        "Marketplace & Infrastructure",
+        "Markellm"
+      ],
+      "k": 10,
+      "text": "The marketplace and infrastructure products are:\n\n- **Markellm** – marketplace connecting consumers with insurance providers  \n- **Claimllm** – AI‑powered claims processing platform across all insurance lines  \n- **Rellm** – enterprise platform for the reinsurance sector[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1383,
+      "completion_tokens": 236,
+      "seconds": 4.197803584000212,
+      "error": null
+    },
+    {
+      "question": "Which product does Jessica Liu develop for?",
+      "category": "relationship",
+      "keywords": [
+        "Rellm",
+        "Jessica"
+      ],
+      "k": 10,
+      "text": "Jessica Liu develops user interfaces for the **Rellm reinsurance platform**[2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1667,
+      "completion_tokens": 124,
+      "seconds": 3.0724157229997218,
+      "error": null
+    },
+    {
+      "question": "What is Tyler Brooks's job title?",
+      "category": "relationship",
+      "keywords": [
+        "Junior Backend Developer",
+        "Tyler"
+      ],
+      "k": 10,
+      "text": "Tyler Brooks’s job title is **Junior Backend Developer**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1319,
+      "completion_tokens": 89,
+      "seconds": 2.252850777003914,
+      "error": null
+    },
+    {
+      "question": "Which product does Tyler Brooks work on?",
+      "category": "relationship",
+      "keywords": [
+        "Carllm",
+        "Tyler"
+      ],
+      "k": 10,
+      "text": "Tyler Brooks develops backend services for the **Carllm auto insurance portal**[5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1441,
+      "completion_tokens": 106,
+      "seconds": 2.560649437989923,
+      "error": null
+    },
+    {
+      "question": "What is the job title of the IIOTY award winner?",
+      "category": "spanning",
+      "keywords": [
+        "Maxine",
+        "Thompson",
+        "Senior Data Engineer",
+        "IIOTY"
+      ],
+      "k": 10,
+      "text": "Senior Data Engineer[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1693,
+      "completion_tokens": 169,
+      "seconds": 2.7631808039877797,
+      "error": null
+    },
+    {
+      "question": "Who is the technical lead for the product that costs $10,000/month for Standard Tier?",
+      "category": "spanning",
+      "keywords": [
+        "Robert",
+        "Chen",
+        "Homellm",
+        "$10,000"
+      ],
+      "k": 10,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 1766,
+      "completion_tokens": 254,
+      "seconds": 2.2221718939981656,
+      "error": null
+    },
+    {
+      "question": "What is the salary of the CTO who joined in January 2017?",
+      "category": "spanning",
+      "keywords": [
+        "James",
+        "Wilson",
+        "$285,000",
+        "January 2017"
+      ],
+      "k": 10,
+      "text": "The CTO who joined in January 2017, James Wilson, has a current salary of **$285,000**[1][7].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1289,
+      "completion_tokens": 181,
+      "seconds": 2.4891460739891045,
+      "error": null
+    },
+    {
+      "question": "What is the current salary of the founder of Insurellm?",
+      "category": "spanning",
+      "keywords": [
+        "Avery",
+        "Lancaster",
+        "$225,000",
+        "founder"
+      ],
+      "k": 10,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 1599,
+      "completion_tokens": 183,
+      "seconds": 3.1743883149902103,
+      "error": null
+    },
+    {
+      "question": "Which product did the Senior Data Scientist build a recommendation engine for that increased conversion by 28%?",
+      "category": "spanning",
+      "keywords": [
+        "Priya",
+        "Sharma",
+        "Marketllm",
+        "28%"
+      ],
+      "k": 10,
+      "text": "Marketllm[3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1675,
+      "completion_tokens": 127,
+      "seconds": 6.96266030400875,
+      "error": null
+    },
+    {
+      "question": "Which product does the UX Designer who improved user satisfaction by 35% lead design for?",
+      "category": "spanning",
+      "keywords": [
+        "Sarah",
+        "Williams",
+        "Homellm",
+        "35%"
+      ],
+      "k": 10,
+      "text": "The UX Designer who improved user satisfaction by 35% leads design for the Homellm home insurance portal[2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1726,
+      "completion_tokens": 171,
+      "seconds": 1.6389777310105274,
+      "error": null
+    },
+    {
+      "question": "What is the annual marketing budget managed by the Marketing Manager in Austin?",
+      "category": "spanning",
+      "keywords": [
+        "Lisa",
+        "Anderson",
+        "$2M",
+        "Austin"
+      ],
+      "k": 10,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 1024,
+      "completion_tokens": 96,
+      "seconds": 2.047806255010073,
+      "error": null
+    },
+    {
+      "question": "Who signed the contract on behalf of Insurellm for the client that pays $18,000 per month for Carllm?",
+      "category": "spanning",
+      "keywords": [
+        "Jennifer",
+        "Rodriguez",
+        "DriveSmart",
+        "$18,000"
+      ],
+      "k": 10,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 1736,
+      "completion_tokens": 305,
+      "seconds": 1.8552455639874097,
+      "error": null
+    },
+    {
+      "question": "What tier did the client with 35 user licenses subscribe to for Bizllm?",
+      "category": "spanning",
+      "keywords": [
+        "Atlantic",
+        "Risk",
+        "Solutions",
+        "Professional",
+        "35"
+      ],
+      "k": 10,
+      "text": "The client with 35 user licenses subscribed to the **Professional Tier** of Bizllm. [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1868,
+      "completion_tokens": 123,
+      "seconds": 2.241653913006303,
+      "error": null
+    },
+    {
+      "question": "How many covered members does the client who subscribed to Healthllm Professional Tier for $15,000/month have?",
+      "category": "spanning",
+      "keywords": [
+        "Harmony",
+        "Health",
+        "Plans",
+        "38,000",
+        "$15,000"
+      ],
+      "k": 10,
+      "text": "Advantage Medical Coverage: 32,000 covered members [1]  \nHarmony Health Plans: 38,000 covered members [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1982,
+      "completion_tokens": 1284,
+      "seconds": 9.62404944600712,
+      "error": null
+    },
+    {
+      "question": "Who signed the Metropolitan Life Group contract that totals $1,098,000?",
+      "category": "spanning",
+      "keywords": [
+        "Jennifer",
+        "Rodriguez",
+        "Richard",
+        "Thompson",
+        "$1,098,000"
+      ],
+      "k": 10,
+      "text": "Jennifer Rodriguez, Chief Executive Officer of Insurellm, Inc. and Richard Thompson, Chairman & Chief Executive Officer of Metropolitan Life Group, Inc. signed the contract that totals $1,098,000. [5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1619,
+      "completion_tokens": 242,
+      "seconds": 1.5563624010101194,
+      "error": null
+    },
+    {
+      "question": "What is the total contract value for the client paying $12,000 per month for Bizllm Professional Tier?",
+      "category": "spanning",
+      "keywords": [
+        "Atlantic",
+        "$144,000",
+        "12 months",
+        "$12,000"
+      ],
+      "k": 10,
+      "text": "$144,000 for Atlantic Risk Solutions [1]  \n$288,000 for Fortress Business Underwriters [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 2134,
+      "completion_tokens": 898,
+      "seconds": 6.431209635004052,
+      "error": null
+    },
+    {
+      "question": "By what percentage did the DevOps Engineer in New York reduce deployment time?",
+      "category": "spanning",
+      "keywords": [
+        "David",
+        "Kim",
+        "60%",
+        "New York"
+      ],
+      "k": 10,
+      "text": "The DevOps Engineer reduced deployment time by **60%**[3].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1684,
+      "completion_tokens": 97,
+      "seconds": 1.8435489760013297,
+      "error": null
+    },
+    {
+      "question": "What is the annual revenue generated by the portfolio managed by the Customer Success Manager in New York?",
+      "category": "spanning",
+      "keywords": [
+        "Marcus",
+        "Johnson",
+        "$5M",
+        "New York"
+      ],
+      "k": 10,
+      "text": "$5 million in annual revenue[3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1746,
+      "completion_tokens": 158,
+      "seconds": 2.4260644460009644,
+      "error": null
+    },
+    {
+      "question": "By what percentage did the Account Executive in Austin exceed their annual sales target in 2022?",
+      "category": "spanning",
+      "keywords": [
+        "Emily",
+        "Carter",
+        "30%",
+        "Austin",
+        "2022"
+      ],
+      "k": 10,
+      "text": "30%[10]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1745,
+      "completion_tokens": 203,
+      "seconds": 1.5677086530049564,
+      "error": null
+    },
+    {
+      "question": "When is the telematics-based pricing feature scheduled to launch for the product that costs $1,000/month for Basic Tier?",
+      "category": "spanning",
+      "keywords": [
+        "Carllm",
+        "Q2 2025",
+        "telematics",
+        "$1,000"
+      ],
+      "k": 10,
+      "text": "The telematics‑based pricing feature is scheduled to launch in **Q2 2025** for the product that has a $1,000/month Basic Tier[1][2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1685,
+      "completion_tokens": 181,
+      "seconds": 2.6623725809913594,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost for the Basic Listing Fee on the marketplace that was Insurellm's first product?",
+      "category": "spanning",
+      "keywords": [
+        "Markellm",
+        "$199",
+        "first product"
+      ],
+      "k": 10,
+      "text": "The Basic Listing Fee on Insurellm’s first product, the Markellm marketplace, is $199 per month. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1743,
+      "completion_tokens": 166,
+      "seconds": 1.5251368080062093,
+      "error": null
+    },
+    {
+      "question": "How many core values does the company founded by Avery Lancaster have?",
+      "category": "spanning",
+      "keywords": [
+        "four",
+        "core values",
+        "Avery",
+        "Lancaster",
+        "founded"
+      ],
+      "k": 10,
+      "text": "The company has one core value listed. [10]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1426,
+      "completion_tokens": 174,
+      "seconds": 2.8785775619908236,
+      "error": null
+    },
+    {
+      "question": "What tier of Healthllm costs $15,000 per month and includes Advanced Medication Management?",
+      "category": "spanning",
+      "keywords": [
+        "Professional",
+        "Healthllm",
+        "$15,000",
+        "Advanced Medication Management"
+      ],
+      "k": 10,
+      "text": "The **Professional Tier** costs $15,000 per month and includes Advanced Medication Management[1][5]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1705,
+      "completion_tokens": 236,
+      "seconds": 3.7887222389981616,
+      "error": null
+    },
+    {
+      "question": "How many active policies does the client who pays $28,000 per month for Lifellm manage?",
+      "category": "spanning",
+      "keywords": [
+        "Metropolitan",
+        "Life",
+        "Group",
+        "50,000",
+        "$28,000"
+      ],
+      "k": 10,
+      "text": "Metropolitan Life Group manages **50,000+ active policies**[2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1781,
+      "completion_tokens": 180,
+      "seconds": 2.251471918003517,
+      "error": null
+    },
+    {
+      "question": "What is Alex Chen's current job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Backend Software Engineer",
+        "Alex Chen"
+      ],
+      "k": 10,
+      "text": "Alex Chen’s documents list two titles.  \n- The summary states his current title is **Backend Software Engineer**[1].  \n- The career‑progression record shows he was promoted to **Senior Backend Software Engineer** in March 2023[6].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1458,
+      "completion_tokens": 386,
+      "seconds": 4.403377983995597,
+      "error": null
+    },
+    {
+      "question": "What is Carlos Rodriguez's current salary?",
+      "category": "direct_fact",
+      "keywords": [
+        "$125,000",
+        "Carlos"
+      ],
+      "k": 10,
+      "text": "Carlos Rodriguez’s current salary is $125,000[2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1484,
+      "completion_tokens": 147,
+      "seconds": 2.5605641750007635,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost of the Bizllm Business Tier?",
+      "category": "direct_fact",
+      "keywords": [
+        "$6,000",
+        "Business",
+        "Bizllm"
+      ],
+      "k": 10,
+      "text": "$6,000 per month[1][4]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1849,
+      "completion_tokens": 107,
+      "seconds": 1.5359618619986577,
+      "error": null
+    },
+    {
+      "question": "What is Nina Patel's job title?",
+      "category": "direct_fact",
+      "keywords": [
+        "Business Intelligence Analyst",
+        "Nina"
+      ],
+      "k": 10,
+      "text": "Nina Patel’s job title is **Business Intelligence Analyst**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1384,
+      "completion_tokens": 89,
+      "seconds": 2.3569168120011454,
+      "error": null
+    },
+    {
+      "question": "What is the contract number for the GreenValley Insurance Homellm agreement?",
+      "category": "direct_fact",
+      "keywords": [
+        "HV-2023-0458",
+        "GreenValley"
+      ],
+      "k": 10,
+      "text": "The contract number is **HV-2023-0458**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1590,
+      "completion_tokens": 89,
+      "seconds": 2.6606995850015664,
+      "error": null
+    },
+    {
+      "question": "When did Alex Chen join Insurellm?",
+      "category": "temporal",
+      "keywords": [
+        "April 2020",
+        "Alex Chen"
+      ],
+      "k": 10,
+      "text": "Alex Chen joined Insurellm in **April 2020**[1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1630,
+      "completion_tokens": 95,
+      "seconds": 2.1513654549926287,
+      "error": null
+    },
+    {
+      "question": "When was the GreenValley Insurance Homellm contract signed?",
+      "category": "temporal",
+      "keywords": [
+        "October 6, 2023",
+        "GreenValley"
+      ],
+      "k": 10,
+      "text": "The GreenValley Insurance Homellm contract was signed on **October 6, 2023**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1494,
+      "completion_tokens": 96,
+      "seconds": 2.149543060004362,
+      "error": null
+    },
+    {
+      "question": "When was the Summit Commercial Insurance Bizllm contract effective?",
+      "category": "temporal",
+      "keywords": [
+        "March 15, 2025",
+        "Summit"
+      ],
+      "k": 10,
+      "text": "The Summit Commercial Insurance Bizllm contract was effective on **March 15, 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1420,
+      "completion_tokens": 117,
+      "seconds": 3.6215064540010644,
+      "error": null
+    },
+    {
+      "question": "When was the Roadway Insurance Carllm contract effective?",
+      "category": "temporal",
+      "keywords": [
+        "January 1, 2025",
+        "Roadway"
+      ],
+      "k": 10,
+      "text": "The Roadway Insurance Carllm contract became effective on **January 1, 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1603,
+      "completion_tokens": 94,
+      "seconds": 2.1124867320031626,
+      "error": null
+    },
+    {
+      "question": "When was the Evergreen Life Insurance Lifellm contract signed?",
+      "category": "temporal",
+      "keywords": [
+        "January 20, 2025",
+        "Evergreen"
+      ],
+      "k": 10,
+      "text": "The Evergreen Life Insurance Lifellm contract was signed on **January 20, 2025**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1436,
+      "completion_tokens": 109,
+      "seconds": 2.2542399160010973,
+      "error": null
+    },
+    {
+      "question": "How many employees did Insurellm have at its peak in 2020?",
+      "category": "numerical",
+      "keywords": [
+        "200",
+        "2020",
+        "peak"
+      ],
+      "k": 10,
+      "text": "Insurellm had a peak of **200 employees** in 2020[4][3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1591,
+      "completion_tokens": 144,
+      "seconds": 1.4329028540087165,
+      "error": null
+    },
+    {
+      "question": "What is the monthly cost for Apex Reinsurance's Rellm subscription?",
+      "category": "numerical",
+      "keywords": [
+        "$10,000",
+        "Apex"
+      ],
+      "k": 10,
+      "text": "The monthly cost for Apex Reinsurance’s Rellm subscription is **$10,000** per month. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1695,
+      "completion_tokens": 159,
+      "seconds": 1.7410635389969684,
+      "error": null
+    },
+    {
+      "question": "How many active policies does Evergreen Life Insurance currently manage?",
+      "category": "numerical",
+      "keywords": [
+        "1,400",
+        "Evergreen"
+      ],
+      "k": 10,
+      "text": "Evergreen Life Insurance currently manages **1,400 active policies**[3].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1606,
+      "completion_tokens": 168,
+      "seconds": 2.459226278006099,
+      "error": null
+    },
+    {
+      "question": "How many user licenses are provided for onboarding training in the Summit Commercial Insurance contract?",
+      "category": "numerical",
+      "keywords": [
+        "15",
+        "Summit"
+      ],
+      "k": 10,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 1598,
+      "completion_tokens": 258,
+      "seconds": 4.299431516992627,
+      "error": null
+    },
+    {
+      "question": "How much new business did Michael O'Brien generate over the past 3 years?",
+      "category": "numerical",
+      "keywords": [
+        "$8.2M",
+        "Michael",
+        "O'Brien"
+      ],
+      "k": 10,
+      "text": "$8.2 million in new business over the past three years[6]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1642,
+      "completion_tokens": 133,
+      "seconds": 2.6111975929961773,
+      "error": null
+    },
+    {
+      "question": "Which product does Rachel Martinez lead product strategy for?",
+      "category": "relationship",
+      "keywords": [
+        "Carllm",
+        "Rachel",
+        "Martinez"
+      ],
+      "k": 10,
+      "text": "Rachel Martinez leads product strategy for **Carllm, the auto insurance portal**[3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1617,
+      "completion_tokens": 117,
+      "seconds": 2.508866770003806,
+      "error": null
+    },
+    {
+      "question": "Which mobile app does Kevin Zhang lead iOS development for?",
+      "category": "relationship",
+      "keywords": [
+        "Marketllm",
+        "Kevin",
+        "Zhang"
+      ],
+      "k": 10,
+      "text": "Kevin Zhang leads iOS development for the **Marketllm consumer mobile app**[2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1503,
+      "completion_tokens": 93,
+      "seconds": 1.8712433699984103,
+      "error": null
+    },
+    {
+      "question": "Which tier of Bizllm did Summit Commercial Insurance subscribe to?",
+      "category": "relationship",
+      "keywords": [
+        "Business",
+        "Summit"
+      ],
+      "k": 10,
+      "text": "Summit Commercial Insurance subscribed to the **Business Tier** of Bizllm. [2][8]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1529,
+      "completion_tokens": 130,
+      "seconds": 2.225105210003676,
+      "error": null
+    },
+    {
+      "question": "What award did Carlos Rodriguez win in 2023?",
+      "category": "relationship",
+      "keywords": [
+        "Solutions Engineer of the Year",
+        "Carlos"
+      ],
+      "k": 10,
+      "text": "Carlos Rodriguez won the **Solutions Engineer of the Year 2023** award. [3]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1714,
+      "completion_tokens": 107,
+      "seconds": 2.151480332002393,
+      "error": null
+    },
+    {
+      "question": "Who signed the Summit Commercial Insurance contract on behalf of Insurellm?",
+      "category": "relationship",
+      "keywords": [
+        "Michael Torres",
+        "Summit"
+      ],
+      "k": 10,
+      "text": "Michael Torres, Chief Revenue Officer of Insurellm, Inc. [2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1441,
+      "completion_tokens": 140,
+      "seconds": 1.4329579019977245,
+      "error": null
+    },
+    {
+      "question": "How many employees at Insurellm have a current salary under $80,000?",
+      "category": "holistic",
+      "keywords": [
+        "salary",
+        "employees"
+      ],
+      "k": 10,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 1464,
+      "completion_tokens": 198,
+      "seconds": 1.5348975759989116,
+      "error": null
+    },
+    {
+      "question": "What is the total contract value of all Healthllm contracts combined?",
+      "category": "holistic",
+      "keywords": [
+        "Healthllm",
+        "contract value"
+      ],
+      "k": 10,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 1439,
+      "completion_tokens": 433,
+      "seconds": 4.216091298992978,
+      "error": null
+    },
+    {
+      "question": "Which product line has the most active contracts according to the company overview?",
+      "category": "holistic",
+      "keywords": [
+        "contracts",
+        "products"
+      ],
+      "k": 10,
+      "text": "The company overview shows that both **Bizllm (Commercial Insurance)** and **Claimllm (Claims Processing)** have the highest number of active contracts, each with **7 contracts**[1].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1833,
+      "completion_tokens": 328,
+      "seconds": 2.338349580997601,
+      "error": null
+    },
+    {
+      "question": "How many total employees work at Insurellm across all locations?",
+      "category": "holistic",
+      "keywords": [
+        "employees",
+        "total"
+      ],
+      "k": 10,
+      "text": "Insurellm has a total of 32 employees across all locations. [1][2]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1465,
+      "completion_tokens": 186,
+      "seconds": 5.119127542988281,
+      "error": null
+    },
+    {
+      "question": "What is the average monthly subscription cost across all Carllm contracts?",
+      "category": "holistic",
+      "keywords": [
+        "Carllm",
+        "monthly cost"
+      ],
+      "k": 10,
+      "text": "I could not find this in the loaded documents.",
+      "refused": true,
+      "cited": false,
+      "prompt_tokens": 1702,
+      "completion_tokens": 431,
+      "seconds": 7.8853495189978275,
+      "error": null
+    },
+    {
+      "question": "How many different insurance product lines does Insurellm offer in total?",
+      "category": "holistic",
+      "keywords": [
+        "products",
+        "insurance lines"
+      ],
+      "k": 10,
+      "text": "Insurellm offers **8** different insurance product lines in total. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1454,
+      "completion_tokens": 161,
+      "seconds": 2.6628552909969585,
+      "error": null
+    },
+    {
+      "question": "Which product has the fewest active contracts according to the portfolio breakdown?",
+      "category": "holistic",
+      "keywords": [
+        "contracts",
+        "fewest"
+      ],
+      "k": 10,
+      "text": "The fewest active contracts are held by the **Insurance Marketplace (Markellm)** and **Reinsurance (Rellm)** products, each with **2 contracts**[2].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1419,
+      "completion_tokens": 549,
+      "seconds": 4.285700334992725,
+      "error": null
+    },
+    {
+      "question": "What is the total number of active contracts across all Insurellm products?",
+      "category": "holistic",
+      "keywords": [
+        "contracts",
+        "total"
+      ],
+      "k": 10,
+      "text": "The total number of active contracts across all Insurellm products is **32**[1][4]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1532,
+      "completion_tokens": 116,
+      "seconds": 2.0629534699983196,
+      "error": null
+    },
+    {
+      "question": "How many states does United Healthcare Alliance operate in according to their contract?",
+      "category": "holistic",
+      "keywords": [
+        "United Healthcare",
+        "states"
+      ],
+      "k": 10,
+      "text": "United Healthcare Alliance operates in **12 states** according to the contract. [1]",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1625,
+      "completion_tokens": 186,
+      "seconds": 1.3740169849916128,
+      "error": null
+    },
+    {
+      "question": "What is the longest contract duration among all Insurellm contracts?",
+      "category": "holistic",
+      "keywords": [
+        "contract",
+        "duration"
+      ],
+      "k": 10,
+      "text": "The longest contract duration is **48 months**. This applies to both the GlobalRe Partners contract for Rellm and the United Healthcare Alliance contract for Healthllm [4][7].",
+      "refused": false,
+      "cited": true,
+      "prompt_tokens": 1920,
+      "completion_tokens": 284,
+      "seconds": 6.402988490997814,
+      "error": null
+    }
+  ],
+  "refusals": [
+    {
+      "source": "unanswerable",
+      "question": "What is the capital of Australia?",
+      "k": 6,
+      "refused": true,
+      "llm_called": false,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "unanswerable",
+      "question": "How do I bake sourdough bread?",
+      "k": 6,
+      "refused": true,
+      "llm_called": false,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "unanswerable",
+      "question": "Who won the 2022 FIFA World Cup?",
+      "k": 6,
+      "refused": true,
+      "llm_called": false,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "unanswerable",
+      "question": "What is the boiling point of nitrogen?",
+      "k": 6,
+      "refused": true,
+      "llm_called": false,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "unanswerable",
+      "question": "Explain how photosynthesis works.",
+      "k": 6,
+      "refused": true,
+      "llm_called": false,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "near_topic",
+      "question": "What is Insurellm's stock ticker symbol?",
+      "k": 6,
+      "refused": true,
+      "llm_called": true,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "near_topic",
+      "question": "What was Insurellm's revenue in 2031?",
+      "k": 6,
+      "refused": true,
+      "llm_called": true,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "near_topic",
+      "question": "Who is the CEO of Insurellm's biggest competitor?",
+      "k": 6,
+      "refused": true,
+      "llm_called": true,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "near_topic",
+      "question": "What is Avery Lancaster's home address?",
+      "k": 6,
+      "refused": true,
+      "llm_called": true,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "near_topic",
+      "question": "Which Insurellm employee has won a Nobel Prize?",
+      "k": 6,
+      "refused": true,
+      "llm_called": true,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "near_topic",
+      "question": "What is the recipe for the Insurellm cafeteria lasagna?",
+      "k": 6,
+      "refused": true,
+      "llm_called": true,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "unanswerable",
+      "question": "What is the capital of Australia?",
+      "k": 10,
+      "refused": true,
+      "llm_called": false,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "unanswerable",
+      "question": "How do I bake sourdough bread?",
+      "k": 10,
+      "refused": true,
+      "llm_called": false,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "unanswerable",
+      "question": "Who won the 2022 FIFA World Cup?",
+      "k": 10,
+      "refused": true,
+      "llm_called": false,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "unanswerable",
+      "question": "What is the boiling point of nitrogen?",
+      "k": 10,
+      "refused": true,
+      "llm_called": false,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "unanswerable",
+      "question": "Explain how photosynthesis works.",
+      "k": 10,
+      "refused": true,
+      "llm_called": false,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "near_topic",
+      "question": "What is Insurellm's stock ticker symbol?",
+      "k": 10,
+      "refused": true,
+      "llm_called": true,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "near_topic",
+      "question": "What was Insurellm's revenue in 2031?",
+      "k": 10,
+      "refused": true,
+      "llm_called": true,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "near_topic",
+      "question": "Who is the CEO of Insurellm's biggest competitor?",
+      "k": 10,
+      "refused": true,
+      "llm_called": true,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "near_topic",
+      "question": "What is Avery Lancaster's home address?",
+      "k": 10,
+      "refused": true,
+      "llm_called": true,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "near_topic",
+      "question": "Which Insurellm employee has won a Nobel Prize?",
+      "k": 10,
+      "refused": true,
+      "llm_called": true,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    },
+    {
+      "source": "near_topic",
+      "question": "What is the recipe for the Insurellm cafeteria lasagna?",
+      "k": 10,
+      "refused": true,
+      "llm_called": true,
+      "text": "I could not find this in the loaded documents.",
+      "error": null
+    }
+  ]
+}
